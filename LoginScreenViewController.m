@@ -11,6 +11,7 @@
 @interface LoginScreenViewController ()
 {
    
+    NSDictionary *dict;
 }
 
 @end
@@ -30,6 +31,34 @@
 
 }
 
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+    dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
+    NSLog(@"%@ login data = ",dict);
+    
+    
+    if ([[dict  valueForKey:@"user_type"] isEqualToString:@"2"]) {
+        
+        LenderTabBarViewController *secondView = [self.storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
+        [self.navigationController pushViewController:secondView animated:YES];
+    }
+    
+    else if ([[dict  valueForKey:@"user_type"] isEqualToString:@"1"])
+    {
+        
+        LendeeTabBarViewController *secondView = [self.storyboard instantiateViewControllerWithIdentifier:@"LendeeTabBarViewController"];
+        [self.navigationController pushViewController:secondView animated:YES];
+    }
+    
+    else
+    {
+        
+        NSLog(@"do nothing ");
+    }
+    
+}
 
 - (IBAction)signUpBtnPressed:(id)sender {
     

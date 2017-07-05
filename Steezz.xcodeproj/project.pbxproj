@@ -22,8 +22,13 @@
 		184A8E411EE13ADF003A6017 /* messages_right_bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 184A8E3D1EE13ADF003A6017 /* messages_right_bubble.png */; };
 		184A8E421EE13ADF003A6017 /* messages_left_bubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 184A8E3E1EE13ADF003A6017 /* messages_left_bubble@2x.png */; };
 		184A8E431EE13ADF003A6017 /* messages_left_bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 184A8E3F1EE13ADF003A6017 /* messages_left_bubble.png */; };
+		185054111EFA8C5A000975A0 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1850540E1EFA8C5A000975A0 /* FBSDKCoreKit.framework */; };
+		185054121EFA8C5A000975A0 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1850540F1EFA8C5A000975A0 /* FBSDKLoginKit.framework */; };
+		185054131EFA8C5A000975A0 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185054101EFA8C5A000975A0 /* FBSDKShareKit.framework */; };
+		185054161EFA8EC3000975A0 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185054151EFA8EC3000975A0 /* Bolts.framework */; };
 		1859A4111ED444A900CD66D3 /* BookNowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859A4101ED444A900CD66D3 /* BookNowViewController.m */; };
 		186EA0B21ED2A39400E28323 /* bookingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186EA0B11ED2A39400E28323 /* bookingViewController.m */; };
+		1873AC441F0A271300CCCEDB /* SaveCreditCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */; };
 		188D7ED21EC342210048804E /* LendeeDashBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188D7ED11EC342210048804E /* LendeeDashBoardViewController.m */; };
 		18A0AEDF1EF0089D005DF4EC /* NotificationCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0AEDE1EF0089D005DF4EC /* NotificationCenterViewController.m */; };
 		18A592651ED8578000D93A37 /* paymentFromViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A592641ED8578000D93A37 /* paymentFromViewController.m */; };
@@ -142,6 +147,8 @@
 
 /* Begin PBXFileReference section */
 		02EB6E17592369CDD89E8371 /* libPods-Steezz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Steezz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		096E76F891B78203EBD83F6F /* Pods-SteezzTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SteezzTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SteezzTests/Pods-SteezzTests.debug.xcconfig"; sourceTree = "<group>"; };
+		14F7597ECD31594735EAA0A6 /* Pods-SteezzUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SteezzUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SteezzUITests/Pods-SteezzUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1801B6EC1EEAC3E50019806C /* EditReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditReportViewController.h; sourceTree = "<group>"; };
 		1801B6ED1EEAC3E50019806C /* EditReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditReportViewController.m; sourceTree = "<group>"; };
 		180F54B41EDE91B50038ACE0 /* LenderHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LenderHistoryViewController.h; sourceTree = "<group>"; };
@@ -167,10 +174,16 @@
 		184A8E3D1EE13ADF003A6017 /* messages_right_bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messages_right_bubble.png; sourceTree = "<group>"; };
 		184A8E3E1EE13ADF003A6017 /* messages_left_bubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messages_left_bubble@2x.png"; sourceTree = "<group>"; };
 		184A8E3F1EE13ADF003A6017 /* messages_left_bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messages_left_bubble.png; sourceTree = "<group>"; };
+		1850540E1EFA8C5A000975A0 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		1850540F1EFA8C5A000975A0 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		185054101EFA8C5A000975A0 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		185054151EFA8EC3000975A0 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		1859A40F1ED444A900CD66D3 /* BookNowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookNowViewController.h; sourceTree = "<group>"; };
 		1859A4101ED444A900CD66D3 /* BookNowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookNowViewController.m; sourceTree = "<group>"; };
 		186EA0B01ED2A39400E28323 /* bookingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bookingViewController.h; sourceTree = "<group>"; };
 		186EA0B11ED2A39400E28323 /* bookingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bookingViewController.m; sourceTree = "<group>"; };
+		1873AC421F0A271300CCCEDB /* SaveCreditCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveCreditCardViewController.h; sourceTree = "<group>"; };
+		1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveCreditCardViewController.m; sourceTree = "<group>"; };
 		188D7ED01EC342210048804E /* LendeeDashBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LendeeDashBoardViewController.h; sourceTree = "<group>"; };
 		188D7ED11EC342210048804E /* LendeeDashBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LendeeDashBoardViewController.m; sourceTree = "<group>"; };
 		18A0AEDD1EF0089D005DF4EC /* NotificationCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCenterViewController.h; sourceTree = "<group>"; };
@@ -352,8 +365,12 @@
 		18D177F51EBCA26D00C29EAB /* SRAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRAlertView.m; sourceTree = "<group>"; };
 		18D594E91EE6AC7C005D62A8 /* LendeeChatUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LendeeChatUserViewController.h; sourceTree = "<group>"; };
 		18D594EA1EE6AC7C005D62A8 /* LendeeChatUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LendeeChatUserViewController.m; sourceTree = "<group>"; };
+		1FB9EA8D97CC78E0F4830177 /* Pods-SteezzUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SteezzUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SteezzUITests/Pods-SteezzUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		458305A92B8BA09C56C9C39A /* libPods-SteezzTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SteezzTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D3F7949E22637F0555A4340 /* libPods-SteezzUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SteezzUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		74CC970DA3DC804FE3EAEF79 /* Pods-Steezz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Steezz.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Steezz/Pods-Steezz.debug.xcconfig"; sourceTree = "<group>"; };
+		C92BB6C46AE945F02A789A55 /* Pods-SteezzTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SteezzTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SteezzTests/Pods-SteezzTests.release.xcconfig"; sourceTree = "<group>"; };
+		E6725617E538809CDE8BA1E8 /* Pods-Steezz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Steezz.release.xcconfig"; path = "Pods/Target Support Files/Pods-Steezz/Pods-Steezz.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,7 +378,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				185054161EFA8EC3000975A0 /* Bolts.framework in Frameworks */,
+				185054131EFA8C5A000975A0 /* FBSDKShareKit.framework in Frameworks */,
 				D3F72A4EEA2D59ECADE63D2E /* libPods-Steezz.a in Frameworks */,
+				185054111EFA8C5A000975A0 /* FBSDKCoreKit.framework in Frameworks */,
+				185054121EFA8C5A000975A0 /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +517,7 @@
 		1850540B1EFA8B66000975A0 /* Third Party files */ = {
 			isa = PBXGroup;
 			children = (
+				185054141EFA8C64000975A0 /* FaceBook SDK  */,
 				18B295401EE80402001440CD /* JTS Zoom Image File */,
 				18BC4D1F1EE045BB002267A0 /* HP Growing Text View  */,
 				18BC4D151EDFFA8B002267A0 /* Utils */,
@@ -531,6 +553,17 @@
 				1801B6ED1EEAC3E50019806C /* EditReportViewController.m */,
 			);
 			name = "Edit Report VC";
+			sourceTree = "<group>";
+		};
+		185054141EFA8C64000975A0 /* FaceBook SDK  */ = {
+			isa = PBXGroup;
+			children = (
+				185054151EFA8EC3000975A0 /* Bolts.framework */,
+				1850540E1EFA8C5A000975A0 /* FBSDKCoreKit.framework */,
+				1850540F1EFA8C5A000975A0 /* FBSDKLoginKit.framework */,
+				185054101EFA8C5A000975A0 /* FBSDKShareKit.framework */,
+			);
+			name = "FaceBook SDK ";
 			sourceTree = "<group>";
 		};
 		186EA0B31ED2A39F00E28323 /* Booking VC */ = {
@@ -948,6 +981,7 @@
 				18D177BA1EBC849300C29EAB /* SteezzTests */,
 				18D177C51EBC849300C29EAB /* SteezzUITests */,
 				18D1779F1EBC849200C29EAB /* Products */,
+				75F960093EBA6ACE0C8AC858 /* Pods */,
 				4CE5E67EA26689B4310E8E54 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -970,6 +1004,8 @@
 				18D177A71EBC849200C29EAB /* ViewController.h */,
 				18D177A81EBC849200C29EAB /* ViewController.m */,
 				18D177AA1EBC849200C29EAB /* Main.storyboard */,
+				1873AC421F0A271300CCCEDB /* SaveCreditCardViewController.h */,
+				1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */,
 				18B725201EC59B2200A1F0C2 /* LENDEE VC */,
 				18409D161EC30E04001C8F56 /* LENDER VC */,
 				18D177AD1EBC849200C29EAB /* Assets.xcassets */,
@@ -1098,6 +1134,19 @@
 				4D3F7949E22637F0555A4340 /* libPods-SteezzUITests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		75F960093EBA6ACE0C8AC858 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				74CC970DA3DC804FE3EAEF79 /* Pods-Steezz.debug.xcconfig */,
+				E6725617E538809CDE8BA1E8 /* Pods-Steezz.release.xcconfig */,
+				096E76F891B78203EBD83F6F /* Pods-SteezzTests.debug.xcconfig */,
+				C92BB6C46AE945F02A789A55 /* Pods-SteezzTests.release.xcconfig */,
+				1FB9EA8D97CC78E0F4830177 /* Pods-SteezzUITests.debug.xcconfig */,
+				14F7597ECD31594735EAA0A6 /* Pods-SteezzUITests.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1436,6 +1485,7 @@
 				18B7255C1EC5E4A300A1F0C2 /* UIImage+MultiFormat.m in Sources */,
 				18D177A91EBC849200C29EAB /* ViewController.m in Sources */,
 				18AD361C1EC1D8F900329B9D /* LenderChangePasswordViewController.m in Sources */,
+				1873AC441F0A271300CCCEDB /* SaveCreditCardViewController.m in Sources */,
 				18B7251D1EC590BE00A1F0C2 /* PlaceDetail.m in Sources */,
 				18D177E01EBC89FE00C29EAB /* TPKeyboardAvoidingScrollView.m in Sources */,
 				18B7255B1EC5E4A300A1F0C2 /* UIImage+GIF.m in Sources */,
@@ -1634,11 +1684,12 @@
 		};
 		18D177CC1EBC849300C29EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74CC970DA3DC804FE3EAEF79 /* Pods-Steezz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jacob Tolkin (3D65F3FZQ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jacob Tolkin (3D65F3FZQ2)";
-				DEVELOPMENT_TEAM = 3D65F3FZQ2;
+				CODE_SIGN_IDENTITY = "iPhone Developer: eshan cheema (55CN576J4L)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: eshan cheema (55CN576J4L)";
+				DEVELOPMENT_TEAM = 6L7QGV6JKR;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1654,21 +1705,22 @@
 					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zoptal.blitz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoptal.chinaMoon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ead36b32-f53f-4918-a999-bcd4d17e2145";
-				PROVISIONING_PROFILE_SPECIFIER = blitz1;
+				PROVISIONING_PROFILE = "40cc4c88-80e7-421b-8ed5-9b9d6a4459b5";
+				PROVISIONING_PROFILE_SPECIFIER = chinaMoonDevelopmnt;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		18D177CD1EBC849300C29EAB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6725617E538809CDE8BA1E8 /* Pods-Steezz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jacob Tolkin (3D65F3FZQ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jacob Tolkin (3D65F3FZQ2)";
-				DEVELOPMENT_TEAM = 3D65F3FZQ2;
+				CODE_SIGN_IDENTITY = "iPhone Developer: eshan cheema (55CN576J4L)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: eshan cheema (55CN576J4L)";
+				DEVELOPMENT_TEAM = 6L7QGV6JKR;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1683,16 +1735,17 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zoptal.blitz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoptal.chinaMoon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ead36b32-f53f-4918-a999-bcd4d17e2145";
-				PROVISIONING_PROFILE_SPECIFIER = blitz1;
+				PROVISIONING_PROFILE = "40cc4c88-80e7-421b-8ed5-9b9d6a4459b5";
+				PROVISIONING_PROFILE_SPECIFIER = chinaMoonDevelopmnt;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		18D177CF1EBC849300C29EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 096E76F891B78203EBD83F6F /* Pods-SteezzTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = SteezzTests/Info.plist;
@@ -1705,6 +1758,7 @@
 		};
 		18D177D01EBC849300C29EAB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C92BB6C46AE945F02A789A55 /* Pods-SteezzTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = SteezzTests/Info.plist;
@@ -1717,6 +1771,7 @@
 		};
 		18D177D21EBC849300C29EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1FB9EA8D97CC78E0F4830177 /* Pods-SteezzUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = SteezzUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1728,6 +1783,7 @@
 		};
 		18D177D31EBC849300C29EAB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14F7597ECD31594735EAA0A6 /* Pods-SteezzUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = SteezzUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

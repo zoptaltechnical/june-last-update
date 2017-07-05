@@ -678,6 +678,7 @@ static ApiMaster* singleton = nil;
 -(void)SavedCreditCardWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
+    
     NSString* infoStr = [NSString stringWithFormat:@"access_token=%@" ,userInfo [@"access_token"]];
     McomLOG(@"infostr :%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@saved_credit_cards",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -740,7 +741,7 @@ static ApiMaster* singleton = nil;
 -(void)MyOrderWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 
 {
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@" ,userInfo [@"access_token"]];
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@",userInfo[@"access_token"]];
     McomLOG(@"infostr :%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@renter_current_bookings",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"that is the url -->%@",url);
@@ -754,6 +755,23 @@ static ApiMaster* singleton = nil;
 
 
 
+-(void)NewCardSavingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
+{
+ 
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&cc_fname=%@&cc_lname=%@&cc_number=%@&card_type=%@&exp_month=%@&exp_year=%@&cvv=%@",userInfo [@"access_token"],userInfo [@"cc_fname"],userInfo[@"cc_lname"],userInfo [@"cc_number"],userInfo[@"card_type"],userInfo [@"exp_month"],userInfo[@"exp_year"] ,userInfo[@"cvv"]];
+    
+    McomLOG(@"infostr :%@",infoStr);
+    NSString *url=[[NSString stringWithFormat:@"%@save_credit_card",creditCardURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"that is the url -->%@",url);
+    
+    NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] ];
+    [request setHTTPBody:[infoStr dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setTimeoutInterval:540];
+    
+    NSLog(@" request at sign up%@",request);
+    [self forwardRequest1:request showActivity:YES completionHandler:handler];
+   
+}
 
 #pragma mark request to Server
 -(void)forwardRequest:(NSMutableURLRequest*)request showActivity:(BOOL)showActivity

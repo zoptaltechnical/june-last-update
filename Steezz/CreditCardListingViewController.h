@@ -10,6 +10,7 @@
 
 @interface CreditCardListingViewController : UIViewController
 {
+    IBOutlet UIButton *addCardBtn;
     
     IBOutlet UIButton *savedCardBackBtn;
     

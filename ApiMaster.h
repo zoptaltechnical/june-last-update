@@ -98,6 +98,7 @@ typedef void (^APICompletionHandler)(NSDictionary* responseDict,NSError *error);
 
 -(void)MyOrderWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
 
+-(void)NewCardSavingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
 
 
 

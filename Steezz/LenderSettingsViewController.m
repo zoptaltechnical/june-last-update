@@ -297,7 +297,7 @@
              {
                  lenderName.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"first_name"]];
                                   
-                 [lenderProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"3"] options:SDWebImageRefreshCached];
+                 [lenderProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile_icon"] options:SDWebImageRefreshCached];
                  
              }
          }
@@ -350,6 +350,7 @@
          {
              NSLog(@"sign_up%@", responseDict);
              
+              [[NSUserDefaults standardUserDefaults] setValue:@"No" forKey:@"logedIn"];
              
              [FBSDKAccessToken setCurrentAccessToken:nil];
              

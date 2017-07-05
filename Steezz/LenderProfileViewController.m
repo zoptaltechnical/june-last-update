@@ -309,17 +309,9 @@
     else
     {
       [self CallUpdateMyProfileAPI];
-        
     }
-
-    
-    
+   
 }
-
-
-
-
-
 
 -(void)ActionSheetImage
 {
@@ -359,9 +351,7 @@
             }
             else
             {
-                
                 picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                
                 [self presentViewController:picker animated:YES completion:Nil];
             }
             
@@ -389,10 +379,7 @@
             data = UIImagePNGRepresentation(image);
         }
       data = UIImagePNGRepresentation(image);
-    
-    
-    
-    
+
     size =CGSizeMake(userProfilePic.frame.size.width,userProfilePic.frame.size.height);
     data = UIImagePNGRepresentation(image);
     base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
@@ -410,14 +397,6 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
 }
-
-
-
-
-
-
-
-
 
 #pragma  My Profile
 #pragma My Profile API
@@ -467,14 +446,11 @@
                  
                  usernametxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"username"]];
                  
-                 [userProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
-                 
+                 [userProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile_icon"] options:SDWebImageRefreshCached];
              }
          }
      }];
 }
-
-
 
 # pragma update
 #pragma Update Profile API
@@ -536,8 +512,7 @@
              
              usernametxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"username"]];
              
-             [userProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
-             
+             [userProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile_icon"] options:SDWebImageRefreshCached];
           
              [aboutTxtView resignFirstResponder];
              cameraBtn.hidden = YES;
@@ -549,20 +524,9 @@
              addressTxtFld.userInteractionEnabled = NO;
              locationtextFld.userInteractionEnabled = NO;
              aboutTxtView.userInteractionEnabled = NO;
-             
              editBtn.hidden = NO;
-             
              [self.navigationController popViewControllerAnimated:YES];
-             
-             
-             
-             
-             
-            
          }
      }];
 }
-
-
-
 @end

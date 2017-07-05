@@ -7,7 +7,9 @@
 //
 
 
-//    com.zoptal.blitz
+//    com.zoptal.blitz   identifier for test Flight .
+
+//    com.zoptal.chinaMoon identifire for running app on devices.
 
 #import "AppDelegate.h"
 
@@ -25,9 +27,8 @@
     
     NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:nil];
     [NSURLCache setSharedURLCache:sharedCache];
-   
     
-    
+        
      [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentProduction:@"EOiEnYkQfcuHN45knuphrEN-MNJ8KFkb3vXHDqgj5RSkhPcUb8HMGrsCEKIuKMP4gC4B19qso7JyRfg0",PayPalEnvironmentSandbox:@"Ae6QnxsdQgyUZSzuMSA306aEbaAf6RFe4ea934EgWtow7knriA_O3qcLI1exXEUgnng3zFZ4HyLhFkfT"}];
     // Override point for customization after application launch.
     return YES;

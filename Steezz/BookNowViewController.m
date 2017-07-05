@@ -7,7 +7,6 @@
 //
 
 #import "BookNowViewController.h"
-
 #import "PayPalMobile.h"
 #import "PayPalConfiguration.h"
 #import "PayPalPaymentViewController.h"
@@ -199,16 +198,12 @@
              NSLog(@"sign_up%@", responseDict);
              
              backGroundView.hidden = NO;
-             
-             
              dummyAmount.hidden = NO;
              dummyDay.hidden = NO;
              daysLabel.hidden = NO;
              amountLabel.hidden = NO;
              daysLabel.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"num_of_days"]];
              amountLabel.text = [NSString stringWithFormat:@"$%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
-             
-             
              
              amountToPay.text = [NSString stringWithFormat:@"$%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
              
@@ -218,37 +213,25 @@
              numberofDay.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"num_of_days"]];
              
              perDayPrice.text = [NSString stringWithFormat:@"$ %@/Day",_PerDayAmount];
-             
-             
          }
      }];
 }
 
-
-
-
 - (IBAction)creditBtnAction:(id)sender {
-    
-    
-    
+
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     paymentFromViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"paymentFromViewController"];
-    
-    
-    
+
     homeObj.PaymentFromstartDateString = _availabelDate;
     homeObj.PaymentFromEndDateString = mystring;
     homeObj.BookProductId = _ProdctID;
     
     [self.navigationController pushViewController:homeObj animated:YES];
-
-    
-    
+  
 }
 
 
 - (IBAction)payPalBtnAction:(id)sender {
-    
     
     PayPalItem *item1 = [PayPalItem itemWithName:@"skateboard" withQuantity:1 withPrice:totalAmountToPay withCurrency:@"USD" withSku:@"SKU-Skateboard"];
         
@@ -278,14 +261,7 @@
     PayPalPaymentViewController *payVC = [[PayPalPaymentViewController alloc]initWithPayment:payment configuration:self.PayPalPaymentConfig delegate:self];
         
     [self presentViewController:payVC animated:YES completion:nil];
-        
-   
-        
-    
 }
-
-
-
 
 #pragma mark - THDatePickerDelegate
 
@@ -296,6 +272,8 @@
     NSComparisonResult result = [_availabelDate compare:mystring];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
+    
+    
     switch (result)
     {
         case NSOrderedAscending:
@@ -306,6 +284,8 @@
         break;
         case NSOrderedDescending:
         {
+            mystring = nil;
+            
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"date's Selected" message:@"Please select Future Date " preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];

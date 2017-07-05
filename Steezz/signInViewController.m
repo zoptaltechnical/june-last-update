@@ -266,6 +266,7 @@
          {
              NSLog(@"sign_up%@", responseDict);
              
+               [[NSUserDefaults standardUserDefaults] setValue:@"Yes" forKey:@"logedIn"];
              
              if ([checkString isEqualToString:@"1"]) {
                  
@@ -281,8 +282,6 @@
                  [[NSUserDefaults standardUserDefaults]setValue:@"" forKey:@"password"];
              }
              
-             
-             
              [[NSUserDefaults standardUserDefaults] setObject:[responseDict objectForKey:@"data"]forKey:@"loginData"];
              [[NSUserDefaults standardUserDefaults] synchronize];
              
@@ -291,7 +290,7 @@
                  
                  LenderTabBarViewController *secondView = [self.storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
                  [self.navigationController pushViewController:secondView animated:YES];
-}
+             }
              
              else if ([[[responseDict valueForKey:@"data"] valueForKey:@"user_type"] isEqualToString:@"1"])
              {
