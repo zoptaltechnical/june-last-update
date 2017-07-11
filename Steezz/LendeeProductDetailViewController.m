@@ -39,11 +39,11 @@
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
     
-    productDetailTextView.placeholderText = @"       Message";
-    productDetailTextView.placeholderColor = [UIColor lightGrayColor];
-    productDetailTextView.layer.borderWidth = 1;
-    productDetailTextView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    productDetailTextView.layer.cornerRadius = 8.0;
+//    productDetailTextView.placeholderText = @"       Message";
+//    productDetailTextView.placeholderColor = [UIColor lightGrayColor];
+//    productDetailTextView.layer.borderWidth = 1;
+//    productDetailTextView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+//    productDetailTextView.layer.cornerRadius = 8.0;
     
     profilePic.layer.cornerRadius=profilePic.frame.size.width/2;
     profilePic.clipsToBounds= YES;
@@ -190,7 +190,7 @@
     
     [IdsArray addObjectsFromArray:categoriesIdArray ];
     
-    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=110;
+    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
     
     [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex)
      {

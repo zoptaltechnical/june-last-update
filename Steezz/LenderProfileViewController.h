@@ -25,6 +25,8 @@
     
     IBOutlet UITextField *phoneNumbertxtFld;
     
+    IBOutlet UITextField *payPalIDTxtFld;
+
    
     IBOutlet UITextField *addressTxtFld;
     IBOutlet MVPlaceSearchTextField *locationtextFld;

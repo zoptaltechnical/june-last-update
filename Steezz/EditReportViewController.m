@@ -66,7 +66,7 @@
     
     [IdsArray addObjectsFromArray:categoriesIdArray ];
     
-    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=110;
+    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
     
     [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex)
      {

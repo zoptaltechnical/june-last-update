@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Steezz/LenderProfileViewController.m"
-            timestampString = "520758065.468116"
+            timestampString = "521123995.500686"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "-callMyProfileAPI"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Steezz/LenderProfileViewController.m"
-            timestampString = "520758065.468116"
+            timestampString = "521123995.500686"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "502"
+            endingLineNumber = "502"
             landmarkName = "-imagePickerControllerDidCancel:"
             landmarkType = "7">
          </BreakpointContent>
@@ -153,22 +153,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Steezz/LenderProductDetailViewController.m"
-            timestampString = "519297542.643539"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
-            landmarkName = "-callProductDetailAPI"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Steezz/LendeeAddProductViewController.m"
             timestampString = "520424699.434745"
             startingColumnNumber = "9223372036854775807"
@@ -202,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Steezz/LENDEEProductsViewController.m"
-            timestampString = "518619150.815866"
+            timestampString = "521125819.122885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "-DeleteBtnPressed:"
             landmarkType = "7">
          </BreakpointContent>
@@ -218,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Steezz/LENDEEProductsViewController.m"
-            timestampString = "518619150.815866"
+            timestampString = "521125819.122885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "-callLendeeDeleteProductAPI"
             landmarkType = "7">
          </BreakpointContent>

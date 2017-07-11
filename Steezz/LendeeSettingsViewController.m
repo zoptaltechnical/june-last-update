@@ -35,7 +35,7 @@
     [lendeeImage.layer setBorderColor: [[UIColor whiteColor] CGColor]];
     [lendeeImage.layer setBorderWidth: 3.0];
     
-    menu_label=[[NSMutableArray alloc]initWithObjects:@"MY PROFILE",@"FEEDBACK FORUM",@"NOTIFICATION CENTER",@"SUPPORT",@"ABOUT US",@"CHANGE PASSWORD",@"PAYMENTS",@"DISCLAIMER",@"SWITCH TO RENTER",nil];
+    menu_label=[[NSMutableArray alloc]initWithObjects:@"MY PROFILE",@"FEEDBACK FORUM",@"NOTIFICATION CENTER",@"SUPPORT",@"ABOUT US",@"CHANGE PASSWORD",@"PAYMENTS",@"PAYMENTS HISTORY",@"DISCLAIMER",@"SWITCH TO RENTER",nil];
     
     Array_of_images = [[NSMutableArray alloc] initWithObjects:
                        [UIImage imageNamed:@"profile_icon"],
@@ -45,6 +45,7 @@
                        [UIImage imageNamed:@"about-us"],
                        [UIImage imageNamed:@"Change-Password"],
                        [UIImage imageNamed:@"payments"],
+                       [UIImage imageNamed:@"history"],
                        [UIImage imageNamed:@"Disclaimer"],
                        [UIImage imageNamed:@"Switch-to-Lendeer"], nil];
     
@@ -156,16 +157,28 @@
         
     }
     
-    
     else if (indexPath.row == 7)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        disclaimerViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"disclaimerViewController"];
-        [self.navigationController pushViewController:homeObj animated:YES];    }
-    
+        PaymentListingViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"PaymentListingViewController"];
+        [self.navigationController pushViewController:homeObj animated:YES];
+    }
     
     else if (indexPath.row == 8)
+    {
+        
+        
+        
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        disclaimerViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"disclaimerViewController"];
+        [self.navigationController pushViewController:homeObj animated:YES];
+    }
+    
+    
+    
+    else if (indexPath.row == 9)
     {
         
         [self callSwitchToLenderAPI];

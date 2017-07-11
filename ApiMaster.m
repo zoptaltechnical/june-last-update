@@ -214,7 +214,7 @@ static ApiMaster* singleton = nil;
 -(void)UpdateProfileWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&device_token=%@&device_type=%@&first_name=%@&last_name=%@&email=%@&phone=%@&location=%@&address=%@&about_user=%@&username=%@&profile_pic=%@",userInfo[@"access_token"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"first_name"],userInfo[@"last_name"],userInfo[@"email"],userInfo[@"phone"],userInfo[@"location"],userInfo[@"address"],userInfo[@"about_user"],userInfo[@"username"],userInfo[@"profile_pic"]];
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&device_token=%@&device_type=%@&first_name=%@&last_name=%@&email=%@&phone=%@&location=%@&address=%@&about_user=%@&username=%@&profile_pic=%@&paypal_id=%@",userInfo[@"access_token"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"first_name"],userInfo[@"last_name"],userInfo[@"email"],userInfo[@"phone"],userInfo[@"location"],userInfo[@"address"],userInfo[@"about_user"],userInfo[@"username"],userInfo[@"profile_pic"],userInfo[@"paypal_id"]];
     NSLog(@"%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@update_profile",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -772,6 +772,45 @@ static ApiMaster* singleton = nil;
     [self forwardRequest1:request showActivity:YES completionHandler:handler];
    
 }
+
+-(void)paymentListingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
+{
+    
+    
+    
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@",userInfo [@"access_token"]];
+    
+    McomLOG(@"infostr :%@",infoStr);
+    NSString *url=[[NSString stringWithFormat:@"%@payment_history",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"that is the url -->%@",url);
+    
+    NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] ];
+    [request setHTTPBody:[infoStr dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setTimeoutInterval:540];
+    
+    NSLog(@" request at sign up%@",request);
+    [self forwardRequest1:request showActivity:YES completionHandler:handler];
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #pragma mark request to Server
 -(void)forwardRequest:(NSMutableURLRequest*)request showActivity:(BOOL)showActivity

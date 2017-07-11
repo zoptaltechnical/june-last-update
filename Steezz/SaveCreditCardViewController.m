@@ -43,7 +43,6 @@
     UIBarButtonItem *flex1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *genderdoneButton1=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(hidePickerMonth)];
     
-    
     [comptoolbar1 setItems:[NSArray arrayWithObjects:genderdoneButton1, nil]];
     comptoolbar1.items = @[flex1, genderdoneButton1];
     [expiryMnth setInputView:UIpickerMonth];
@@ -364,7 +363,6 @@
     else  if(pickerView == UIpickerMonth)
     {
         return [MonthArray  count];
-        
     }
     
     UiPickerView.hidden = NO;
@@ -372,20 +370,14 @@
     return 0;
 }
 
-
 #pragma TextField Delegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    
     if ([accountNmberTxtFld.text length]<17)
     {
         return YES;
     }
-    
     return NO;
-    
 }
-
-
 @end

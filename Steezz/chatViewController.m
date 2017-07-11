@@ -378,7 +378,7 @@
     
     if (ScreenHeight<= 568)
     {
-        msgInPutView.frame=CGRectMake(0,self.view.frame.size.height-270, self.view.frame.size.width, 50);
+        msgInPutView.frame=CGRectMake(0,self.view.frame.size.height-320, self.view.frame.size.width, 50);
     }
     else if (ScreenHeight<= 667)
     {
@@ -408,7 +408,7 @@
     
     if (ScreenHeight<= 568)
     {
-        msgInPutView.frame=CGRectMake(0,self.view.frame.size.height-270, self.view.frame.size.width, 50);
+        msgInPutView.frame=CGRectMake(0,self.view.frame.size.height-302, self.view.frame.size.width, 50);
     }
     else if (ScreenHeight<= 667)
     {

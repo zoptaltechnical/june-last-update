@@ -177,6 +177,14 @@
         
         
         [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
         
         
     }
@@ -195,7 +203,16 @@
                                   }];
         
         
-        [lastNameTextField resignFirstResponder];}
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
     else if ([[emailTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
@@ -209,7 +226,16 @@
                                   }];
         
         
-        [emailTxtFld resignFirstResponder];    }
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
     
     else if ([[usernametxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
@@ -224,7 +250,16 @@
                                   }];
         
         
-        [usernametxtFld resignFirstResponder];    }
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
     else if ([[phoneNumbertxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
@@ -239,7 +274,16 @@
                                   }];
         
         
-        [phoneNumbertxtFld resignFirstResponder];    }
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
     
     
@@ -255,7 +299,16 @@
                                   }];
         
         
-        [addressTxtFld resignFirstResponder];    }
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
     else if ([[locationtextFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
@@ -270,7 +323,16 @@
                                   }];
         
         
-        [locationtextFld resignFirstResponder];    }
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
     
     
@@ -286,7 +348,16 @@
                                   }];
         
         
-        [aboutTxtView resignFirstResponder];    }
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+    }
     
 
     else if (![Utility NSStringIsValidEmail:emailTxtFld.text])
@@ -302,9 +373,44 @@
                                   }];
         
         
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
         
     }
+    
+    else if ([[payPalIDTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    {
+        
+        
+        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                       message:@"Please enter your Paypal ID"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+         
+                                  
+                                  }];
+        
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+         [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder]; }
+    
+    
     
     else
     {
@@ -475,7 +581,8 @@
                       @"device_token":@"12345678",
                       @"about_user":aboutTxtView.text,
                       @"phone":phoneNumbertxtFld.text,
-                      @"username":usernametxtFld.text
+                      @"username":usernametxtFld.text,
+                      @"paypal_id":payPalIDTxtFld.text
                       };
     
     McomLOG(@"%@",MyProfileInfo);

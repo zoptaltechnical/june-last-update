@@ -60,7 +60,9 @@
 #import "LendeeSettingsViewController.h"
 #import "LendeeDashBoardViewController.h"
 #import "LendeeChatUserViewController.h"
+#import "PaymentListingViewController.h"
 
+#import "PaymentDetailViewController.h"
 #import "Constants.h"
 #import "Utility.h"
 #import "MVPlaceSearchTextField.h"

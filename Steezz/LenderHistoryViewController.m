@@ -40,11 +40,13 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    UIImage *colorimage = [UIImage imageNamed:@"disable"];
+    
+    //
+    UIImage *colorimage = [UIImage imageNamed:@"active"];
     [historyBtn setBackgroundImage:colorimage forState:UIControlStateNormal];
     
     
-    UIImage *colorimage1 = [UIImage imageNamed:@"active"];
+    UIImage *colorimage1 = [UIImage imageNamed:@"disable"];
     [myOrderBtn setBackgroundImage:colorimage1 forState:UIControlStateNormal];
     
     
@@ -199,6 +201,31 @@
     return cell1;
     
 }
+
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (_myBool ==YES) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    LenderProductDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProductDetailViewController"];
+    homeObj.ProductDetail = [[histroyListingArray valueForKey:@"product_id"]objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:homeObj animated:YES];
+    }
+    
+    else if (_myBool ==NO)
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        LenderProductDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProductDetailViewController"];
+        homeObj.ProductDetail = [[myOrderArray valueForKey:@"product_id"]objectAtIndex:indexPath.row];
+        [self.navigationController pushViewController:homeObj animated:YES];
+        
+    }
+    
+    
+}
+
+
 
 
 -(void)messageBtnPressed:(id)sender

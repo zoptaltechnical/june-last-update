@@ -104,6 +104,8 @@
 		18BC4D181EE01282002267A0 /* LenderChatUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC4D171EE01282002267A0 /* LenderChatUsersViewController.m */; };
 		18BC4D1D1EE045AC002267A0 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC4D1A1EE045AC002267A0 /* HPGrowingTextView.m */; };
 		18BC4D1E1EE045AC002267A0 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC4D1C1EE045AC002267A0 /* HPTextViewInternal.m */; };
+		18C7369C1F139B0C0050AAE9 /* PaymentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C7369B1F139B0C0050AAE9 /* PaymentDetailViewController.m */; };
+		18C736A01F13AD380050AAE9 /* PaymentListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C7369F1F13AD380050AAE9 /* PaymentListingViewController.m */; };
 		18D177A31EBC849200C29EAB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D177A21EBC849200C29EAB /* main.m */; };
 		18D177A61EBC849200C29EAB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D177A51EBC849200C29EAB /* AppDelegate.m */; };
 		18D177A91EBC849200C29EAB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D177A81EBC849200C29EAB /* ViewController.m */; };
@@ -326,6 +328,10 @@
 		18BC4D1A1EE045AC002267A0 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		18BC4D1B1EE045AC002267A0 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
 		18BC4D1C1EE045AC002267A0 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
+		18C7369A1F139B0C0050AAE9 /* PaymentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentDetailViewController.h; sourceTree = "<group>"; };
+		18C7369B1F139B0C0050AAE9 /* PaymentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentDetailViewController.m; sourceTree = "<group>"; };
+		18C7369E1F13AD380050AAE9 /* PaymentListingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentListingViewController.h; sourceTree = "<group>"; };
+		18C7369F1F13AD380050AAE9 /* PaymentListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentListingViewController.m; sourceTree = "<group>"; };
 		18D1779E1EBC849200C29EAB /* Steezz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Steezz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18D177A21EBC849200C29EAB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		18D177A41EBC849200C29EAB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -972,6 +978,24 @@
 			name = "HP Growing Text View ";
 			sourceTree = "<group>";
 		};
+		18C736991F139AD70050AAE9 /* Save Credit Card VC */ = {
+			isa = PBXGroup;
+			children = (
+				1873AC421F0A271300CCCEDB /* SaveCreditCardViewController.h */,
+				1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */,
+			);
+			name = "Save Credit Card VC";
+			sourceTree = "<group>";
+		};
+		18C7369D1F13AD0E0050AAE9 /* Payment Detail VC */ = {
+			isa = PBXGroup;
+			children = (
+				18C7369A1F139B0C0050AAE9 /* PaymentDetailViewController.h */,
+				18C7369B1F139B0C0050AAE9 /* PaymentDetailViewController.m */,
+			);
+			name = "Payment Detail VC";
+			sourceTree = "<group>";
+		};
 		18D177951EBC849200C29EAB = {
 			isa = PBXGroup;
 			children = (
@@ -1004,8 +1028,10 @@
 				18D177A71EBC849200C29EAB /* ViewController.h */,
 				18D177A81EBC849200C29EAB /* ViewController.m */,
 				18D177AA1EBC849200C29EAB /* Main.storyboard */,
-				1873AC421F0A271300CCCEDB /* SaveCreditCardViewController.h */,
-				1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */,
+				18C7369E1F13AD380050AAE9 /* PaymentListingViewController.h */,
+				18C7369F1F13AD380050AAE9 /* PaymentListingViewController.m */,
+				18C7369D1F13AD0E0050AAE9 /* Payment Detail VC */,
+				18C736991F139AD70050AAE9 /* Save Credit Card VC */,
 				18B725201EC59B2200A1F0C2 /* LENDEE VC */,
 				18409D161EC30E04001C8F56 /* LENDER VC */,
 				18D177AD1EBC849200C29EAB /* Assets.xcassets */,
@@ -1504,6 +1530,7 @@
 				18BC4D141EDFFA85002267A0 /* UIImage+Utils.m in Sources */,
 				18409D251EC32CCB001C8F56 /* LendeeSettingsViewController.m in Sources */,
 				18B725051EC579E900A1F0C2 /* ApiMaster.m in Sources */,
+				18C7369C1F139B0C0050AAE9 /* PaymentDetailViewController.m in Sources */,
 				18B8A91A1EC0430300B9E36D /* lenderHomePageViewController.m in Sources */,
 				18B8A9261EC055F200B9E36D /* lenderConditionlReportViewController.m in Sources */,
 				18D177F01EBC968B00C29EAB /* LendeeTabBarViewController.m in Sources */,
@@ -1522,6 +1549,7 @@
 				18B7255A1EC5E4A300A1F0C2 /* UIButton+WebCache.m in Sources */,
 				18B2953E1EE803FB001440CD /* UIApplication+JTSImageViewController.m in Sources */,
 				1859A4111ED444A900CD66D3 /* BookNowViewController.m in Sources */,
+				18C736A01F13AD380050AAE9 /* PaymentListingViewController.m in Sources */,
 				18BC4CEC1EDFFA23002267A0 /* SPHMediaBubbleCell.m in Sources */,
 				18259AB21ED5940F00C7FAE6 /* disclaimerViewController.m in Sources */,
 				18B2953D1EE803FB001440CD /* JTSSimpleImageDownloader.m in Sources */,

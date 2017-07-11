@@ -26,7 +26,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
     
@@ -35,7 +34,6 @@
 
     [profilePic.layer setBorderColor: [[UIColor whiteColor] CGColor]];
     [profilePic.layer setBorderWidth: 4.0];
-    
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
     [tapRecognizer addTarget:self action:@selector(bigButtonTapped:)];
@@ -122,9 +120,7 @@
     [FavouriteSaveBtn addTarget:self
                       action:@selector(FavouriteSaveBtnPressed:)
                       forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
+        
     UIButton *BookBtn =(UIButton *)[cell.contentView viewWithTag:4005];
     [BookBtn addTarget:self
              action:@selector(BookBtnPressed:)

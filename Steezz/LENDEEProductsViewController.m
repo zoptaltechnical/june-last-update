@@ -46,10 +46,32 @@
 - (IBAction)productAddBtnPressed:(id)sender {
     
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    LendeeAddProductViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LendeeAddProductViewController"];
-    [self.navigationController pushViewController:homeObj animated:YES];
+    if ([dict valueForKey:@"paypal_id"]) {
+        if ([[dict valueForKey:@"paypal_id"]length]==0)
+        {
+            [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                           message:@"You have to Add Paypal Id in order to add Products."
+                                   leftActionTitle:@"OK"
+                                  rightActionTitle:@""
+                                    animationStyle:AlertViewAnimationTopToCenterSpring
+                                      selectAction:^(AlertViewActionType actionType) {
+                                          NSLog(@"%zd", actionType);
+                                      }];
 
+            
+        }
+        else
+        {
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            LendeeAddProductViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LendeeAddProductViewController"];
+            [self.navigationController pushViewController:homeObj animated:YES];
+            
+        }
+        
+        
+    }
+   
     
 }
 
