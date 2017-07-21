@@ -159,6 +159,8 @@
     CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:bookingListTableView];
     NSIndexPath *indexPath = [bookingListTableView indexPathForRowAtPoint:buttonPosition];
     McomLOG(@"like-indexPath--%ld",(long)indexPath.row);
+    
+    
    
     ProductId = [NSString stringWithFormat:@"%@",[[bookingListArray valueForKey:@"id"]objectAtIndex:indexPath.row]];
     dateString = [NSString stringWithFormat:@"%@",[[bookingListArray valueForKey:@"available_date"]objectAtIndex:indexPath.row]];

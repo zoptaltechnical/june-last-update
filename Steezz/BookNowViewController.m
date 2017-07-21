@@ -6,14 +6,40 @@
 //  Copyright © 2017 Prince. All rights reserved.
 //
 
+
+#import "CZPickerView.h"
 #import "BookNowViewController.h"
 #import "PayPalMobile.h"
 #import "PayPalConfiguration.h"
 #import "PayPalPaymentViewController.h"
 
-@interface BookNowViewController ()<PayPalPaymentDelegate>
+
+#import <CoreGraphics/CoreGraphics.h>
+
+
+
+#import "FTPopOverMenu.h"
+
+#import "FIMultipleSelectionCalendarView.h"
+
+
+
+
+@interface BookNowViewController ()<PayPalPaymentDelegate,FIMultipleSelectionCalendarViewDelegate>
 {
     NSString *mystring;
+    
+    NSString *AvailableDatesString;
+    
+    NSMutableArray * detailDataArray;
+    
+    NSMutableArray *aviDateArray;
+    
+    CZPickerView *IndividualCZPicker,*MultipleCZPicker;
+    
+    BOOL startBtnSelected;
+    
+    NSString *startDateString;
     
     NSString* paypalId;
     NSString *create_time;
@@ -21,8 +47,19 @@
     NSDecimalNumber *totalAmountToPay;
     
     NSDictionary *dict;
+    
+    NSMutableArray *disableDates;
+    
+    
+    NSMutableArray *randomDateSelection;
 }
 
+
+
+@property(nonatomic, strong) UILabel *dateLabel;
+@property(nonatomic, strong) NSDateFormatter *dateFormatter;
+@property(nonatomic, strong) NSDate *minimumDate;
+@property(nonatomic, strong) NSArray *disabledDates;
 @property (nonatomic, retain) NSDate * curDate;
 @property (nonatomic, retain) NSDateFormatter * formatter;
 @property (nonatomic, strong) PayPalConfiguration *PayPalPaymentConfig;
@@ -33,20 +70,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+     randomDateSelection =  [[NSMutableArray alloc] init];
+    
+    
+    selectedDateCount.layer.cornerRadius=selectedDateCount.frame.size.width/2;
+    selectedDateCount.clipsToBounds= YES;
+    
+    
+    bookNowBtn.layer.cornerRadius = 4;
+    bookNowBtn.clipsToBounds = YES;
+    
+   
+    
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    self.minimumDate =  [self.dateFormatter dateFromString:@"2017-07-01"];
+    
+  
+    
+ 
+    
+    
+   // self.view.backgroundColor = [UIColor whiteColor];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localeDidChange) name:NSCurrentLocaleDidChangeNotification object:nil];
+    
+
+    
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
     
     [backGroundView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.81]];
     popUpView.layer.cornerRadius = 8.0;
-    
-    startDate.text = [NSString stringWithFormat:@"%@",_availabelDate];
-    [endDateBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 0.0f)];
+  
     
     self.curDate = [NSDate date];
     self.formatter = [[NSDateFormatter alloc] init];
     [_formatter setDateFormat:@"yyyy-MM-dd"];
     
-    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:startDate ,nil]];
+   // [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:startDate ,nil]];
   
     
     _PayPalPaymentConfig = [[PayPalConfiguration alloc]init];
@@ -59,9 +121,86 @@
     
     
     
+   
+     [self callProductDetailAPI];
+    
     
     // Do any additional setup after loading the view.
 }
+
+
+
+- (IBAction)selectedDateCountBtnActn:(id)sender {
+    
+    
+    
+    NSMutableArray*array=[[NSMutableArray alloc]init];
+    
+    
+    [array addObjectsFromArray:randomDateSelection ];
+    
+    
+    
+    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
+    
+    [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex) {
+        
+      //  categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
+        
+        
+       // NSLog(@"3u294509645604 =====%@",categoryID);
+    }
+                    dismissBlock:^{
+                    }];
+
+    
+    
+}
+
+
+- (IBAction)BookNowBtnActn:(id)sender
+{
+    
+    [self bookingValidation];
+    
+}
+
+
+
+
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    } else {
+        return YES;
+    }
+}
+
+
+
+- (BOOL)dateIsDisabled:(NSDate *)date {
+    for (NSDate *disabledDate in self.disabledDates) {
+        if ([disabledDate isEqualToDate:date]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+
 
 - (IBAction)BookingBtnAction:(id)sender {
     
@@ -73,6 +212,8 @@
 - (IBAction)crossBtnPressed:(id)sender {
     
     backGroundView.hidden = YES;
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -87,55 +228,14 @@
 
 
 
-
-
-- (IBAction)endDateBtnPressed:(id)sender {
-    
-    mystring = nil;
-    
-    if(!self.datePicker)
-        self.datePicker = [THDatePickerViewController datePicker];
-    self.datePicker.date = self.curDate;
-    self.datePicker.delegate = self;
-    [self.datePicker setAllowClearDate:NO];
-    [self.datePicker setClearAsToday:YES];
-    [self.datePicker setAutoCloseOnSelectDate:NO];
-    
-     [self.datePicker setAllowSelectionOfSelectedDate:YES];
-    
-    [self.datePicker setDisableYearSwitch:YES];
-    [self.datePicker setDisableFutureSelection:YES];
-    [self.datePicker setDaysInHistorySelection:0];
-    [self.datePicker setDaysInFutureSelection:0];
-    
-    
-    
-    [self.datePicker setAllowMultiDaySelection:YES];
-    // [self.datePicker setDateTimeZoneWithName:@"UTC"];
-    // [self.datePicker setAutoCloseCancelDelay:5.0];
-    [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
-    [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
-    [self.datePicker setCurrentDateColorSelected:[UIColor yellowColor]];
-    
-    [self.datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
-        int tmp = (arc4random() % 30)+1;
-        return (tmp % 5 == 0);
-    }];
-    [self presentSemiViewController:self.datePicker withOptions:@{
-                                                                  KNSemiModalOptionKeys.pushParentBack    : @(NO),
-                                                                  KNSemiModalOptionKeys.animationDuration : @(0.3),
-                                                                  KNSemiModalOptionKeys.shadowOpacity     : @(1.0),
-                                                                  }];
-}
-
-
-
 -(void)bookingValidation
 {
-    if ([mystring length]==0)
+    
+    if ([AvailableDatesString length]==0)
     {
+        
         [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please Select End Date!"
+                                       message:@"Please Select Booking Dates!"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationZoom
@@ -143,7 +243,6 @@
                                       NSLog(@"%zd", actionType);
                                   }];
     }
-    
     
     else
     {
@@ -162,8 +261,7 @@
     NSDictionary* registerInfo = @{
                                    @"access_token":[dict valueForKey:@"access_token"],
                                    @"product_id":_ProdctID,
-                                   @"start_date":_availabelDate,
-                                   @"end_date":mystring
+                                   @"booking_dates":AvailableDatesString,
                                    };
     McomLOG(@"%@",registerInfo);
     [API BookProductWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
@@ -186,7 +284,7 @@
                                            NSLog(@"%zd", actionType);
                                        }];
              
-             [endDateBtn setTitle:nil forState:UIControlStateNormal];
+           
              mystring = nil;
              
              [self.navigationController popViewControllerAnimated:YES];
@@ -198,12 +296,6 @@
              NSLog(@"sign_up%@", responseDict);
              
              backGroundView.hidden = NO;
-             dummyAmount.hidden = NO;
-             dummyDay.hidden = NO;
-             daysLabel.hidden = NO;
-             amountLabel.hidden = NO;
-             daysLabel.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"num_of_days"]];
-             amountLabel.text = [NSString stringWithFormat:@"$%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
              
              amountToPay.text = [NSString stringWithFormat:@"$%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
              
@@ -222,7 +314,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     paymentFromViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"paymentFromViewController"];
 
-    homeObj.PaymentFromstartDateString = _availabelDate;
+    homeObj.PaymentFromstartDateString = AvailableDatesString;
     homeObj.PaymentFromEndDateString = mystring;
     homeObj.BookProductId = _ProdctID;
     
@@ -263,110 +355,11 @@
     [self presentViewController:payVC animated:YES completion:nil];
 }
 
-#pragma mark - THDatePickerDelegate
-
-- (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
-    self.curDate = datePicker.date;
-    
-    
-    NSComparisonResult result = [_availabelDate compare:mystring];
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
-    
-    
-    switch (result)
-    {
-        case NSOrderedAscending:
-        {
-            [endDateBtn setTitle:mystring forState:UIControlStateNormal];
-        }
-            
-        break;
-        case NSOrderedDescending:
-        {
-            mystring = nil;
-            
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"date's Selected" message:@"Please select Future Date " preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-            [alertController addAction:ok];
-            [self presentViewController:alertController animated:YES completion:nil];
-            
-            mystring = nil;
-            dummyDay.hidden = YES;
-            dummyAmount.hidden = YES;
-            amountLabel.hidden = YES;
-            daysLabel.hidden = YES;
-            [endDateBtn setTitle:nil forState:UIControlStateNormal];
-            [self dismissSemiModalView];
-        }
-         
-            break;
-        
-        default:
-           // NSLog(@"erorr dates %@, %@", [df stringFromDate:_availabelDate], [df stringFromDate:mystring]);
-            break;
-    }
-    
-    
-    
-    
-    if ([mystring length]==0) {
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"date's Selected" message:@"nothing is selected " preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:ok];
-        [self presentViewController:alertController animated:YES completion:nil];
-        [self dismissSemiModalView];
-        
-        
-    }
-    else
-    {
-        [self dismissSemiModalView];
-        
-    }
-}
 
 - (void)datePickerCancelPressed:(THDatePickerViewController *)datePicker {
   
     NSLog(@"randomDateSelection after cancle button pressed = %@",mystring);
     [self dismissSemiModalView];
-}
-
-- (void)datePicker:(THDatePickerViewController *)datePicker selectedDate:(NSDate *)selectedDate
-{
-    mystring = @"SelectedString";
-    NSLog(@"Date selected: %@",[_formatter stringFromDate:selectedDate]);
-    NSLog(@"selectedDate = %@",selectedDate);
-    
-    mystring  = [_formatter stringFromDate:selectedDate];
-    NSLog(@"myString = %@",mystring);
-    
-}
-
-
--(void)datePicker:(THDatePickerViewController *)datePicker deselectedDate:(NSDate *)deselectedDate
-{
-    
-    NSLog(@"Date selected: %@",[_formatter stringFromDate:deselectedDate]);
-    NSLog(@"de_selectedDate = %@",deselectedDate);
-    mystring =  nil;
-    
-  /*  if ([randomDateSelection containsObject:[_formatter stringFromDate:deselectedDate]])
-    {
-        [randomDateSelection removeObject:[_formatter stringFromDate:deselectedDate]];
-        NSLog(@"my array = %@",randomDateSelection);
-        
-        // convert array into string and seperated the date's with ","
-        //    NSString * myString = [randomDateSelection componentsJoinedByString:@", "];
-        //    NSLog(@"%@",myString);
-        
-    }
-   
-   */
-    
 }
 
 
@@ -410,18 +403,17 @@
 
 -(void)PaymentSucessAPI
 {
-    
-   
+    NSLog(@"%@",AvailableDatesString);
     
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
     
     NSDictionary* registerInfo = @{
                                    @"access_token":[dict valueForKey:@"access_token"],
                                    @"product_id":_ProdctID,
-                                   @"start_date":_availabelDate,
-                                   @"end_date":mystring,
+                                   @"booking_dates":AvailableDatesString,
                                    @"txd_id":paypalId,
-                                   @"create_time":create_time
+                                   @"create_time":create_time,
+                                   @"amount":_PerDayAmount
                                    };
     McomLOG(@"%@",registerInfo);
     [API paypalPaymentSucessWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
@@ -431,9 +423,11 @@
          
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
          
-         if ([responseDict[@"result"]boolValue]==0)
+         if ([responseDict[@"response"]boolValue]==0)
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
+              [self.navigationController popViewControllerAnimated:YES];
              
              [SRAlertView sr_showAlertViewWithTitle:@"Alert"
                                             message:errormessage
@@ -448,27 +442,208 @@
              
              
          }
-         else if ([responseDict[@"result"]boolValue]==1)
+         else if ([responseDict[@"response"]boolValue]==1)
          {
              NSLog(@"sign_up%@", responseDict);
              
+             [self.navigationController popViewControllerAnimated:YES];
+             
+             
+             
              [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                            message:@""
+                                            message:@"Product booked successfully!"
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
                                      animationStyle:AlertViewAnimationRightToCenterSpring
                                        selectAction:^(AlertViewActionType actionType) {
                                            NSLog(@"%zd", actionType);
                                        }];
-
-             
-             
          }
      }];
-
     
     
 }
 
+
+
+#pragma Product Detail API
+-(void)callProductDetailAPI
+{
+    
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    NSDictionary* registerInfo = @{
+                                   @"access_token":[dict valueForKey:@"access_token"],
+                                   @"product_id":_ProdctID
+                                   };
+    
+    McomLOG(@"%@",registerInfo);
+    
+    [API ProductDetailWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         
+         [Appdelegate stopLoader:nil];
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         NSLog(@"%@",dict_response);
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             [self.navigationController popViewControllerAnimated:YES];
+             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+         }
+         
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             //NSLog(@"Home Feed List  = %@",responseDict);
+             
+             if ([responseDict valueForKey:@"product"])
+             {
+                 
+                 if ([[responseDict[@"product"] valueForKey:@"unavailable_dates"] isKindOfClass:[NSString class]])
+                 {
+                     
+                     [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                                    message:@"Product is not Available"
+                                            leftActionTitle:@"OK"
+                                           rightActionTitle:@""
+                                             animationStyle:AlertViewAnimationZoom
+                                               selectAction:^(AlertViewActionType actionType) {
+                                                   NSLog(@"%zd", actionType);
+                                               }];
+                     
+                     [self.navigationController popViewControllerAnimated:YES];
+                 }
+                 
+                 else if ([[responseDict[@"product"] valueForKey:@"unavailable_dates"] isKindOfClass:[NSArray class]])
+                 {
+                 
+                 detailDataArray =[[responseDict[@"product"] valueForKey:@"unavailable_dates"] valueForKey:@"unavailable_date"];
+                 
+               //  NSLog(@"count = %lu",(unsigned long)detailDataArray.count);
+                 
+                 disableDates = [[responseDict[@"product"] valueForKey:@"unavailable_dates"] valueForKey:@"unavailable_date"];
+                     
+                     
+                     NSMutableArray*datesArray=[[NSMutableArray alloc]init];
+                     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
+                     for (int i=0; i<disableDates.count; i++)
+                     {
+                         NSDate*date=[self.dateFormatter dateFromString:[disableDates objectAtIndex:i]];
+                         NSString*date1=[self.formatter stringFromDate:date];
+                         
+                         [datesArray addObject:date1];
+                     }
+                     
+                     
+                     NSLog(@"datesArray = %@",datesArray);
+                     
+                     NSCalendar* cal = [NSCalendar currentCalendar];
+                     
+                     FIMultipleSelectionCalendarView* view = [[FIMultipleSelectionCalendarView alloc]initWithFrame:CGRectMake(0, 0, myCalnderView.frame.size.width,myCalnderView.frame.size.height ) calendar:cal singleSelectionOnly:NO disableDates:datesArray];
+                     view.calViewDelegate = self;
+                     [myCalnderView addSubview:view];
+                     
+ 
+                     if (detailDataArray.count ==0)
+                 {
+                     [self.navigationController popViewControllerAnimated:YES];
+                 }
+                 
+                 }
+             }
+         }
+     }];
+}
+
+#pragma Fimultiple Date Selection Delegates
+
+-(BOOL)calendarView:(FIMultipleSelectionCalendarView *)calView shouldSelectDate:(NSDate *)date
+{
+    BOOL isPresent=NO;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *stringFromDate = [formatter stringFromDate:date];
+    for (int i=0; i<disableDates.count; i++)
+    {
+        if ([stringFromDate isEqualToString:[disableDates objectAtIndex:i]])
+        {
+            isPresent=YES;
+        }
+        else
+        {
+            
+        }
+        
+    }
+    
+    if (isPresent)
+    {
+        
+        return NO;
+        
+    }
+    else
+    {
+        
+        NSLog(@"Add this date");
+        
+        [randomDateSelection addObject:[formatter stringFromDate:date]];
+        NSLog(@"randomDateSelection array%@",randomDateSelection);
+        
+        
+          AvailableDatesString = [randomDateSelection componentsJoinedByString:@","];
+        
+        return YES;
+        
+    }
+    
+    
+    
+    
+}
+-(BOOL)calendarView:(FIMultipleSelectionCalendarView*)calView shouldDeselectDate:(NSDate*)date
+{
+    BOOL isPresent=NO;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *stringFromDate = [formatter stringFromDate:date];
+    for (int i=0; i<disableDates.count; i++)
+    {
+        if ([stringFromDate isEqualToString:[disableDates objectAtIndex:i]])
+        {
+            isPresent=YES;
+        }
+        else
+        {
+            
+        }
+        
+    }
+    
+    if (isPresent)
+    {
+        
+        return NO;
+        
+    }
+    else
+    {
+        if ([randomDateSelection containsObject:[formatter stringFromDate:date]])
+        {
+            [randomDateSelection removeObject:[formatter stringFromDate:date]];
+            NSLog(@"my array = %@",randomDateSelection);
+        }
+        
+         AvailableDatesString = [randomDateSelection componentsJoinedByString:@","];
+        return YES;
+        
+    }
+    
+    
+}
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 @end

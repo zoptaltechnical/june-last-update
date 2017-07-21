@@ -50,18 +50,22 @@
                        [UIImage imageNamed:@"Switch-to-Lendeer"], nil];
     
     
-     [self callMyProfileAPI];
+    
     // Do any additional setup after loading the view.
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self callMyProfileAPI];
+    
+    
 }
 
 - (IBAction)lendeeLogoutBtnPressed:(id)sender {
  
     [Utility showAlertWithTitleText:@"Are you sure you want to logout?" messageText:nil delegate:self OKButtonText:@"NO" CancelButtonText:@"YES" tag:786100];
 }
-
-
-
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
@@ -280,7 +284,7 @@
              [self.view.window setRootViewController:popUpController];
             
              [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                            message:@"You have sucessfully switch to RENTER."
+                                            message:@"You are now a Renter."
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
                                      animationStyle:AlertViewAnimationZoom

@@ -16,6 +16,7 @@
     NSString *ProductId;
     NSString *dateString;
     NSString *categoryString;
+    NSMutableArray *availableDates;
     
     NSString *GetUserId;
     
@@ -270,6 +271,9 @@
     
     UILabel *location=(UILabel *)[cell.contentView viewWithTag:1002];
     location.text= [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
+        
+    UILabel *Date=(UILabel *)[cell.contentView viewWithTag:1012];
+    Date.text= [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"total_unavailable_dates"]objectAtIndex:indexPath.row]];
     
     UIImageView *ImageMy = (UIImageView *)[cell.contentView viewWithTag:1003];
     
@@ -353,9 +357,6 @@
     dateString = [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"available_date"]objectAtIndex:indexPath.row]];
     
     
-    
-
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     BookNowViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"BookNowViewController"];
     
@@ -396,8 +397,8 @@
              {
                  categoriesListArray =[[NSMutableArray alloc]initWithArray:[responseDict[@"data"] valueForKey:@"cat_name"]];
                  categoriesIdArray =[[NSMutableArray alloc]initWithArray:[responseDict[@"data"] valueForKey:@"id"]];
-                 NSLog(@"categories List = %@", categoriesListArray);
-                 NSLog(@"categories List = %@", categoriesIdArray);
+               //  NSLog(@"categories List = %@", categoriesListArray);
+                // NSLog(@"categories List = %@", categoriesIdArray);
              }
              
              else
@@ -440,10 +441,10 @@
          {
              NSLog(@"Home Feed List  = %@",responseDict);
              
-             NSLog(@"%@", responseDict);
+            // NSLog(@"%@", responseDict);
              
              homeFeedArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
-             NSLog(@"tabel list Data%@", homeFeedArray);
+           //  NSLog(@"tabel list Data%@", homeFeedArray);
              
              if (homeFeedArray.count ==0)
              {
@@ -620,7 +621,7 @@
              
              
              homeFeedArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
-             NSLog(@"tabel list Data%@", homeFeedArray);
+           //  NSLog(@"tabel list Data%@", homeFeedArray);
              
              backgroudView.hidden = YES;
                [homeFeedTableView reloadData];

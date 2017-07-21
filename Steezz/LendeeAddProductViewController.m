@@ -10,6 +10,10 @@
 #import "FTPopOverMenu.h"
 @interface LendeeAddProductViewController ()<PlaceSearchTextFieldDelegate>
 {
+    NSMutableArray *randomDateSelection;
+    NSString *myString;
+    
+    NSString *availableDateString;
     
     NSString *base64EncodedP;
     
@@ -25,12 +29,19 @@
     UIDatePicker *DatePicker;
 }
 
+
+@property (nonatomic, retain) NSDate * curDate;
+@property (nonatomic, retain) NSDateFormatter * formatter;
 @end
 
 @implementation LendeeAddProductViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.curDate = [NSDate date];
+    self.formatter = [[NSDateFormatter alloc] init];
+    [_formatter setDateFormat:@"yyyy/MM/dd"];
     
     
     
@@ -43,10 +54,14 @@
     [selectCategoryBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 0.0f)];
 
     
-    datetxtFld.borderStyle = UITextBorderStyleLine;
-    datetxtFld.layer.borderWidth = 1;
-    datetxtFld.layer.borderColor = [[UIColor darkGrayColor] CGColor];
-    datetxtFld.layer.cornerRadius = 15.0;
+    calanderBtn.layer.borderWidth = 1;
+    calanderBtn.layer.borderColor = [[UIColor darkGrayColor] CGColor];
+    calanderBtn.layer.cornerRadius = 15.0;
+    
+    dateCountBtn.layer.cornerRadius=dateCountBtn.frame.size.width/2;
+    dateCountBtn.clipsToBounds= YES;
+    
+
     
     pricetxtFld.borderStyle = UITextBorderStyleLine;
     pricetxtFld.layer.borderWidth = 1;
@@ -64,7 +79,6 @@
     
     
 
-    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:datetxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:pricetxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:locationTxtFld ,nil]];
     
@@ -100,16 +114,94 @@
    // DatePicker.maximumDate =[[NSDate date] dateByAddingTimeInterval:60*60*24*6];
     
    // DatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:-568024668];
-    
-    UIToolbar *toolbarstate1 =[[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-    UIBarButtonItem *doneBtnstate1=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(removedatePicker)];
-    [toolbarstate1 setItems:[NSArray arrayWithObjects:doneBtnstate1, nil]];
-    [datetxtFld setInputView:DatePicker];
-    [datetxtFld setInputAccessoryView:toolbarstate1];
+ 
     
     [self callGetAllCategories];
     
 }
+- (IBAction)calanderBtnAction:(id)sender
+{
+    
+    randomDateSelection =  [[NSMutableArray alloc] init];
+    
+    [randomDateSelection removeAllObjects];
+    
+    //  if ([myString isEqualToString:@"SelectedString"]) {
+    
+    if(!self.datePicker)
+        self.datePicker = [THDatePickerViewController datePicker];
+    self.datePicker.date = self.curDate;
+    self.datePicker.delegate = self;
+    [self.datePicker setAllowClearDate:NO];
+    [self.datePicker setClearAsToday:YES];
+    [self.datePicker setAutoCloseOnSelectDate:NO];
+    
+    // [self.datePicker setAllowSelectionOfSelectedDate:YES];
+    
+    [self.datePicker setDisableYearSwitch:YES];
+    //[self.datePicker setDisableFutureSelection:NO];
+    [self.datePicker setDaysInHistorySelection:0];
+    [self.datePicker setDaysInFutureSelection:0];
+    
+    
+    
+    [self.datePicker setAllowMultiDaySelection:YES];
+    // [self.datePicker setDateTimeZoneWithName:@"UTC"];
+    // [self.datePicker setAutoCloseCancelDelay:5.0];
+    [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
+    [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
+    [self.datePicker setCurrentDateColorSelected:[UIColor yellowColor]];
+    
+    [self.datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
+        int tmp = (arc4random() % 30)+1;
+        return (tmp % 5 == 0);
+    }];
+    //[self.datePicker slideUpInView:self.view withModalColor:[UIColor lightGrayColor]];
+    [self presentSemiViewController:self.datePicker withOptions:@{
+                                                                  KNSemiModalOptionKeys.pushParentBack    : @(NO),
+                                                                  KNSemiModalOptionKeys.animationDuration : @(0.5),
+                                                                  KNSemiModalOptionKeys.shadowOpacity     : @(1.0),
+                                                                  }];
+    
+
+    
+    
+    
+}
+
+
+
+- (IBAction)dateCountBtnAction:(id)sender {
+    
+    
+    NSMutableArray*array=[[NSMutableArray alloc]init];
+    
+    
+    [array addObjectsFromArray:randomDateSelection ];
+    
+
+    
+    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
+    
+    [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex) {
+        
+    categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
+       
+        
+        NSLog(@"3u294509645604 =====%@",categoryID);
+    }
+                    dismissBlock:^{
+                    }];
+
+    
+    
+    
+    
+    
+    
+}
+
+
 
 -(void)viewDidAppear:(BOOL)animated{
     
@@ -132,15 +224,6 @@
 }
 
 
-
-
-
--(void)removedatePicker
-{
-    datetxtFld.text = [self timetofill:DatePicker.date];
-    [datetxtFld resignFirstResponder];
-    // [timeTextField   becomeFirstResponder];
-}
 
 
 
@@ -213,27 +296,9 @@
 
 -(void)validations
 {
-
     
-    if ([[datetxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
-    {
-        
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter expiry date of board"
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationDownToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        [description resignFirstResponder];
-        [pricetxtFld resignFirstResponder];
-        [locationTxtFld resignFirstResponder];
-        [datetxtFld resignFirstResponder];}
     
-    else if ([[locationTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    if ([[locationTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         [SRAlertView sr_showAlertViewWithTitle:@"Alert"
                                        message:@"Please enter Location Field"
@@ -248,7 +313,7 @@
         [description resignFirstResponder];
         [pricetxtFld resignFirstResponder];
         [locationTxtFld resignFirstResponder];
-        [datetxtFld resignFirstResponder];   }
+           }
     
     
     else if ([[pricetxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
@@ -266,7 +331,7 @@
         [description resignFirstResponder];
         [pricetxtFld resignFirstResponder];
         [locationTxtFld resignFirstResponder];
-        [datetxtFld resignFirstResponder];    }
+         }
     
     else if ([base64EncodedP length] == 0)
     {
@@ -283,11 +348,7 @@
         [description resignFirstResponder];
         [pricetxtFld resignFirstResponder];
         [locationTxtFld resignFirstResponder];
-        [datetxtFld resignFirstResponder];
-        
-        
-          }
-    
+    }
     
     
     else if ([[description.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
@@ -301,11 +362,10 @@
                                       NSLog(@"%zd", actionType);
                                   }];
         
-        
         [description resignFirstResponder];
         [pricetxtFld resignFirstResponder];
         [locationTxtFld resignFirstResponder];
-        [datetxtFld resignFirstResponder];    }
+           }
     
 
     
@@ -314,10 +374,6 @@
         [self callAddProductAPI];
     }
 }
-
-
-
-
 
 -(void)ActionSheetImage
 {
@@ -331,11 +387,6 @@
     
     [popup showInView:self.view];
 }
-
-
-
-
-
 
 #pragma mark - UIImagePickerController Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -444,17 +495,9 @@
                  NSLog(@"categories List = %@", categoriesListArray);
                  NSLog(@"categories List = %@", categoriesIdArray);
              }
-             
-             else
-             {
-             }
-             
          }
      }];
 }
-
-
-
 
 -(void)callAddProductAPI
 {
@@ -467,7 +510,7 @@
                     @"access_token":[dict valueForKey:@"access_token"],
                     @"product_name":categoryString,
                     @"product_desc":description.text,
-                    @"available_date":datetxtFld.text,
+                    @"unavailable_dates":availableDateString,
                     @"is_available":@"Yes",
                     @"price":pricetxtFld.text,
                     @"product_image":base64EncodedP,
@@ -489,25 +532,17 @@
          else if ([responseDict[@"result"]boolValue]==1)
          {
              
-             //  [Utility setValue:[responseDict valueForKey:@"access_token"] forKey:access_token];
-             
-             
              NSLog(@"sign_up responce Data%@", responseDict);
              
              pricetxtFld.text = nil;
              locationTxtFld.text = nil;
-             datetxtFld.text = nil;
              description.text = nil;
              productImage.image = nil;
              [pricetxtFld resignFirstResponder];
              [description resignFirstResponder];
-             [datetxtFld resignFirstResponder];
              [locationTxtFld resignFirstResponder];
              
-             
              [self.navigationController popViewControllerAnimated:YES];
-             
-             
              [SRAlertView sr_showAlertViewWithTitle:@"Alert"
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
@@ -516,8 +551,6 @@
                                        selectAction:^(AlertViewActionType actionType) {
                                            NSLog(@"%zd", actionType);
                                        }];
-             
-             
          }
      }];
 }
@@ -552,6 +585,71 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     return textView.text.length + (text.length - range.length) <= 40;
+}
+
+
+#pragma  DATE PICKER DELGATES :-
+
+#pragma mark - THDatePickerDelegate
+
+- (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
+    self.curDate = datePicker.date;
+    
+    if (randomDateSelection.count==0) {
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"date's Selected" message:@"nothing is selected " preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:ok];
+        [self presentViewController:alertController animated:YES completion:nil];
+        [self dismissSemiModalView];
+    }
+    
+    else
+    {
+        
+        dateCountBtn.hidden = NO;
+        
+        [dateCountBtn setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)randomDateSelection.count] forState:UIControlStateNormal];
+        
+        availableDateString = [randomDateSelection componentsJoinedByString:@","];
+        
+        [calanderBtn setTitle: [NSString stringWithFormat:@"%@",availableDateString] forState:UIControlStateNormal];
+        
+        [self dismissSemiModalView];
+        
+    }
+}
+
+- (void)datePickerCancelPressed:(THDatePickerViewController *)datePicker {
+    [randomDateSelection removeAllObjects];
+    NSLog(@"randomDateSelection after cancle button pressed = %@",randomDateSelection);
+    [self dismissSemiModalView];
+}
+
+- (void)datePicker:(THDatePickerViewController *)datePicker selectedDate:(NSDate *)selectedDate
+{
+    
+    myString = @"SelectedString";
+    NSLog(@"Date selected: %@",[_formatter stringFromDate:selectedDate]);
+    NSLog(@"selectedDate = %@",selectedDate);
+    [randomDateSelection addObject:[_formatter stringFromDate:selectedDate]];
+    NSLog(@"randomDateSelection array%@",randomDateSelection);
+}
+
+
+-(void)datePicker:(THDatePickerViewController *)datePicker deselectedDate:(NSDate *)deselectedDate
+{
+    
+    NSLog(@"Date selected: %@",[_formatter stringFromDate:deselectedDate]);
+    NSLog(@"de_selectedDate = %@",deselectedDate);
+    
+    if ([randomDateSelection containsObject:[_formatter stringFromDate:deselectedDate]])
+    {
+        [randomDateSelection removeObject:[_formatter stringFromDate:deselectedDate]];
+        NSLog(@"my array = %@",randomDateSelection);
+    }
+    
 }
 
 

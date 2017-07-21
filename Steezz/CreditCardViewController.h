@@ -18,7 +18,6 @@
     
     IBOutlet UITextField *startDate;
     
-    IBOutlet UITextField *endDate;
     
     IBOutlet UITextField *accountNumberTxtFld;
     

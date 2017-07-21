@@ -559,7 +559,14 @@
              
              if (MessageData.count ==0)
              {
-                 
+                 [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                                message:@"Message Chat is Empty!"
+                                        leftActionTitle:@"OK"
+                                       rightActionTitle:@""
+                                         animationStyle:AlertViewAnimationRightToCenterSpring
+                                           selectAction:^(AlertViewActionType actionType) {
+                                               NSLog(@"%zd", actionType);
+                                           }];
              }
              
              else

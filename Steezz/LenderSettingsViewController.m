@@ -245,16 +245,16 @@
              UIViewController *popUpController = ViewControllerIdentifier(@"LendeeNavigateID");
              [self.view.window setRootViewController:popUpController];
              NSLog(@"done");
+             
 //             
-////             
-//             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-//                                            message:@"You have sucessfully switch to HOST."
-//                                    leftActionTitle:@"OK"
-//                                   rightActionTitle:@""
-//                                     animationStyle:AlertViewAnimationZoom
-//                                       selectAction:^(AlertViewActionType actionType) {
-//                                           NSLog(@"%zd", actionType);
-//                                       }];
+             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                            message:@"You are now an enthusiast."
+                                    leftActionTitle:@"OK"
+                                   rightActionTitle:@""
+                                     animationStyle:AlertViewAnimationZoom
+                                       selectAction:^(AlertViewActionType actionType) {
+                                           NSLog(@"%zd", actionType);
+                                       }];
              
          }
      }];

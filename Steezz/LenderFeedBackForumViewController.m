@@ -148,20 +148,7 @@
         [feedbackMessageTextView resignFirstResponder];
     }
     
-    else if ([rateString length] == 0)
-    {
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please Select the rating from the smily button"
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationZoom
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        [feedbackMessageTextView resignFirstResponder];
-    }
+ 
     
     else
     {

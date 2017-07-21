@@ -77,6 +77,11 @@
     UILabel *Price=(UILabel *)[cell.contentView viewWithTag:2001];
     Price.text= [NSString stringWithFormat:@"%@",[[savedProductArray valueForKey:@"product_price"]objectAtIndex:indexPath.row]];
     
+    
+    UILabel *dateLa=(UILabel *)[cell.contentView viewWithTag:2012];
+    dateLa.text= [NSString stringWithFormat:@"%@",[[savedProductArray valueForKey:@"total_unavailable_dates"]objectAtIndex:indexPath.row]];
+    
+    
     UILabel *description=(UILabel *)[cell.contentView viewWithTag:2002];
     description.text= [NSString stringWithFormat:@"%@ %%",[[savedProductArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
     

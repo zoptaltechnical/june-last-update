@@ -66,13 +66,12 @@
     doneBtnstate.tintColor = [UIColor blackColor];
     
     startDate.text= [NSString stringWithFormat:@"%@",_startDateString];
-    endDate.text = [NSString stringWithFormat:@"%@",_EndDateString];
+  //  endDate.text = [NSString stringWithFormat:@"%@",_EndDateString];
     startDate.userActivity = NO;
-    endDate.userInteractionEnabled = NO;
+   // endDate.userInteractionEnabled = NO;
     
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:startDate ,nil]];
-    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:endDate ,nil]];
-
+   
 
     // Do any additional setup after loading the view.
 }
@@ -288,11 +287,19 @@
   
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
     
+    
+    NSLog(@"%@",_startDateString);
+    
     NSDictionary* registerInfo;
     
-    if ((saveCardString=@""))
+    if (([saveCardString isEqualToString:@"1"]))
     {
-        saveCardString = @"0";
+        saveCardString = @"1";
+        
+    }
+    
+    else
+    { saveCardString = @"0";
         
     }
     
@@ -307,8 +314,7 @@
                     @"save_credit_card":saveCardString,
                     @"access_token":[dict valueForKey:@"access_token"],
                     @"product_id":_bookingProductIDString,
-                    @"start_date":_startDateString,
-                    @"end_date":_EndDateString,
+                    @"booking_dates":_startDateString,
                     @"payment_by":@"new_card",
                     @"save_cc_id":@""
                     };
@@ -319,17 +325,26 @@
          [Appdelegate stopLoader:nil];
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
          
-         if ([responseDict[@"result"]boolValue]==0)
+         if ([responseDict[@"response"]boolValue]==0)
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
              [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
-         }
-         else if ([responseDict[@"result"]boolValue]==1)
-         {
-              [self.navigationController popViewControllerAnimated:YES];
              
-              NSLog(@"sign_up responce Data%@", responseDict);
+             UIStoryboard *sb = [self storyboard];
+             UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"lenderHomePageViewController"];
+             Appdelegate.window.rootViewController = vc;
+             
+         }
+         else if ([responseDict[@"response"]boolValue]==1)
+         {
+             
+             [Utility showAlertWithTitleText:@"Product Booked Succesfully!" messageText:nil delegate:nil];
+             
+             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+             LenderTabBarViewController* tabBarController = (LenderTabBarViewController*)[storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
+             
+             [self.navigationController pushViewController:tabBarController animated:YES];
              
          }
      }];

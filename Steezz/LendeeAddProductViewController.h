@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "MVPlaceSearchTextField.h"
 
-@interface LendeeAddProductViewController : UIViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate>
+@interface LendeeAddProductViewController : UIViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,THDatePickerDelegate>
 {
+    IBOutlet UIButton *calanderBtn;
     
     IBOutlet UIButton *backBtn;
     
-    IBOutlet UITextField *datetxtFld;
+   
     
+    IBOutlet UIButton *dateCountBtn;
     
     IBOutlet MVPlaceSearchTextField *locationTxtFld;
     
@@ -35,5 +37,5 @@
     
     
 }
-
+@property (nonatomic, strong) THDatePickerViewController * datePicker;
 @end

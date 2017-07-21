@@ -112,7 +112,7 @@ static ApiMaster* singleton = nil;
           completionHandler:(APICompletionHandler)handler
 {
     
-     NSString* infoStr = [NSString stringWithFormat:@"first_name=%@&last_name=%@&email=%@&phone=%@&address=%@&username=%@&password=%@&device_token=%@&device_type=%@&cpassword=%@&location=%@",userInfo [@"first_name"],userInfo[@"last_name"],userInfo [@"email"],userInfo[@"phone"],userInfo [@"address"],userInfo [@"username"],userInfo[@"password"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"cpassword"],userInfo[@"location"]];
+     NSString* infoStr = [NSString stringWithFormat:@"first_name=%@&last_name=%@&email=%@&phone=%@&address=%@&password=%@&device_token=%@&device_type=%@&cpassword=%@&location=%@",userInfo [@"first_name"],userInfo[@"last_name"],userInfo [@"email"],userInfo[@"phone"],userInfo [@"address"],userInfo[@"password"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"cpassword"],userInfo[@"location"]];
     
     
     McomLOG(@"infostr :%@",infoStr);
@@ -230,7 +230,7 @@ static ApiMaster* singleton = nil;
 -(void)AddProductWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
-    NSString* infoStr = [NSString stringWithFormat:@"cat_id=%@&product_name=%@&product_desc=%@&location=%@&available_date=%@&is_available=%@&access_token=%@&product_image=%@&price=%@",userInfo[@"cat_id"],userInfo[@"product_name"],userInfo[@"product_desc"],userInfo[@"location"],userInfo[@"available_date"],userInfo[@"is_available"],userInfo[@"access_token"],userInfo[@"product_image"],userInfo[@"price"]];
+    NSString* infoStr = [NSString stringWithFormat:@"cat_id=%@&product_name=%@&product_desc=%@&location=%@&unavailable_dates=%@&is_available=%@&access_token=%@&product_image=%@&price=%@",userInfo[@"cat_id"],userInfo[@"product_name"],userInfo[@"product_desc"],userInfo[@"location"],userInfo[@"unavailable_dates"],userInfo[@"is_available"],userInfo[@"access_token"],userInfo[@"product_image"],userInfo[@"price"]];
     NSLog(@"%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@add_product",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -399,11 +399,10 @@ static ApiMaster* singleton = nil;
     
 }
 
-
 -(void)BookProductWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
-    NSString* infoStr = [NSString stringWithFormat:@"product_id=%@&start_date=%@&access_token=%@&end_date=%@",userInfo[@"product_id"],userInfo[@"start_date"] ,userInfo[@"access_token"],userInfo[@"end_date"]];
+    NSString* infoStr = [NSString stringWithFormat:@"product_id=%@&booking_dates=%@&access_token=%@",userInfo[@"product_id"],userInfo[@"booking_dates"] ,userInfo[@"access_token"]];
     NSLog(@"%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@is_booking_available",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -479,7 +478,7 @@ static ApiMaster* singleton = nil;
 -(void)EditProductWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler{
     
     
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&cat_id=%@&product_name=%@&product_desc=%@&location=%@&available_date=%@&is_available=%@&price=%@&product_image=%@" ,userInfo [@"access_token"],userInfo [@"product_id"],userInfo[@"cat_id"],userInfo [@"product_name"],userInfo[@"product_desc"],userInfo [@"location"],userInfo[@"available_date"],userInfo [@"is_available"],userInfo [@"price"],userInfo[@"product_image"]];
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&cat_id=%@&product_name=%@&product_desc=%@&location=%@&unavailable_dates=%@&is_available=%@&price=%@&product_image=%@" ,userInfo [@"access_token"],userInfo [@"product_id"],userInfo[@"cat_id"],userInfo [@"product_name"],userInfo[@"product_desc"],userInfo [@"location"],userInfo[@"unavailable_dates"],userInfo [@"is_available"],userInfo [@"price"],userInfo[@"product_image"]];
     
     NSLog(@"%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@edit_product",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -493,10 +492,10 @@ static ApiMaster* singleton = nil;
 -(void)paypalPaymentSucessWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&txd_id=%@&start_date=%@&end_date=%@&amount=%@&create_time=%@" ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo [@"txd_id"],userInfo[@"start_date"],userInfo [@"end_date"],userInfo [@"amount"],userInfo[@"create_time"]];
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&txd_id=%@&booking_dates=%@&amount=%@&create_time=%@" ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo [@"txd_id"],userInfo[@"booking_dates"],userInfo [@"amount"],userInfo[@"create_time"]];
     
     McomLOG(@"infostr :%@",infoStr);
-    NSString *url=[[NSString stringWithFormat:@"%@paypal_payment",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *url=[[NSString stringWithFormat:@"%@paypal_payment",creditCardURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"that is the url -->%@",url);
     
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] ];
@@ -657,10 +656,10 @@ static ApiMaster* singleton = nil;
    // access_token, product_id, start_date, end_date, payment_by = new_card, save_cc_id, cc_fname, cc_lname, cc_number, card_type, exp_month, exp_year, cvv, save_credit_card
     
     
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&start_date=%@&end_date=%@&payment_by=%@&save_cc_id=%@&cc_fname=%@&cc_lname=%@&cc_number=%@&card_type=%@&exp_month=%@&exp_year=%@&cvv=%@&save_credit_card=%@  " ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo [@"start_date"],userInfo[@"end_date"],userInfo [@"payment_by"],userInfo[@"save_cc_id"] ,       userInfo [@"cc_fname"],userInfo[@"cc_lname"],userInfo [@"cc_number"],userInfo[@"card_type"],userInfo [@"exp_month"],userInfo[@"exp_year"] ,userInfo[@"cvv"],userInfo[@"save_credit_card"]];
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&booking_dates=%@&payment_by=%@&save_cc_id=%@&cc_fname=%@&cc_lname=%@&cc_number=%@&card_type=%@&exp_month=%@&exp_year=%@&cvv=%@&save_credit_card=%@  " ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo [@"booking_dates"],userInfo [@"payment_by"],userInfo[@"save_cc_id"] ,       userInfo [@"cc_fname"],userInfo[@"cc_lname"],userInfo [@"cc_number"],userInfo[@"card_type"],userInfo [@"exp_month"],userInfo[@"exp_year"] ,userInfo[@"cvv"],userInfo[@"save_credit_card"]];
     
     McomLOG(@"infostr :%@",infoStr);
-    NSString *url=[[NSString stringWithFormat:@"%@make_payment",creditCardURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *url=[[NSString stringWithFormat:@"%@make_payment",webURLCardSaving] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"that is the url -->%@",url);
     
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] ];
@@ -761,7 +760,7 @@ static ApiMaster* singleton = nil;
     NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&cc_fname=%@&cc_lname=%@&cc_number=%@&card_type=%@&exp_month=%@&exp_year=%@&cvv=%@",userInfo [@"access_token"],userInfo [@"cc_fname"],userInfo[@"cc_lname"],userInfo [@"cc_number"],userInfo[@"card_type"],userInfo [@"exp_month"],userInfo[@"exp_year"] ,userInfo[@"cvv"]];
     
     McomLOG(@"infostr :%@",infoStr);
-    NSString *url=[[NSString stringWithFormat:@"%@save_credit_card",creditCardURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *url=[[NSString stringWithFormat:@"%@save_credit_card",webURLCardSaving] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"that is the url -->%@",url);
     
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] ];

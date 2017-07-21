@@ -17,12 +17,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    sucessView.layer.cornerRadius = 8;
+    
     sucessLabel.text = [NSString stringWithFormat:@"%@",_Status];
     paypalMailIDLable.text = [NSString stringWithFormat:@"%@",_PaypalIdString];
     productNameLble.text = [NSString stringWithFormat:@"%@",_ProductNAmeString];
     AmountPaid.text = [NSString stringWithFormat:@"$ %@",_AmountPaidString];
     totalAmountLabel.text = [NSString stringWithFormat:@"$ %@",_TotalAmountString];
-    startDateLble.text = [NSString stringWithFormat:@"%@",_startDateStrig];
+    startDateLble.text = @"5 days";//[NSString stringWithFormat:@"%@",_startDateStrig];
     endDateLble.text = [NSString stringWithFormat:@"%@",_EndDateStrings];
     
     adminCharges.text = [NSString stringWithFormat:@"$ %@",_AdminChargesString];

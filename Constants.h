@@ -76,10 +76,10 @@
 #define kNetworkAlert   @"No network available"
 
 
-#define WebURl @"http://workmeappit.com/steezz/home/"
-//#define creditCardURL @"https://zoptal.com/demo/steezz/cc_payment/"
+#define WebURl @"https://zoptal.com/demo/steezz/home/"
+#define creditCardURL @"https://zoptal.com/demo/steezz/cc_payment/"
 
-#define creditCardURL @"http://workmeappit.com/steezz/cc_payment/"
+#define webURLCardSaving @"https://zoptal.com/demo/steezz/cc_payment/"
 
 #define UtilManager  [Utility singleton]
 #define iOSVersion   [[[UIDevice currentDevice] systemVersion] floatValue]

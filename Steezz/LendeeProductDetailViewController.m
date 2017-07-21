@@ -15,6 +15,8 @@
 @interface LendeeProductDetailViewController ()<PlaceSearchTextFieldDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 {
+     NSMutableArray *randomDateSelection;
+     NSString *availableDateString;
     NSString *categoryString;
     NSString *base64EncodedP;
     NSString *check;
@@ -26,7 +28,10 @@
     NSMutableArray *categoriesListArray;
     NSMutableArray *categoriesIdArray;
     
-     UIDatePicker *DatePicker;
+    
+ 
+    
+     
 }
 
 @end
@@ -35,6 +40,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    self.curDate = [NSDate date];
+    self.formatter = [[NSDateFormatter alloc] init];
+    [_formatter setDateFormat:@"yyyy/MM/dd"];
     
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
@@ -48,41 +58,14 @@
     profilePic.layer.cornerRadius=profilePic.frame.size.width/2;
     profilePic.clipsToBounds= YES;
     
+    countBtn.layer.cornerRadius=countBtn.frame.size.width/2;
+    countBtn.clipsToBounds= YES;
     
     locationTxtFld.placeSearchDelegate                 = self;
     locationTxtFld.strApiKey                           = @"AIzaSyCDi2dklT-95tEHqYoE7Tklwzn3eJP-MtM";
     locationTxtFld.superViewOfList                     = self.view;
     locationTxtFld.autoCompleteShouldHideOnSelection   = YES;
     locationTxtFld.maximumNumberOfAutoCompleteRows     = 5;
-    
-    
-    
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDate *currentDate = [NSDate date];
-    NSDateComponents *comps = [[NSDateComponents alloc] init];
-    [comps setYear:-18];
-    NSDate *minDate = [gregorian dateByAddingComponents:comps toDate:currentDate  options:0];
-    [comps setYear:-150];
-    NSDate *maxDate = [gregorian dateByAddingComponents:comps toDate:currentDate  options:0];
-    DatePicker.minimumDate=minDate;
-    DatePicker.maximumDate = maxDate;
-    
-    DatePicker = [[UIDatePicker alloc]init];
-    [DatePicker setDate:[NSDate date]];
-    [DatePicker setDatePickerMode:UIDatePickerModeDate];
-    DatePicker.minimumDate=[NSDate date];
-    
-    // DatePicker.maximumDate =[[NSDate date] dateByAddingTimeInterval:60*60*24*6];
-    
-    
-    
-    UIToolbar *toolbarstate1 =[[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-    UIBarButtonItem *doneBtnstate1=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(removedatePicker)];
-    [toolbarstate1 setItems:[NSArray arrayWithObjects:doneBtnstate1, nil]];
-    [dateTextFld setInputView:DatePicker];
-    [dateTextFld setInputAccessoryView:toolbarstate1];
-    
-    
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
     [tapRecognizer addTarget:self action:@selector(bigButtonTapped:)];
@@ -146,8 +129,7 @@
 
 -(void)removedatePicker
 {
-    dateTextFld.text = [self timetofill:DatePicker.date];
-    [dateTextFld resignFirstResponder];
+ 
    
 }
 
@@ -160,6 +142,89 @@
     NSString *formatted_time = [ formatter stringFromDate:date];
     return formatted_time;
 }
+
+
+- (IBAction)countBtnActn:(id)sender {
+    
+    
+    
+    
+    NSMutableArray*array=[[NSMutableArray alloc]init];
+    
+    
+    [array addObjectsFromArray:[randomDateSelection valueForKey:@"unavailable_date"] ];
+    
+    
+    
+    [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
+    
+    [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex) {
+        
+        categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
+        
+        
+        NSLog(@"3u294509645604 =====%@",categoryID);
+    }
+                    dismissBlock:^{
+                    }];
+    
+
+    
+    
+}
+
+
+
+
+
+- (IBAction)availableDateBtnAction:(id)sender {
+    
+
+    randomDateSelection =  [[NSMutableArray alloc] init];
+    
+    [randomDateSelection removeAllObjects];
+    
+    //  if ([myString isEqualToString:@"SelectedString"]) {
+    
+    if(!self.datePicker)
+        self.datePicker = [THDatePickerViewController datePicker];
+    self.datePicker.date = self.curDate;
+    self.datePicker.delegate = self;
+    [self.datePicker setAllowClearDate:NO];
+    [self.datePicker setClearAsToday:YES];
+    [self.datePicker setAutoCloseOnSelectDate:NO];
+    
+    // [self.datePicker setAllowSelectionOfSelectedDate:YES];
+    
+    [self.datePicker setDisableYearSwitch:YES];
+    //[self.datePicker setDisableFutureSelection:NO];
+    [self.datePicker setDaysInHistorySelection:0];
+    [self.datePicker setDaysInFutureSelection:0];
+    
+    
+    
+    [self.datePicker setAllowMultiDaySelection:YES];
+    // [self.datePicker setDateTimeZoneWithName:@"UTC"];
+    // [self.datePicker setAutoCloseCancelDelay:5.0];
+    [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
+    [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
+    [self.datePicker setCurrentDateColorSelected:[UIColor yellowColor]];
+    
+    [self.datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
+        int tmp = (arc4random() % 30)+1;
+        return (tmp % 5 == 0);
+    }];
+    //[self.datePicker slideUpInView:self.view withModalColor:[UIColor lightGrayColor]];
+    [self presentSemiViewController:self.datePicker withOptions:@{
+                                                                  KNSemiModalOptionKeys.pushParentBack    : @(NO),
+                                                                  KNSemiModalOptionKeys.animationDuration : @(0.5),
+                                                                  KNSemiModalOptionKeys.shadowOpacity     : @(1.0),
+                                                                  }];
+ 
+    
+}
+
+
 
 
 - (IBAction)landeeBackBtnPressed:(id)sender {
@@ -206,9 +271,10 @@
 
 - (IBAction)editBtnPressed:(id)sender
 {
+    countBtn.hidden = YES;
     
     categoryBtn.userInteractionEnabled = YES;
-    dateTextFld.userInteractionEnabled = YES;
+    availableDatebtn.userInteractionEnabled = YES;
     locationTxtFld.userInteractionEnabled = YES;
     priceTxtFld.userInteractionEnabled = YES;
     descriptnTxtView.userInteractionEnabled = YES;
@@ -429,29 +495,77 @@
              if ([responseDict valueForKey:@"product"])
              {
                  
-                 dateTextFld.text =[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"available_date"]] ;
+                 countBtn.hidden = NO;                 
                  
-                 locationTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"location"]];
+                 if ([[[responseDict valueForKey:@"product"]valueForKey:@"unavailable_dates"]isKindOfClass:[NSString class]])
+                 {
+                  
+                     availableDateString = [[randomDateSelection valueForKey:@"total_unavailable_dates"] componentsJoinedByString:@","];
+                     countBtn.hidden = YES;
+                  
+                     
+                     [availableDatebtn setTitle:@"Not Available" forState:UIControlStateNormal];
+                     
+                     locationTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"location"]];
+                     
+                     descriptnTxtView.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_desc"]];
+                     
+                     name.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"first_name"]];
+                     
+                     priceTxtFld.text =[NSString stringWithFormat:@"$%@/Day",[[responseDict valueForKey:@"product"] valueForKey:@"price"]];
+                     
+                     [categoryBtn setTitle:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_name"]] forState:UIControlStateNormal];
+
+                     [productImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"product_image"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
+                     
+                     [profilePic sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"profile_pic"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
+                     
+                     product_id = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_id"]];
+                     
+                     category_name = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_name"]];
+                     
+                     
+                 }
                  
-                 descriptnTxtView.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_desc"]];
+                 else
+                 {
+                     
+                     randomDateSelection =[[NSMutableArray alloc]initWithArray:[[responseDict valueForKey:@"product"] valueForKey:@"unavailable_dates"]];
+                     
+                     // [randomDateSelection addObject:[[responseDict valueForKey:@"product"] valueForKey:@"available_dates"]];
+                     
+                     
+                     [countBtn setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)randomDateSelection.count] forState:UIControlStateNormal];
+                     
+                     
+                     availableDateString = [[randomDateSelection valueForKey:@"available_date"] componentsJoinedByString:@","];
+                     
+                     [availableDatebtn setTitle: [NSString stringWithFormat:@"Not Available for %@ Days",[[responseDict valueForKey:@"product"] valueForKey:@"total_unavailable_dates"]] forState:UIControlStateNormal];
+                     
+                     locationTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"location"]];
+                     
+                     descriptnTxtView.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_desc"]];
+                     
+                     name.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"first_name"]];
+                     
+                     priceTxtFld.text =[NSString stringWithFormat:@"$%@/Day",[[responseDict valueForKey:@"product"] valueForKey:@"price"]];
+                     
+                     [categoryBtn setTitle:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_name"]] forState:UIControlStateNormal];
+                     
+                     
+                     [productImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"product_image"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
+                     
+                     [profilePic sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"profile_pic"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
+                     
+                     product_id = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_id"]];
+                     
+                     category_name = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_name"]];
+                     
+                     
+                     
+                 }
                  
-                 
-                 
-                 
-                 name.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"first_name"]];
-                 
-                 priceTxtFld.text =[NSString stringWithFormat:@"$%@/Day",[[responseDict valueForKey:@"product"] valueForKey:@"price"]];
-                 
-                [categoryBtn setTitle:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_name"]] forState:UIControlStateNormal];
-                 
-                 
-                 [productImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"product_image"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
-                 
-                 [profilePic sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"profile_pic"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
-                 
-                 product_id = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_id"]];
-                 
-                 category_name = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_name"]];
+               
                  
              }
              
@@ -550,7 +664,7 @@
                                    @"product_name":categoryString,
                                    @"product_desc":descriptnTxtView.text,
                                    @"location":locationTxtFld.text,
-                                   @"available_date":dateTextFld.text,
+                                   @"unavailable_dates":availableDateString,
                                    @"is_available":@"yes",
                                    @"price":Price,
                                    @"product_image":base64EncodedP
@@ -596,23 +710,8 @@
 
 -(void)EditProductValidations
 {
-    if ([[dateTextFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
-    {
-        
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter date"
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationDownToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        
-        [dateTextFld resignFirstResponder];}
     
-    else if ([[locationTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+     if ([[locationTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         [SRAlertView sr_showAlertViewWithTitle:@"Alert"
                                        message:@"Please enter Location"
@@ -694,6 +793,86 @@
 }
 
 
+#pragma  DATE PICKER DELGATES :-
+
+
+#pragma mark - THDatePickerDelegate
+
+- (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
+    self.curDate = datePicker.date;
+    //[self refreshTitle];
+    
+    if (randomDateSelection.count==0) {
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"date's Selected" message:@"nothing is selected " preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:ok];
+        [self presentViewController:alertController animated:YES completion:nil];
+        [self dismissSemiModalView];
+        
+        
+    }
+    
+    
+    else
+    {
+     
+        countBtn.hidden = NO;
+       // [availableDatebtn setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)randomDateSelection.count] forState:UIControlStateNormal];
+        
+        availableDateString = [randomDateSelection componentsJoinedByString:@","];
+        
+      //  [availableDatebtn setTitle: [NSString stringWithFormat:@"%@",availableDateString] forState:UIControlStateNormal];
+        
+        [countBtn setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)randomDateSelection.count] forState:UIControlStateNormal];
+        
+
+        [self dismissSemiModalView];
+        
+    }
+}
+
+- (void)datePickerCancelPressed:(THDatePickerViewController *)datePicker {
+    [randomDateSelection removeAllObjects];
+    NSLog(@"randomDateSelection after cancle button pressed = %@",randomDateSelection);
+    [self dismissSemiModalView];
+}
+
+- (void)datePicker:(THDatePickerViewController *)datePicker selectedDate:(NSDate *)selectedDate
+{
+    
+  
+    NSLog(@"Date selected: %@",[_formatter stringFromDate:selectedDate]);
+    NSLog(@"selectedDate = %@",selectedDate);
+    [randomDateSelection addObject:[_formatter stringFromDate:selectedDate]];
+    NSLog(@"randomDateSelection array%@",randomDateSelection);
+    // convert array into string and seperated the date's with ","
+    //    NSString * myString = [randomDateSelection componentsJoinedByString:@", "];
+    //    NSLog(@"%@",myString);
+    
+    
+}
+
+
+-(void)datePicker:(THDatePickerViewController *)datePicker deselectedDate:(NSDate *)deselectedDate
+{
+    
+    NSLog(@"Date selected: %@",[_formatter stringFromDate:deselectedDate]);
+    NSLog(@"de_selectedDate = %@",deselectedDate);
+    
+    if ([randomDateSelection containsObject:[_formatter stringFromDate:deselectedDate]])
+    {
+        [randomDateSelection removeObject:[_formatter stringFromDate:deselectedDate]];
+        NSLog(@"my array = %@",randomDateSelection);
+        
+        // convert array into string and seperated the date's with ","
+        //    NSString * myString = [randomDateSelection componentsJoinedByString:@", "];
+        //    NSLog(@"%@",myString);
+        
+    }
+    
+}
 
 
 @end

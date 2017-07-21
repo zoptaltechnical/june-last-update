@@ -62,6 +62,13 @@
     locationtextFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     locationtextFld.layer.cornerRadius = 15.0;
     
+    payPalIDTxtFld.layer.borderWidth = 1;
+    payPalIDTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    payPalIDTxtFld.layer.cornerRadius = 15.0;
+    
+    
+    
+    
     aboutTxtView.layer.borderWidth = 1;
     aboutTxtView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     aboutTxtView.layer.cornerRadius = 15.0;
@@ -76,7 +83,7 @@
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:emailTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:phoneNumbertxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:addressTxtFld ,nil]];
-    
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:payPalIDTxtFld ,nil]];
     editBtn.hidden = YES;
     
     
@@ -125,7 +132,7 @@
     addressTxtFld.userInteractionEnabled = YES;
     locationtextFld.userInteractionEnabled = YES;
     aboutTxtView.userInteractionEnabled = YES;
-
+    payPalIDTxtFld.userInteractionEnabled = YES;
     editBtn.hidden = NO;
     
 }
@@ -185,6 +192,7 @@
         [locationtextFld resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
         [usernametxtFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
         
         
     }
@@ -384,6 +392,33 @@
         [usernametxtFld resignFirstResponder];
         
     }
+    
+    
+    else if (![Utility NSStringIsValidEmail:payPalIDTxtFld.text])
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                       message:@"Please enter Valid Paypal ID."
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationRightToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [locationtextFld resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+        [usernametxtFld resignFirstResponder];
+        
+    }
+    
     
     else if ([[payPalIDTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
@@ -631,6 +666,7 @@
              addressTxtFld.userInteractionEnabled = NO;
              locationtextFld.userInteractionEnabled = NO;
              aboutTxtView.userInteractionEnabled = NO;
+             payPalIDTxtFld.userInteractionEnabled = NO;
              editBtn.hidden = NO;
              [self.navigationController popViewControllerAnimated:YES];
          }

@@ -169,10 +169,10 @@
          {
              NSLog(@"Home Feed Data =  %@",responseDict);
              
-             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
              
              [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                            message:errormessage
+                                            message:@"Password Changed!"
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
                                      animationStyle:AlertViewAnimationRightToCenterSpring

@@ -19,11 +19,12 @@
     
     IBOutlet UITextField *lastnameTxtFld;
     
-    IBOutlet UITextField *usernametxtFld;
+
     
     IBOutlet UITextField *emailTxtFld;
     
  
+    IBOutlet UIButton *termsOfServicesBtn;
    
     
     IBOutlet UITextField *passwordTxtFld;

@@ -115,7 +115,7 @@
     
     
     UILabel *date=(UILabel *)[cell.contentView viewWithTag:6005];
-    date.text= [NSString stringWithFormat:@"%@",   [[LendeeProductArray valueForKey:@"available_date"]objectAtIndex:indexPath.row]];
+    date.text= [NSString stringWithFormat:@"%@",   [[LendeeProductArray valueForKey:@"total_unavailable_dates"]objectAtIndex:indexPath.row]];
     
     UILabel *location=(UILabel *)[cell.contentView viewWithTag:6006];
     location.text= [NSString stringWithFormat:@"%@",[[LendeeProductArray valueForKey:@"location"]objectAtIndex:indexPath.row]];

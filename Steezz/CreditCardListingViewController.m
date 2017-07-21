@@ -8,6 +8,7 @@
 
 #import "CreditCardListingViewController.h"
 
+
 @interface CreditCardListingViewController ()
 {
     NSString *cardID;
@@ -24,6 +25,7 @@
     
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
+    
     
     [self CreditCardListingAPI];
     
@@ -166,6 +168,8 @@
     
     NSLog(@"%@",cardID);
     
+    NSLog(@"saved Card _startDateString = %@",_startDateString);
+    
     NSDictionary* registerInfo;
     
     registerInfo= @{
@@ -179,8 +183,7 @@
                     @"save_credit_card":@"",
                     @"access_token":[dict valueForKey:@"access_token"],
                     @"product_id":_ProductIdStringString,
-                    @"start_date":_startDateString,
-                    @"end_date":_endDateString,
+                    @"booking_dates":_startDateString,
                     @"payment_by":@"saved_card",
                     @"save_cc_id":cardID
                     };
@@ -191,15 +194,28 @@
          [Appdelegate stopLoader:nil];
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
          
-         if ([responseDict[@"result"]boolValue]==0)
+         if ([responseDict[@"response"]boolValue]==0)
          {
-             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
-             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+             UIStoryboard *sb = [self storyboard];
+             
+             UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
+             Appdelegate.window.rootViewController = vc;
+           
+             [Utility showAlertWithTitleText:@"Please Provide paypal transaction id." messageText:nil delegate:nil];
          }
-         else if ([responseDict[@"result"]boolValue]==1)
+         else if ([responseDict[@"response"]boolValue]==1)
          {
-             [self.navigationController popViewControllerAnimated:YES];
-             NSLog(@"sign_up responce Data%@", responseDict);
+             
+               [Utility showAlertWithTitleText:@"Product Booked Succesfully!" messageText:nil delegate:nil];
+    
+             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+             LenderTabBarViewController* tabBarController = (LenderTabBarViewController*)[storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
+           
+             [self.navigationController pushViewController:tabBarController animated:YES];
+             
+            
+     
+
          }
      }];
     

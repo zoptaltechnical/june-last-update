@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "THDatePickerViewController.h"
-
-@interface BookNowViewController : UIViewController<THDatePickerDelegate>
+#import "CZPickerView.h"
+@interface BookNowViewController : UIViewController<THDatePickerDelegate, CZPickerViewDataSource, CZPickerViewDelegate>
 
 {
     IBOutlet UIButton *crossBtn;
@@ -24,16 +24,17 @@
     
     IBOutlet UIButton *payPal;
     IBOutlet UIButton *backBtn;
-    IBOutlet UITextField *startDate;
     
-    IBOutlet UILabel *dummyAmount;
-    IBOutlet UILabel *daysLabel;
+  
     
-    IBOutlet UILabel *dummyDay;
-    IBOutlet UILabel *amountLabel;
-    IBOutlet UIButton *endDateBtn;
+    IBOutlet UIButton *bookNowBtn;
     
-    IBOutlet UIButton *booking;
+    
+    IBOutlet UIButton *selectedDateCount;
+    
+    
+    IBOutlet UIView *myCalnderView;
+    
     
 }
 
@@ -41,5 +42,7 @@
 @property(nonatomic,strong) NSString * availabelDate;
 
 @property(nonatomic,strong) NSString * ProdctID;
+
+
 @property(nonatomic,strong) NSString * PerDayAmount;
 @end

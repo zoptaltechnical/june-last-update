@@ -123,7 +123,7 @@ typedef NS_ENUM(NSUInteger, FTPopOverMenuArrowDirection) {
         
         _menuNameLabel.font = [FTPopOverMenuConfiguration defaultConfiguration].textFont;
        // _menuNameLabel.textColor = [FTPopOverMenuConfiguration defaultConfiguration].textColor;
-        _menuNameLabel.textColor = [UIColor redColor];
+        _menuNameLabel.textColor = [UIColor darkGrayColor];
 
         _menuNameLabel.textAlignment = [FTPopOverMenuConfiguration defaultConfiguration].textAlignment;
         _menuNameLabel.text = menuName;

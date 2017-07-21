@@ -17,6 +17,7 @@
     
     IBOutlet UIButton *messageBtn;
     
+    IBOutlet UILabel *dateCountLabel;
     
     IBOutlet UIButton *detailBackBtn;
     

@@ -200,13 +200,16 @@
              [messageTxtView resignFirstResponder];
              
              [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                            message:@"Success: Your message submitted successfully. We will contact you very shortly"
+                                            message:@"Your message has been successfully submitted. We will contact you within 24 hours"
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
                                      animationStyle:AlertViewAnimationRightToCenterSpring
                                        selectAction:^(AlertViewActionType actionType) {
                                            NSLog(@"%zd", actionType);
                                        }];
+             
+             [self.navigationController popViewControllerAnimated: YES];
+             
          }
      }];
 }

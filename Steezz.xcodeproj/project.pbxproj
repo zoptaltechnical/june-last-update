@@ -10,6 +10,7 @@
 		1801B6EE1EEAC3E50019806C /* EditReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1801B6ED1EEAC3E50019806C /* EditReportViewController.m */; };
 		180F54B61EDE91B50038ACE0 /* LenderHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180F54B51EDE91B50038ACE0 /* LenderHistoryViewController.m */; };
 		180F54BA1EDEBC910038ACE0 /* LenderEndReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180F54B91EDEBC910038ACE0 /* LenderEndReportViewController.m */; };
+		18154B8A1F18C3AE00434494 /* CZPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18154B891F18C3AE00434494 /* CZPickerView.m */; };
 		18259AAD1ED58E5A00C7FAE6 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18259AAC1ED58E5A00C7FAE6 /* AboutUsViewController.m */; };
 		18259AB21ED5940F00C7FAE6 /* disclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18259AB11ED5940F00C7FAE6 /* disclaimerViewController.m */; };
 		1828DF861EBE09FD004DE302 /* century-gothic-bold-590dd25b625e1.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1828DF851EBE09FD004DE302 /* century-gothic-bold-590dd25b625e1.ttf */; };
@@ -30,6 +31,11 @@
 		186EA0B21ED2A39400E28323 /* bookingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186EA0B11ED2A39400E28323 /* bookingViewController.m */; };
 		1873AC441F0A271300CCCEDB /* SaveCreditCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */; };
 		188D7ED21EC342210048804E /* LendeeDashBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188D7ED11EC342210048804E /* LendeeDashBoardViewController.m */; };
+		18970FA71F1F13D500962299 /* CKCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18970FA61F1F13D500962299 /* CKCalendarView.m */; };
+		18970FAA1F1F142200962299 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18970FA91F1F142200962299 /* CoreGraphics.framework */; };
+		18970FAC1F1F143200962299 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18970FAB1F1F143200962299 /* Foundation.framework */; };
+		18970FAE1F1F143E00962299 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18970FAD1F1F143D00962299 /* UIKit.framework */; };
+		18970FB01F1F145900962299 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18970FAF1F1F145900962299 /* QuartzCore.framework */; };
 		18A0AEDF1EF0089D005DF4EC /* NotificationCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0AEDE1EF0089D005DF4EC /* NotificationCenterViewController.m */; };
 		18A592651ED8578000D93A37 /* paymentFromViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A592641ED8578000D93A37 /* paymentFromViewController.m */; };
 		18AD36101EC1A50000329B9D /* LenderSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AD360F1EC1A50000329B9D /* LenderSettingsViewController.m */; };
@@ -125,6 +131,10 @@
 		18D177F61EBCA26D00C29EAB /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D177F31EBCA26D00C29EAB /* FXBlurView.m */; };
 		18D177F71EBCA26D00C29EAB /* SRAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D177F51EBCA26D00C29EAB /* SRAlertView.m */; };
 		18D594EB1EE6AC7C005D62A8 /* LendeeChatUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D594EA1EE6AC7C005D62A8 /* LendeeChatUserViewController.m */; };
+		18D8B5E51F21FE67009EBE7E /* FIMultipleSelectionCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D8B5DE1F21FE66009EBE7E /* FIMultipleSelectionCalendarView.m */; };
+		18D8B5E61F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D8B5E01F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.m */; };
+		18D8B5E71F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D8B5E21F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.m */; };
+		18D8B5E81F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18D8B5E41F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.m */; };
 		3426D2845E2F9E1593F0B3A7 /* libPods-SteezzTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 458305A92B8BA09C56C9C39A /* libPods-SteezzTests.a */; };
 		A126EA1E7CCB612CCB5E6314 /* libPods-SteezzUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3F7949E22637F0555A4340 /* libPods-SteezzUITests.a */; };
 		D3F72A4EEA2D59ECADE63D2E /* libPods-Steezz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02EB6E17592369CDD89E8371 /* libPods-Steezz.a */; };
@@ -157,6 +167,9 @@
 		180F54B51EDE91B50038ACE0 /* LenderHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LenderHistoryViewController.m; sourceTree = "<group>"; };
 		180F54B81EDEBC910038ACE0 /* LenderEndReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LenderEndReportViewController.h; sourceTree = "<group>"; };
 		180F54B91EDEBC910038ACE0 /* LenderEndReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LenderEndReportViewController.m; sourceTree = "<group>"; };
+		18154B871F18C3AE00434494 /* CZPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPicker.h; sourceTree = "<group>"; };
+		18154B881F18C3AE00434494 /* CZPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPickerView.h; sourceTree = "<group>"; };
+		18154B891F18C3AE00434494 /* CZPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZPickerView.m; sourceTree = "<group>"; };
 		18259AAB1ED58E5A00C7FAE6 /* AboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsViewController.h; sourceTree = "<group>"; };
 		18259AAC1ED58E5A00C7FAE6 /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		18259AB01ED5940F00C7FAE6 /* disclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = disclaimerViewController.h; sourceTree = "<group>"; };
@@ -188,6 +201,12 @@
 		1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveCreditCardViewController.m; sourceTree = "<group>"; };
 		188D7ED01EC342210048804E /* LendeeDashBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LendeeDashBoardViewController.h; sourceTree = "<group>"; };
 		188D7ED11EC342210048804E /* LendeeDashBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LendeeDashBoardViewController.m; sourceTree = "<group>"; };
+		18970FA51F1F13D500962299 /* CKCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKCalendarView.h; sourceTree = "<group>"; };
+		18970FA61F1F13D500962299 /* CKCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKCalendarView.m; sourceTree = "<group>"; };
+		18970FA91F1F142200962299 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		18970FAB1F1F143200962299 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		18970FAD1F1F143D00962299 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		18970FAF1F1F145900962299 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		18A0AEDD1EF0089D005DF4EC /* NotificationCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCenterViewController.h; sourceTree = "<group>"; };
 		18A0AEDE1EF0089D005DF4EC /* NotificationCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCenterViewController.m; sourceTree = "<group>"; };
 		18A592631ED8578000D93A37 /* paymentFromViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paymentFromViewController.h; sourceTree = "<group>"; };
@@ -371,6 +390,15 @@
 		18D177F51EBCA26D00C29EAB /* SRAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRAlertView.m; sourceTree = "<group>"; };
 		18D594E91EE6AC7C005D62A8 /* LendeeChatUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LendeeChatUserViewController.h; sourceTree = "<group>"; };
 		18D594EA1EE6AC7C005D62A8 /* LendeeChatUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LendeeChatUserViewController.m; sourceTree = "<group>"; };
+		18D8B5DC1F21FE66009EBE7E /* FIMultipleSelectionCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIMultipleSelectionCalendar.h; sourceTree = "<group>"; };
+		18D8B5DD1F21FE66009EBE7E /* FIMultipleSelectionCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIMultipleSelectionCalendarView.h; sourceTree = "<group>"; };
+		18D8B5DE1F21FE66009EBE7E /* FIMultipleSelectionCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIMultipleSelectionCalendarView.m; sourceTree = "<group>"; };
+		18D8B5DF1F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIMultipleSelectionCalendarViewCell.h; sourceTree = "<group>"; };
+		18D8B5E01F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIMultipleSelectionCalendarViewCell.m; sourceTree = "<group>"; };
+		18D8B5E11F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIMultipleSelectionCalendarViewFlowLayout.h; sourceTree = "<group>"; };
+		18D8B5E21F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIMultipleSelectionCalendarViewFlowLayout.m; sourceTree = "<group>"; };
+		18D8B5E31F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FIMultipleSelectionCalendarViewHeader.h; sourceTree = "<group>"; };
+		18D8B5E41F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FIMultipleSelectionCalendarViewHeader.m; sourceTree = "<group>"; };
 		1FB9EA8D97CC78E0F4830177 /* Pods-SteezzUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SteezzUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SteezzUITests/Pods-SteezzUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		458305A92B8BA09C56C9C39A /* libPods-SteezzTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SteezzTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D3F7949E22637F0555A4340 /* libPods-SteezzUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SteezzUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -384,6 +412,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18970FB01F1F145900962299 /* QuartzCore.framework in Frameworks */,
+				18970FAE1F1F143E00962299 /* UIKit.framework in Frameworks */,
+				18970FAC1F1F143200962299 /* Foundation.framework in Frameworks */,
+				18970FAA1F1F142200962299 /* CoreGraphics.framework in Frameworks */,
 				185054161EFA8EC3000975A0 /* Bolts.framework in Frameworks */,
 				185054131EFA8C5A000975A0 /* FBSDKShareKit.framework in Frameworks */,
 				D3F72A4EEA2D59ECADE63D2E /* libPods-Steezz.a in Frameworks */,
@@ -436,6 +468,16 @@
 				180F54B51EDE91B50038ACE0 /* LenderHistoryViewController.m */,
 			);
 			name = "Lender History VC";
+			sourceTree = "<group>";
+		};
+		18154B8B1F18C3B700434494 /* CZ Picker */ = {
+			isa = PBXGroup;
+			children = (
+				18154B871F18C3AE00434494 /* CZPicker.h */,
+				18154B881F18C3AE00434494 /* CZPickerView.h */,
+				18154B891F18C3AE00434494 /* CZPickerView.m */,
+			);
+			name = "CZ Picker";
 			sourceTree = "<group>";
 		};
 		18259AAE1ED593A800C7FAE6 /* About Us */ = {
@@ -588,6 +630,15 @@
 				18409D241EC32CCB001C8F56 /* LendeeSettingsViewController.m */,
 			);
 			name = "Lendee Setting VC";
+			sourceTree = "<group>";
+		};
+		18970FA81F1F13F800962299 /* CKCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				18970FA51F1F13D500962299 /* CKCalendarView.h */,
+				18970FA61F1F13D500962299 /* CKCalendarView.m */,
+			);
+			name = CKCalendar;
 			sourceTree = "<group>";
 		};
 		18A4F65D1EFCE36600E858CF /* Lender Payment From VC */ = {
@@ -1000,6 +1051,9 @@
 			isa = PBXGroup;
 			children = (
 				18D177E41EBC8A2900C29EAB /* PrefixHeader.pch */,
+				18D8B5E91F21FE6D009EBE7E /* FIMultipleCalendar */,
+				18970FA81F1F13F800962299 /* CKCalendar */,
+				18154B8B1F18C3B700434494 /* CZ Picker */,
 				1850540B1EFA8B66000975A0 /* Third Party files */,
 				18D177A01EBC849200C29EAB /* Steezz */,
 				18D177BA1EBC849300C29EAB /* SteezzTests */,
@@ -1152,9 +1206,29 @@
 			name = "Lendee Chat Users VC";
 			sourceTree = "<group>";
 		};
+		18D8B5E91F21FE6D009EBE7E /* FIMultipleCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				18D8B5DC1F21FE66009EBE7E /* FIMultipleSelectionCalendar.h */,
+				18D8B5DD1F21FE66009EBE7E /* FIMultipleSelectionCalendarView.h */,
+				18D8B5DE1F21FE66009EBE7E /* FIMultipleSelectionCalendarView.m */,
+				18D8B5DF1F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.h */,
+				18D8B5E01F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.m */,
+				18D8B5E11F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.h */,
+				18D8B5E21F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.m */,
+				18D8B5E31F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.h */,
+				18D8B5E41F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.m */,
+			);
+			name = FIMultipleCalendar;
+			sourceTree = "<group>";
+		};
 		4CE5E67EA26689B4310E8E54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				18970FAF1F1F145900962299 /* QuartzCore.framework */,
+				18970FAD1F1F143D00962299 /* UIKit.framework */,
+				18970FAB1F1F143200962299 /* Foundation.framework */,
+				18970FA91F1F142200962299 /* CoreGraphics.framework */,
 				02EB6E17592369CDD89E8371 /* libPods-Steezz.a */,
 				458305A92B8BA09C56C9C39A /* libPods-SteezzTests.a */,
 				4D3F7949E22637F0555A4340 /* libPods-SteezzUITests.a */,
@@ -1491,6 +1565,7 @@
 				18B725531EC5E4A300A1F0C2 /* SDImageCache.m in Sources */,
 				186EA0B21ED2A39400E28323 /* bookingViewController.m in Sources */,
 				188D7ED21EC342210048804E /* LendeeDashBoardViewController.m in Sources */,
+				18D8B5E61F21FE67009EBE7E /* FIMultipleSelectionCalendarViewCell.m in Sources */,
 				18B725311EC5E47800A1F0C2 /* Base64.m in Sources */,
 				18D177F71EBCA26D00C29EAB /* SRAlertView.m in Sources */,
 				18A0AEDF1EF0089D005DF4EC /* NotificationCenterViewController.m in Sources */,
@@ -1500,11 +1575,13 @@
 				18D594EB1EE6AC7C005D62A8 /* LendeeChatUserViewController.m in Sources */,
 				18409D191EC30E68001C8F56 /* LENDEEProductsViewController.m in Sources */,
 				18B7252B1EC5C90E00A1F0C2 /* FCAlertView.m in Sources */,
+				18D8B5E71F21FE67009EBE7E /* FIMultipleSelectionCalendarViewFlowLayout.m in Sources */,
 				18AD36181EC1D4B100329B9D /* lenderSupportViewController.m in Sources */,
 				18BC4CE61EDFF323002267A0 /* chatViewController.m in Sources */,
 				18B2953B1EE803FB001440CD /* JTSImageInfo.m in Sources */,
 				18B7255D1EC5E4A300A1F0C2 /* UIImageView+HighlightedWebCache.m in Sources */,
 				18441AF11EBF07870012A12B /* LoginScreenViewController.m in Sources */,
+				18154B8A1F18C3AE00434494 /* CZPickerView.m in Sources */,
 				18B8A9101EC034B100B9E36D /* forgotPasswordViewController.m in Sources */,
 				18B7255E1EC5E4A300A1F0C2 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				18B295431EE8144B001440CD /* CreditCardListingViewController.m in Sources */,
@@ -1528,6 +1605,8 @@
 				18AD36281EC1F13300329B9D /* LenderBookingListViewController.m in Sources */,
 				180F54B61EDE91B50038ACE0 /* LenderHistoryViewController.m in Sources */,
 				18BC4D141EDFFA85002267A0 /* UIImage+Utils.m in Sources */,
+				18970FA71F1F13D500962299 /* CKCalendarView.m in Sources */,
+				18D8B5E51F21FE67009EBE7E /* FIMultipleSelectionCalendarView.m in Sources */,
 				18409D251EC32CCB001C8F56 /* LendeeSettingsViewController.m in Sources */,
 				18B725051EC579E900A1F0C2 /* ApiMaster.m in Sources */,
 				18C7369C1F139B0C0050AAE9 /* PaymentDetailViewController.m in Sources */,
@@ -1535,6 +1614,7 @@
 				18B8A9261EC055F200B9E36D /* lenderConditionlReportViewController.m in Sources */,
 				18D177F01EBC968B00C29EAB /* LendeeTabBarViewController.m in Sources */,
 				18BC4CED1EDFFA23002267A0 /* SPHTextBubbleCell.m in Sources */,
+				18D8B5E81F21FE67009EBE7E /* FIMultipleSelectionCalendarViewHeader.m in Sources */,
 				180F54BA1EDEBC910038ACE0 /* LenderEndReportViewController.m in Sources */,
 				18D177E21EBC89FE00C29EAB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				18B7FCD21ED6E33500E9591A /* CreditCardViewController.m in Sources */,

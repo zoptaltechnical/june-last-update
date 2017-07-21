@@ -10,12 +10,19 @@
 
 @interface signupViewController ()<PlaceSearchTextFieldDelegate>
 
+{
+    NSString *termOfSerivecs;
+}
+
 @end
 
 @implementation signupViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+     termOfSerivecs = @"0";
     
     firstnameTxtFld.borderStyle = UITextBorderStyleLine;
     firstnameTxtFld.layer.borderWidth = 1;
@@ -55,18 +62,13 @@
     areaTxtFld.autoCompleteShouldHideOnSelection   = YES;
     areaTxtFld.maximumNumberOfAutoCompleteRows     = 5;
     
-    usernametxtFld.borderStyle = UITextBorderStyleRoundedRect;
-    usernametxtFld.layer.borderWidth = 1;
-    usernametxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    usernametxtFld.layer.cornerRadius = 15.0;
-    
+   
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:firstnameTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:lastnameTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:passwordTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:mobileTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:areaTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:addressTxtFld ,nil]];
-    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:usernametxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:emailTxtFld ,nil]];
     // Do any additional setup after loading the view.
 }
@@ -88,6 +90,29 @@
     
     areaTxtFld.autoCompleteTableFrame = CGRectMake((self.view.frame.size.width-areaTxtFld.frame.size.width)*0.5, areaTxtFld.frame.size.height+100.0, areaTxtFld.frame.size.width, 200.0);
 }
+
+- (IBAction)termsOfServicesBtnAction:(id)sender {
+
+        
+        if ([termsOfServicesBtn.currentImage isEqual:[UIImage imageNamed:@"cricle"]])
+        {
+
+            termOfSerivecs = @"1";
+       
+            [termsOfServicesBtn setImage:[UIImage imageNamed:@"select_icon-1"] forState:UIControlStateNormal];
+        }
+        else
+        {
+
+          termOfSerivecs = @"0";
+            [termsOfServicesBtn setImage:[UIImage imageNamed:@"cricle"] forState:UIControlStateNormal];
+        }
+ 
+    
+}
+
+
+
 
 #pragma mark - 
 #pragma -> Place search Textfield Delegates
@@ -168,7 +193,6 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-         [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
         
     }
@@ -194,7 +218,6 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
     else if ([[passwordTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
@@ -216,7 +239,6 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
     
@@ -240,7 +262,6 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
     
@@ -264,7 +285,6 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
     
@@ -289,7 +309,6 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
     
@@ -314,33 +333,10 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
     
-    else if ([[usernametxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
-    {
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your Username"
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationDownToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        
-        [emailTxtFld resignFirstResponder];
-        [firstnameTxtFld resignFirstResponder];
-        [lastnameTxtFld resignFirstResponder];
-        [passwordTxtFld resignFirstResponder];
-        [addressTxtFld resignFirstResponder];
-        [areaTxtFld resignFirstResponder];
-        [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
-        [emailTxtFld resignFirstResponder];
-    }
+
     
     
     
@@ -364,10 +360,36 @@
         [addressTxtFld resignFirstResponder];
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
         
     }
+    
+    else if ([termOfSerivecs isEqualToString:@"0"])
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                                       message:@"Please Agree to Our Terms and Condition."
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationRightToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        
+    }
+    
+    
+    
     
      else
     {
@@ -386,7 +408,6 @@
             registerInfo= @{
                             @"first_name":firstnameTxtFld.text,
                             @"last_name":lastnameTxtFld.text,
-                            @"username":usernametxtFld.text,
                             @"email":emailTxtFld.text,
                             @"password":passwordTxtFld.text,
                             @"address":addressTxtFld.text,

@@ -77,7 +77,7 @@
     Productname.text= [NSString stringWithFormat:@"Your  %@ is booked",   [[DashBoardArray valueForKey:@"product_name"]objectAtIndex:indexPath.row]];
     
     UILabel *StartDate=(UILabel *)[cell.contentView viewWithTag:10001000101];
-    StartDate.text= [NSString stringWithFormat:@"From %@",   [[DashBoardArray valueForKey:@"start_date"]objectAtIndex:indexPath.row]];
+    StartDate.text= @"for 5 days";//[NSString stringWithFormat:@"From %@",   [[DashBoardArray valueForKey:@"start_date"]objectAtIndex:indexPath.row]];
     
     UILabel *endDate=(UILabel *)[cell.contentView viewWithTag:10001000104];
     endDate.text= [NSString stringWithFormat:@"To %@",   [[DashBoardArray valueForKey:@"end_date"]objectAtIndex:indexPath.row]];
@@ -138,9 +138,25 @@
 }
 
 
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{}
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    PaymentDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"PaymentDetailViewController"];
+    homeObj.Status = [[DashBoardArray valueForKey:@"status"]objectAtIndex:indexPath.row];
+    homeObj.TotalAmountString = [[DashBoardArray valueForKey:@"total_amount"]objectAtIndex:indexPath.row];
+    homeObj.AmountPaidString = [[DashBoardArray valueForKey:@"amount"]objectAtIndex:indexPath.row];
+    homeObj.AdminChargesString = [[DashBoardArray valueForKey:@"admin_charges"]objectAtIndex:indexPath.row];
+    homeObj.PaypalIdString = [[DashBoardArray valueForKey:@"paypal_id"]objectAtIndex:indexPath.row];
+    
+    homeObj.startDateStrig = [[DashBoardArray valueForKey:@"start_date"]objectAtIndex:indexPath.row];
+    
+    homeObj.EndDateStrings = [[DashBoardArray valueForKey:@"end_date"]objectAtIndex:indexPath.row];
+    
+    homeObj.ProductNAmeString = [[DashBoardArray valueForKey:@"product_name"]objectAtIndex:indexPath.row];
+    homeObj.Status = [[DashBoardArray valueForKey:@"status"]objectAtIndex:indexPath.row];
+    
+    [self.navigationController pushViewController:homeObj animated:YES];
+}
 
 
 -(void)callDashBoardAPI
@@ -154,7 +170,7 @@
                                    };
     
     McomLOG(@"%@",registerInfo);
-    [API DashboardtWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+    [API paymentListingWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
      {
          [Appdelegate stopLoader:nil];
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
@@ -177,7 +193,7 @@
          else if ([responseDict[@"result"]boolValue]==1)
          {
              NSLog(@"sign_up%@", responseDict);
-             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"products"]];
+             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
              
              
              [dashBoardTableVIew reloadData];
@@ -186,5 +202,8 @@
          }
      }];
 }
+
+
+
 
 @end

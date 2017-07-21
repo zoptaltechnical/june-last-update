@@ -25,6 +25,7 @@
     IBOutlet UILabel *productNameLble;
     
     IBOutlet UILabel *sucessLabel;
+    IBOutlet UIView *sucessView;
     
     IBOutlet UILabel *adminCharges;
     IBOutlet UILabel *totalAmountLabel;

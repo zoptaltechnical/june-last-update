@@ -15,12 +15,10 @@
 {
     NSString *ownerName;
     NSString *GetUserId;
-
     NSString *product_id;
     NSString *User_id;
     NSDictionary *dict;
     NSString *perdayAmountString;
-    
     NSString *dateString;
     
 }
@@ -31,6 +29,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    dateCountLabel.layer.cornerRadius = dateCountLabel.frame.size.width / 2;
+    dateCountLabel.clipsToBounds = YES;
     
     userImage.layer.borderWidth=5;
     userImage.layer.cornerRadius=userImage.frame.size.width/2;;
@@ -172,7 +174,8 @@
              if ([responseDict valueForKey:@"product"])
              {
                  
-                 date.text =[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"available_date"]] ;
+                 dateCountLabel.hidden = NO;
+             //    date.text =[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"available_date"]] ;
                  
                  location.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"location"]];
                  
@@ -180,13 +183,14 @@
                  
                  categoryName.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"cat_name"]];
                  
+                   dateCountLabel.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"total_unavailable_dates"]];
+                 
                  price.text =[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"product_price"]];
                  
                  [usernameBtn setTitle:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"first_name"]] forState:UIControlStateNormal];
                  
                  
                  [productImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"product_image"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
-                 
                  
                  
                  [userImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"profile_pic"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];

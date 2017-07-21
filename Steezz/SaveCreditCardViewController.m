@@ -310,6 +310,8 @@
          {
              [self.navigationController popViewControllerAnimated:YES];
              NSLog(@"sign_up responce Data%@", responseDict);
+             
+             [expryYrTxtFld resignFirstResponder];
          }
      }];
 }
