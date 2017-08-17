@@ -18,6 +18,7 @@
     IBOutlet UIButton *paymentListingBckBtn;
     
     
+    IBOutlet UILabel *paymentlistLabel;
     
     
     

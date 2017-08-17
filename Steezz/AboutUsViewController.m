@@ -19,7 +19,7 @@
     
     aboutUsWebView.delegate = self;
     
-    NSURL *url = [NSURL URLWithString:@"http://workmeappit.com/steezz/about_us"];
+    NSURL *url = [NSURL URLWithString:@"https://zoptal.com/demo/steezz/about_us"];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [aboutUsWebView loadRequest:requestObj];
     

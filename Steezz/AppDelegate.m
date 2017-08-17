@@ -17,22 +17,67 @@
 
 @interface AppDelegate ()
 
+{
+    
+    NSDictionary *dict;
+    
+}
+
+
+
+
 @end
 
 @implementation AppDelegate
 
 
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    
+    dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
+    
+   if ([[dict  valueForKey:@"user_type"] isEqualToString:@"2"]) {
+       
+       UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+       UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+       LenderTabBarViewController *controller = (LenderTabBarViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"LenderTabBarViewController"];
+       [navigationController pushViewController:controller animated:YES];
+       
+       
+    
+    }
+   
+    else if ([[dict  valueForKey:@"user_type"] isEqualToString:@"1"])
+    {
+        UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        LendeeTabBarViewController *controller = (LendeeTabBarViewController*)[mainStoryboard instantiateViewControllerWithIdentifier: @"LendeeTabBarViewController"];
+        [navigationController pushViewController:controller animated:YES];
+
+   }
     
     NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:nil];
     [NSURLCache setSharedURLCache:sharedCache];
+    [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentProduction:@"EOiEnYkQfcuHN45knuphrEN-MNJ8KFkb3vXHDqgj5RSkhPcUb8HMGrsCEKIuKMP4gC4B19qso7JyRfg0",PayPalEnvironmentSandbox:@"Ae6QnxsdQgyUZSzuMSA306aEbaAf6RFe4ea934EgWtow7knriA_O3qcLI1exXEUgnng3zFZ4HyLhFkfT"}];
     
+    
+    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
+    
+    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
         
-     [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentProduction:@"EOiEnYkQfcuHN45knuphrEN-MNJ8KFkb3vXHDqgj5RSkhPcUb8HMGrsCEKIuKMP4gC4B19qso7JyRfg0",PayPalEnvironmentSandbox:@"Ae6QnxsdQgyUZSzuMSA306aEbaAf6RFe4ea934EgWtow7knriA_O3qcLI1exXEUgnng3zFZ4HyLhFkfT"}];
+        statusBar.backgroundColor = [UIColor blackColor];
+    }
+    
     // Override point for customization after application launch.
     return YES;
 }
+
+
+
 
 
 #pragma mark  Loader 

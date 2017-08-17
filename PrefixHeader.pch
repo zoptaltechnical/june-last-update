@@ -43,16 +43,10 @@
 #import "LenderChatUsersViewController.h"
 #import "CreditCardListingViewController.h"
 #import "NotificationCenterViewController.h"
-
 #import "EditReportViewController.h"
-
 #import "chatViewController.h"
-
-
 #import "AboutUsViewController.h"
-
 #import "disclaimerViewController.h"
-
 #import "LendeeTabBarViewController.h"
 #import "LENDEEProductsViewController.h"
 #import "LendeeProductDetailViewController.h"
@@ -69,7 +63,6 @@
 
 #import "ApiMaster.h"
 #import "UIAlertView+Blocks.h"
-
 
 #import "Base64.h"
 #import "UIImageView+WebCache.h"

@@ -50,7 +50,7 @@
 {
     if ([[forgotEmailTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -64,7 +64,7 @@
     
     else if (![Utility NSStringIsValidEmail:forgotEmailTxtFld.text])
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Valid Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -106,7 +106,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -125,7 +125,7 @@
              [forgotEmailTxtFld resignFirstResponder];
 
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

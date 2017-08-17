@@ -209,6 +209,23 @@
     
     [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
     
+    
+    
+    if (array.count==0) {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Sorry Categories are not Loaded!"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+    }
+    
+    else
+    {
+    
     [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex)
     {
         categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
@@ -219,7 +236,7 @@
                     dismissBlock:^{
                     }];
 
-    
+    }
     
 }
 
@@ -269,8 +286,12 @@
     UILabel *price=(UILabel *)[cell.contentView viewWithTag:1001];
     price.text= [NSString stringWithFormat:@"%@",   [[homeFeedArray valueForKey:@"product_price"]objectAtIndex:indexPath.row]];
     
-    UILabel *location=(UILabel *)[cell.contentView viewWithTag:1002];
-    location.text= [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
+//    UILabel *location=(UILabel *)[cell.contentView viewWithTag:1002];
+//    location.text= [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
+    
+    UILabel *ActualLocation=(UILabel *)[cell.contentView viewWithTag:1018];
+    ActualLocation.text= [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"location"]objectAtIndex:indexPath.row]];
+    
         
     UILabel *Date=(UILabel *)[cell.contentView viewWithTag:1012];
     Date.text= [NSString stringWithFormat:@"%@",[[homeFeedArray valueForKey:@"total_unavailable_dates"]objectAtIndex:indexPath.row]];
@@ -284,6 +305,21 @@
                         action:@selector(SaveBtnPressed:)
               forControlEvents:UIControlEventTouchUpInside];
     
+    
+    if ([[[homeFeedArray valueForKey:@"is_favourite"] objectAtIndex:indexPath.row] isEqualToString:@"Yes"])
+    {
+        [SaveBtn setImage:[UIImage imageNamed:@"favorite"] forState:UIControlStateNormal
+         ];
+        
+    }
+    else if ([[[homeFeedArray valueForKey:@"is_favourite"] objectAtIndex:indexPath.row] isEqualToString:@"No"])
+    {
+        [SaveBtn setImage:[UIImage imageNamed:@"heart"] forState:UIControlStateNormal
+         ];
+        
+    }
+    
+    
     UIButton *BookBtn =(UIButton *)[cell.contentView viewWithTag:1005];
     [BookBtn addTarget:self
                 action:@selector(BookBtnPressed:)
@@ -293,8 +329,6 @@
     [MessageBtn addTarget:self
                 action:@selector(messageBtnPressed:)
       forControlEvents:UIControlEventTouchUpInside];
-    
-    
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return  cell;
@@ -379,14 +413,19 @@
     McomLOG(@"%@",registerInfo);
     [API getCategoriesList:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
      {
-         
          [Appdelegate stopLoader:nil];
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
          NSLog(@"%@",dict_response);
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+             
+             if ([[responseDict valueForKey:@"message"] isEqualToString:@"Access token incorrect."])
+             {
+                 
+                 
+             }
+             
          }
          
          else if ([responseDict[@"result"]boolValue]==1)
@@ -409,9 +448,6 @@
      }];
 }
 
-
-
-
 #pragma  Lendeer Home Feed List API
 -(void)callLendeerHomeFeedAPI
 {
@@ -432,8 +468,10 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
              
+             [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+             UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+             [self.view.window setRootViewController:popUpController];
             
          }
          
@@ -489,8 +527,9 @@
          {
              NSLog(@"save product = %@",responseDict);
              
+             [self callLendeerHomeFeedAPI];
         
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -503,17 +542,13 @@
      }];
 }
 
-
-
-
-
 -(void)Searchvalidations
 {
     
     if ([categoryString length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Category"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -532,7 +567,7 @@
     {
         
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Date"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -546,7 +581,7 @@
     
     else if ([[locationTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Location"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -561,7 +596,7 @@
     
     else if ([[priceTextFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Price"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -610,9 +645,29 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
+             if ([[responseDict valueForKey:@"message"] isEqualToString:@"No product found."])
+             {
+                 [SRAlertView sr_showAlertViewWithTitle:@""
+                                                message:@"No product found."
+                                        leftActionTitle:@"OK"
+                                       rightActionTitle:@""
+                                         animationStyle:AlertViewAnimationDownToCenterSpring
+                                           selectAction:^(AlertViewActionType actionType) {
+                                               NSLog(@"%zd", actionType);
+                                           }];
+                 
+             }
+             
+             else
+             {
+             
+             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"Sorry This user is already logged in from other device!"]];
              
              [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+             
+             }
+             
          }
          else if ([responseDict[@"result"]boolValue]==1)
          {

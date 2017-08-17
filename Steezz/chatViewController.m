@@ -45,6 +45,9 @@
     NSLog(@"%@ login data = ",dict);
     
     messageTxtFld.delegate = self;
+    
+    messageTxtFld.layer.borderWidth = 1;
+    messageTxtFld.layer.borderColor = [UIColor blackColor].CGColor;
     reciverUserName.text = [NSString stringWithFormat:@"%@",_ReciverName_string];
     
     isfromMe=YES;
@@ -52,21 +55,28 @@
     sphBubbledata =[[NSMutableArray alloc]init];
     
    
-    
-    
+    messageTxtFld.layer.cornerRadius = 15;
+    messageTxtFld.clipsToBounds = YES;
+        
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
     [Chattable addGestureRecognizer:tap];
      Chattable.backgroundColor =[UIColor clearColor];
     
-    
-    
-    
     [self loadAllMessages:_ConversationID_string];
+    
+    [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(reloadTable) userInfo:nil repeats:YES];
 
     // Do any additional setup after loading the view.
 }
+
+-(void) reloadTable
+{
+    [self MyloadAllMessages:_ConversationID_string];
+    
+}
+
 
 -(void)viewWillAppear:(BOOL)animated{
     
@@ -109,7 +119,7 @@
             
             if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
             {
-                [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                [SRAlertView sr_showAlertViewWithTitle:@""
                                                message:@"Device has no camera"
                                        leftActionTitle:@"OK"
                                       rightActionTitle:@""
@@ -142,20 +152,6 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 
 {
-    isFromImagePicker=YES;
-    image = [info objectForKey:UIImagePickerControllerEditedImage];
-    data = UIImageJPEGRepresentation(image, 0.99);
-    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
-    CGRect rect = CGRectMake(0,0,100,80);
-    UIGraphicsBeginImageContext( rect.size );
-    [image drawInRect:rect];
-    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    NSData *imageData = UIImagePNGRepresentation(picture1);
-    image=[UIImage imageWithData:imageData];
-    
-    [self sendImage:image];
     
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -202,9 +198,10 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"hh:mm a"];
     
-    [self sendMessageAPI:_reciverID_string];
 
     [Chattable reloadData];
+    
+     [self sendMessageAPI:_reciverID_string];
     //  [self scrollTableview];
 
     
@@ -559,7 +556,7 @@
              
              if (MessageData.count ==0)
              {
-                 [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+                 [SRAlertView sr_showAlertViewWithTitle:@""
                                                 message:@"Message Chat is Empty!"
                                         leftActionTitle:@"OK"
                                        rightActionTitle:@""
@@ -724,6 +721,7 @@
          }
          else if ([responseDict[@"response"]boolValue]==1)
          {
+             
              [self loadAllMessages:_ConversationID_string];
              if ([messageTxtFld.text length]>0)
              {
@@ -741,4 +739,98 @@
          }
      }];
 }
+
+
+
+#pragma Api for refreshing messages 
+
+-(void)MyloadAllMessages:(NSString *)String
+{
+    
+    
+    
+    NSLog(@"%@",dict1);
+    
+    NSDictionary* registerInfo;
+    
+    NSLog(@"string  = =   %@",String);
+    
+    registerInfo= @{
+                    @"access_token":[dict valueForKey:@"access_token"],
+                    @"conversation_id":String,
+                    };
+    
+    McomLOG(@"%@",registerInfo);
+    [API LoadAllMessagesWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+        
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
+             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+         }
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"responce =  %@",responseDict);
+             
+             MessageData = [responseDict valueForKey:@"data"];
+             [sphBubbledata removeAllObjects];
+             
+             if (MessageData.count ==0)
+             {
+                 [SRAlertView sr_showAlertViewWithTitle:@""
+                                                message:@"Message Chat is Empty!"
+                                        leftActionTitle:@"OK"
+                                       rightActionTitle:@""
+                                         animationStyle:AlertViewAnimationRightToCenterSpring
+                                           selectAction:^(AlertViewActionType actionType) {
+                                               NSLog(@"%zd", actionType);
+                                           }];
+             }
+             
+             else
+             {
+                 
+                 for (int i=0; i<[[responseDict valueForKey:@"data"] count]; i++)
+                 {
+                     NSDate *date = [NSDate date];
+                     NSLog(@"%@",date);
+                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                     [formatter setDateFormat:@"hh:mm a"];
+                     dict1=[[responseDict valueForKey:@"data"] objectAtIndex:i];
+                     
+                     if ([[dict1 valueForKey:@"type"] isEqualToString:@"self"])
+                     {
+                         if ([[dict1 valueForKey:@"image"]length]>0)
+                         {
+                             [self adddMediaBubbledata:kImagebyme mediaPath:[dict1 valueForKey:@"image"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         
+                         NSMutableDictionary* mutableDict = [dict1 mutableCopy];
+                         [mutableDict removeObjectForKey:@"data"];
+                         
+                     }
+                     
+                     else  if ([[dict1 valueForKey:@"type"]isEqualToString:@"other"])
+                         
+                     {
+                                                 
+                         NSMutableDictionary* mutableDict = [dict1 mutableCopy];
+                         [mutableDict removeObjectForKey:@"data"];
+                     }
+                     
+                     [Chattable reloadData];
+                     [self scrollTableview];
+                     [self performSelector:@selector(messageSent:) withObject:@"0" afterDelay:1];
+                 }
+             }
+         }
+     }];
+}
+
+
+
 @end

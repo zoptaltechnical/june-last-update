@@ -1,7 +1,7 @@
 //
 //  FXBlurView.m
 //
-//  Version 1.6.4
+//  Version 1.6.2
 //
 //  Created by Nick Lockwood on 25/08/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -33,6 +33,9 @@
 
 #import "FXBlurView.h"
 #import <objc/runtime.h>
+#import <objc/message.h>
+#import <QuartzCore/QuartzCore.h>
+#import <Accelerate/Accelerate.h>
 
 
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
@@ -59,18 +62,6 @@
     
     //create image buffers
     CGImageRef imageRef = self.CGImage;
-    
-    //convert to ARGB if it isn't
-    if (CGImageGetBitsPerPixel(imageRef) != 32 ||
-        CGImageGetBitsPerComponent(imageRef) != 8 ||
-        !((CGImageGetBitmapInfo(imageRef) & kCGBitmapAlphaInfoMask)))
-    {
-        UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
-        [self drawAtPoint:CGPointZero];
-        imageRef = UIGraphicsGetImageFromCurrentImageContext().CGImage;
-        UIGraphicsEndImageContext();
-    }
-    
     vImage_Buffer buffer1, buffer2;
     buffer1.width = buffer2.width = CGImageGetWidth(imageRef);
     buffer1.height = buffer2.height = CGImageGetHeight(imageRef);
@@ -79,28 +70,13 @@
     buffer1.data = malloc(bytes);
     buffer2.data = malloc(bytes);
     
-    if (NULL == buffer1.data || NULL == buffer2.data)
-    {
-        free(buffer1.data);
-        free(buffer2.data);
-        return self;
-    }
-    
     //create temp buffer
     void *tempBuffer = malloc((size_t)vImageBoxConvolve_ARGB8888(&buffer1, &buffer2, NULL, 0, 0, boxSize, boxSize,
                                                                  NULL, kvImageEdgeExtend + kvImageGetTempBufferSize));
     
     //copy image data
-    CGDataProviderRef provider = CGImageGetDataProvider(imageRef);
-    CFDataRef dataSource = CGDataProviderCopyData(provider);
-    if (NULL == dataSource)
-    {
-        free(tempBuffer);
-        return self;
-    }
-    const UInt8 *dataSourceData = CFDataGetBytePtr(dataSource);
-    CFIndex dataSourceLength = CFDataGetLength(dataSource);
-    memcpy(buffer1.data, dataSourceData, MIN(bytes, (unsigned long)dataSourceLength));
+    CFDataRef dataSource = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
+    memcpy(buffer1.data, CFDataGetBytePtr(dataSource), bytes);
     CFRelease(dataSource);
     
     for (NSUInteger i = 0; i < iterations; i++)
@@ -127,7 +103,7 @@
     if (tintColor && CGColorGetAlpha(tintColor.CGColor) > 0.0f)
     {
         CGContextSetFillColorWithColor(ctx, [tintColor colorWithAlphaComponent:0.25].CGColor);
-        CGContextSetBlendMode(ctx, kCGBlendModePlusLighter);
+        CGContextSetBlendMode(ctx, kCGBlendModePlusDarker);
         CGContextFillRect(ctx, CGRectMake(0, 0, buffer1.width, buffer1.height));
     }
     
@@ -184,7 +160,6 @@
 @property (nonatomic, assign) BOOL dynamicSet;
 @property (nonatomic, assign) BOOL blurEnabledSet;
 @property (nonatomic, strong) NSDate *lastUpdate;
-@property (nonatomic, assign) BOOL needsDrawViewHierarchy;
 
 - (UIImage *)snapshotOfUnderlyingView;
 - (BOOL)shouldUpdate;
@@ -293,7 +268,7 @@
                 }
             }
         }
-        
+
         //try again, delaying until the time when the next view needs an update.
         self.viewIndex = 0;
         [self performSelector:@selector(updateAsynchronously)
@@ -307,8 +282,6 @@
 
 
 @implementation FXBlurView
-
-@synthesize underlyingView = _underlyingView;
 
 + (void)setBlurEnabled:(BOOL)blurEnabled
 {
@@ -352,7 +325,6 @@
         }
     }
     free(methods);
-    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -377,35 +349,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-- (BOOL)viewOrSubviewNeedsDrawViewHierarchy:(UIView *)view
-{
-    if ([view isKindOfClass:NSClassFromString(@"SKView")] ||
-        [view.layer isKindOfClass:NSClassFromString(@"CAEAGLLayer")] ||
-        [view.layer isKindOfClass:NSClassFromString(@"AVPlayerLayer")] ||
-        ABS(view.layer.transform.m34) > 0)
-    {
-        return YES;
-    }
-    for (UIView *subview in view.subviews)
-    {
-        if ([self viewOrSubviewNeedsDrawViewHierarchy:subview])
-        {
-            return YES;
-        }
-    }
-    return  NO;
-}
-
-- (void)willMoveToSuperview:(UIView *)newSuperview
-{
-    [super willMoveToSuperview:newSuperview];
-    if (!_underlyingView)
-    {
-        _needsDrawViewHierarchy = [self viewOrSubviewNeedsDrawViewHierarchy:newSuperview];
-    }
 }
 
 - (void)setIterations:(NSUInteger)iterations
@@ -459,13 +402,6 @@
     return _underlyingView ?: self.superview;
 }
 
-- (void)setUnderlyingView:(UIView *)underlyingView
-{
-    _underlyingView = underlyingView;
-    _needsDrawViewHierarchy = [self viewOrSubviewNeedsDrawViewHierarchy:self.underlyingView];
-    [self setNeedsDisplay];
-}
-
 - (CALayer *)underlyingLayer
 {
     return self.underlyingView.layer;
@@ -491,11 +427,6 @@
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
-    [self setNeedsDisplay];
-}
-
-- (void)clearImage {
-    self.layer.contents = nil;
     [self setNeedsDisplay];
 }
 
@@ -554,7 +485,7 @@
         {
             CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:key];
             animation.fromValue = [layer.presentationLayer valueForKey:key];
-            
+    
             //CAMediatiming attributes
             animation.beginTime = action.beginTime;
             animation.duration = action.duration;
@@ -585,9 +516,9 @@
     CGFloat scale = 0.5;
     if (self.iterations)
     {
-        CGFloat blockSize = 12.0/self.iterations;
+        CGFloat blockSize = 12.0f/self.iterations;
         scale = blockSize/MAX(blockSize * 2, blurLayer.blurRadius);
-        scale = 1.0/floor(1.0/scale);
+        scale = 1.0f/floorf(1.0f/scale);
     }
     CGSize size = bounds.size;
     if (self.contentMode == UIViewContentModeScaleToFill ||
@@ -596,51 +527,24 @@
         self.contentMode == UIViewContentModeRedraw)
     {
         //prevents edge artefacts
-        size.width = floor(size.width * scale) / scale;
-        size.height = floor(size.height * scale) / scale;
+        size.width = floorf(size.width * scale) / scale;
+        size.height = floorf(size.height * scale) / scale;
     }
-    else if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0 && [UIScreen mainScreen].scale == 1.0)
+    else if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f && [UIScreen mainScreen].scale == 1.0f)
     {
         //prevents pixelation on old devices
-        scale = 1.0;
+        scale = 1.0f;
     }
-    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+    UIGraphicsBeginImageContextWithOptions(size, YES, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    if (context)
-    {
-        CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
-        
-        NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
-        if (self.needsDrawViewHierarchy)
-        {
-            __strong UIView *underlyingView = self.underlyingView;
-            [underlyingView drawViewHierarchyInRect:underlyingView.bounds afterScreenUpdates:YES];
-        }
-        else
-        {
-            [underlyingLayer renderInContext:context];
-        }
-        [self restoreSuperviewAfterSnapshot:hiddenViews];
-        UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return snapshot;
-    }
-    return nil;
-}
-
-- (NSArray *)hideEmptyLayers:(CALayer *)layer
-{
-    NSMutableArray *layers = [NSMutableArray array];
-    if (CGRectIsEmpty(layer.bounds))
-    {
-        layer.hidden = YES;
-        [layers addObject:layer];
-    }
-    for (CALayer *sublayer in layer.sublayers)
-    {
-        [layers addObjectsFromArray:[self hideEmptyLayers:sublayer]];
-    }
-    return layers;
+    CGContextTranslateCTM(context, -bounds.origin.x, -bounds.origin.y);
+    
+    NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
+    [underlyingLayer renderInContext:context];
+    [self restoreSuperviewAfterSnapshot:hiddenViews];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return snapshot;
 }
 
 - (NSArray *)prepareUnderlyingViewForSnapshot
@@ -665,10 +569,6 @@
             }
         }
     }
-    
-    //also hide any sublayers with empty bounds to prevent a crash on iOS 8
-    [layers addObjectsFromArray:[self hideEmptyLayers:underlyingLayer]];
-    
     return layers;
 }
 
@@ -700,7 +600,7 @@
         UIImage *snapshot = [self snapshotOfUnderlyingView];
         if (async)
         {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 
                 UIImage *blurredImage = [self blurredSnapshot:snapshot radius:self.blurRadius];
                 dispatch_sync(dispatch_get_main_queue(), ^{

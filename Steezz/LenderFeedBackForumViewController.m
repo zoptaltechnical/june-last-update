@@ -136,7 +136,7 @@
 {
     if ([[feedbackMessageTextView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Message"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -163,11 +163,9 @@
 {
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
     
-    
- 
     NSDictionary* registerInfo = @{
                                    @"access_token":[dict valueForKey:@"access_token"],
-                                   @"rate":rateString,
+                                   @"rate":@"3",
                                    @"message":feedbackMessageTextView.text
                                    };
     
@@ -183,7 +181,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -203,7 +201,7 @@
              
              
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

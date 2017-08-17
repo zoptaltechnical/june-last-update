@@ -14,6 +14,9 @@
     NSMutableArray *array;
     NSMutableArray *imagesArray;
     
+    NSString *categoryType;
+    NSString *GetUserId;
+    NSString *ownerUserName;
     
     
     NSMutableArray *DashBoardArray;
@@ -39,8 +42,18 @@
              nil];
     
    
+    [NSTimer scheduledTimerWithTimeInterval:6.0 target:self selector:@selector(reloadTable) userInfo:nil repeats:YES];
     
     // Do any additional setup after loading the view.
+}
+
+
+-(void) reloadTable
+{
+     [self MycallDashBoardAPI];
+    
+    
+    
 }
 
 
@@ -74,10 +87,38 @@
     }
     
     UILabel *Productname=(UILabel *)[cell.contentView viewWithTag:10001000100];
-    Productname.text= [NSString stringWithFormat:@"Your  %@ is booked",   [[DashBoardArray valueForKey:@"product_name"]objectAtIndex:indexPath.row]];
+    Productname.text= [NSString stringWithFormat:@"%@",   [[DashBoardArray valueForKey:@"msg_string"]objectAtIndex:indexPath.row]];
+    
+//    categoryType = [NSString stringWithFormat:@"%@",   [[DashBoardArray valueForKey:@"product_name"]objectAtIndex:indexPath.row]];
+//    NSLog(@"%@",categoryType);
+//    
+//    if ([categoryType isEqualToString:@"Rock Climb"])
+//    {
+//         //categoryType = [NSString stringWithFormat:@"Your  %@ gear is booked",   [[DashBoardArray valueForKey:@"product_name"]objectAtIndex:indexPath.row]];
+//        Productname.text = [NSString stringWithFormat:@"Your %@ing gear is booked",categoryType] ;
+//
+//        
+//    }
+//    
+// else if ([categoryType isEqualToString:@" Bicycles"])
+//    {
+//        categoryType = [categoryType substringToIndex:[categoryType length] - 1];
+//        Productname.text = [NSString stringWithFormat:@"Your %@ is booked",categoryType] ;
+//        
+//    }
+//    
+//    else
+//        
+//    {
+//        categoryType = [categoryType substringToIndex:[categoryType length] - 1];
+//        
+//        Productname.text = [NSString stringWithFormat:@"Your %@ing gear is booked",categoryType] ;
+//    }
+    
+    
     
     UILabel *StartDate=(UILabel *)[cell.contentView viewWithTag:10001000101];
-    StartDate.text= @"for 5 days";//[NSString stringWithFormat:@"From %@",   [[DashBoardArray valueForKey:@"start_date"]objectAtIndex:indexPath.row]];
+    StartDate.text=[NSString stringWithFormat:@"For %@ Days",   [[DashBoardArray valueForKey:@"booking_dates_count"]objectAtIndex:indexPath.row]];
     
     UILabel *endDate=(UILabel *)[cell.contentView viewWithTag:10001000104];
     endDate.text= [NSString stringWithFormat:@"To %@",   [[DashBoardArray valueForKey:@"end_date"]objectAtIndex:indexPath.row]];
@@ -90,9 +131,91 @@
     ImageMy.clipsToBounds= YES;
     [ImageMy sd_setImageWithURL:[NSURL URLWithString: [[DashBoardArray valueForKey:@"product_image"] objectAtIndex:indexPath.row] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
     
+    UIButton *MessageBtn =(UIButton *)[cell.contentView viewWithTag:10001000109];
+    [MessageBtn addTarget:self
+                   action:@selector(dashBoarsmessageBtnPressed:)
+         forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+ 
+    
 
     return  cell;
 }
+
+
+
+
+
+-(void)dashBoarsmessageBtnPressed:(id)sender
+{
+    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:dashBoardTableVIew];
+    NSIndexPath *indexPath = [dashBoardTableVIew indexPathForRowAtPoint:buttonPosition];
+    McomLOG(@"like-indexPath--%ld",(long)indexPath.row);
+    NSString *reciverString = [NSString stringWithFormat:@"%@",[[DashBoardArray valueForKey:@"id"]objectAtIndex:indexPath.row]];
+    
+    GetUserId = [NSString stringWithFormat:@"%@",[[DashBoardArray valueForKey:@"user_id"]objectAtIndex:indexPath.row]];
+    ownerUserName = [NSString stringWithFormat:@"%@",[[DashBoardArray valueForKey:@"first_name"]objectAtIndex:indexPath.row]];
+    
+    NSLog(@" reciverString = %@",reciverString);
+    
+    [self callGetConversationIDAPI];
+    
+    
+    
+}
+
+
+
+
+
+
+-(void)callGetConversationIDAPI
+{
+    
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    NSDictionary* registerInfo;
+    
+    
+    registerInfo= @{
+                    @"access_token":[dict valueForKey:@"access_token"],
+                    @"receiver_id":GetUserId
+                    };
+    McomLOG(@"%@",registerInfo);
+    [API GetConversationIDWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         [Appdelegate stopLoader:nil];
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
+             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+         }
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"sign_up responce Data%@", responseDict);
+             
+             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+             chatViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"chatViewController"];
+             homeObj.reciverID_string =[NSString stringWithFormat:@"%@",GetUserId] ;
+             homeObj.ConversationID_string = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"]valueForKey:@"conversation_id"]];
+             
+             homeObj.ReciverName_string = [NSString stringWithFormat:@"%@",ownerUserName];
+             
+             [self.navigationController pushViewController:homeObj animated:YES];
+             
+             
+             
+         }
+     }];
+}
+
+
+
 
 //-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 //{
@@ -148,7 +271,7 @@
     homeObj.AdminChargesString = [[DashBoardArray valueForKey:@"admin_charges"]objectAtIndex:indexPath.row];
     homeObj.PaypalIdString = [[DashBoardArray valueForKey:@"paypal_id"]objectAtIndex:indexPath.row];
     
-    homeObj.startDateStrig = [[DashBoardArray valueForKey:@"start_date"]objectAtIndex:indexPath.row];
+    homeObj.startDateStrig = [[DashBoardArray valueForKey:@"booking_dates_count"]objectAtIndex:indexPath.row];
     
     homeObj.EndDateStrings = [[DashBoardArray valueForKey:@"end_date"]objectAtIndex:indexPath.row];
     
@@ -177,25 +300,24 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
+
+             if ([[responseDict valueForKey:@"message"]isEqualToString:@"Access token incorrect."])
+             {
+                 [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+                 UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+                 [self.view.window setRootViewController:popUpController];
+                 
+             }
+             else
+             {
+                noDashBoardLabel.hidden = NO;
+             }
              
-               noDashBoardLabel.hidden = NO;
-             
-//             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
-//             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-//                                            message:errormessage
-//                                    leftActionTitle:@"OK"
-//                                   rightActionTitle:@""
-//                                     animationStyle:AlertViewAnimationRightToCenterSpring
-//                                       selectAction:^(AlertViewActionType actionType) {
-//                                           NSLog(@"%zd", actionType);
-//                                       }];
          }
          else if ([responseDict[@"result"]boolValue]==1)
          {
              NSLog(@"sign_up%@", responseDict);
              DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
-             
-             
              [dashBoardTableVIew reloadData];
              
              NSLog(@"Dashboard list Data%@",DashBoardArray);
@@ -204,6 +326,48 @@
 }
 
 
+
+
+
+-(void)MycallDashBoardAPI
+{
+    
+    NSDictionary* registerInfo = @{
+                                   @"access_token":[dict valueForKey:@"access_token"],
+                                   };
+    
+   
+    [API paymentListingWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         [Appdelegate stopLoader:nil];
+       //  NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             
+             if ([[responseDict valueForKey:@"message"]isEqualToString:@"Access token incorrect."])
+             {
+                 [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+                 UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+                 [self.view.window setRootViewController:popUpController];
+                 
+             }
+             else
+             {
+                 noDashBoardLabel.hidden = NO;
+             }
+             
+         }
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"sign_up%@", responseDict);
+             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
+             [dashBoardTableVIew reloadData];
+             
+             NSLog(@"Dashboard list Data%@",DashBoardArray);
+         }
+     }];
+}
 
 
 @end

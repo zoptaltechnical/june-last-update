@@ -83,7 +83,7 @@
     
     
     UILabel *description=(UILabel *)[cell.contentView viewWithTag:2002];
-    description.text= [NSString stringWithFormat:@"%@ %%",[[savedProductArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
+    description.text= [NSString stringWithFormat:@"%@",[[savedProductArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
     
     UIImageView *ImageMy = (UIImageView *)[cell.contentView viewWithTag:2003];
     
@@ -94,18 +94,10 @@
                 action:@selector(BookNowBtnPressed:)
                 forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *SaveBtn =(UIButton *)[cell.contentView viewWithTag:2005];
-    [SaveBtn addTarget:self
-             action:@selector(SavevBtnPressed:)
+    UIButton *FavriteBtn =(UIButton *)[cell.contentView viewWithTag:2005];
+    [FavriteBtn addTarget:self
+             action:@selector(favouriteBtnPressed:)
              forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    UIButton *MessageBtn =(UIButton *)[cell.contentView viewWithTag:2006];
-    [MessageBtn addTarget:self
-                action:@selector(MessageBtnPressed:)
-      forControlEvents:UIControlEventTouchUpInside];
-    
-    
     
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -156,7 +148,7 @@
 
 
 
--(void)SavevBtnPressed:(id)sender
+-(void)favouriteBtnPressed:(id)sender
 {
     
     CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:savedProductTableView];
@@ -167,25 +159,6 @@
     
     
      [self callSaveProductAPI];
-    
-    
-}
-
-
-
--(void)MessageBtnPressed:(id)sender
-{
-    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:savedProductTableView];
-    NSIndexPath *indexPath = [savedProductTableView indexPathForRowAtPoint:buttonPosition];
-    McomLOG(@"like-indexPath--%ld",(long)indexPath.row);
-    NSString *reciverString = [NSString stringWithFormat:@"%@",[[savedProductArray valueForKey:@"id"]objectAtIndex:indexPath.row]];
-    
-    GetUserId = [NSString stringWithFormat:@"%@",[[savedProductArray valueForKey:@"user_id"]objectAtIndex:indexPath.row]];
-
-    ownerNameString = [NSString stringWithFormat:@"%@",[[savedProductArray valueForKey:@"first_name"]objectAtIndex:indexPath.row]];
-    NSLog(@" reciverString = %@",reciverString);
-    
-    [self callGetConversationIDAPI];
     
     
 }
@@ -211,7 +184,9 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+             [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+             UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+             [self.view.window setRootViewController:popUpController];
          }
          
          else if ([responseDict[@"result"]boolValue]==1)
@@ -265,7 +240,10 @@
              NSLog(@"save product = %@",responseDict);
              
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [self callSavedProductAPI];
+             
+             
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

@@ -12,8 +12,7 @@
 
 {
     NSDictionary *dict;
-    
-     NSString *myText, *CardString ,*saveCardString;
+    NSString *myText, *CardString ,*saveCardString;
      UIPickerView *UiPickerView,*UIpickerMonth;
      NSMutableArray *MonthArray,*YearArray,*ATMCard;
 }
@@ -34,9 +33,53 @@
     
     MonthArray=[[NSMutableArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
     
-    YearArray=[[NSMutableArray alloc]initWithObjects:@"2017",@"2018",@"2019",@"2020",@"2021",@"2022",@"2022",@"2023",@"2024",@"2025",@"2026",@"2027",@"2028",@"2029",@"2030",@"2031",@"2032",@"2033",@"2034",@"2035",@"2036",@"2037",@"2038",@"2039",@"2040",@"2041",@"2042",@"2043",@"2044",@"2045",@"2046",@"2047",@"2048",@"2049",@"2050",nil];
+    YearArray=[[NSMutableArray alloc]initWithObjects:@"2017",@"2018",@"2019",@"2020",@"2021",@"2022",@"2023",@"2024",@"2025",@"2026",@"2027",@"2028",@"2029",@"2030",@"2031",@"2032",@"2033",@"2034",@"2035",@"2036",@"2037",@"2038",@"2039",@"2040",@"2041",@"2042",@"2043",@"2044",@"2045",@"2046",@"2047",@"2048",@"2049",@"2050",nil];
+    
+    expMnth.borderStyle = UITextBorderStyleLine;
+    expMnth.layer.borderWidth = 1;
+    expMnth.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    expMnth.layer.cornerRadius = 15.0;
     
     
+    expYrTxtFld.borderStyle = UITextBorderStyleLine;
+    expYrTxtFld.layer.borderWidth = 1;
+    expYrTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    expYrTxtFld.layer.cornerRadius = 15.0;
+    
+    payBtn.layer.cornerRadius = 23.0;
+    payBtn.clipsToBounds = YES;
+    
+    firstName.borderStyle = UITextBorderStyleLine;
+    firstName.layer.borderWidth = 1;
+    firstName.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    firstName.layer.cornerRadius = 15.0;
+    
+    lastName.borderStyle = UITextBorderStyleLine;
+    lastName.layer.borderWidth = 1;
+    lastName.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    lastName.layer.cornerRadius = 15.0;
+    
+    
+    accountNumberTxtFld.borderStyle = UITextBorderStyleLine;
+    accountNumberTxtFld.layer.borderWidth = 1;
+    accountNumberTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    accountNumberTxtFld.layer.cornerRadius = 15.0;
+    
+    
+    cardTypeBtn.layer.cornerRadius = 15;
+    cardTypeBtn.clipsToBounds = YES;
+    
+    
+    cvvNumberTxtFld.borderStyle = UITextBorderStyleLine;
+    cvvNumberTxtFld.layer.borderWidth = 1;
+    cvvNumberTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    cvvNumberTxtFld.layer.cornerRadius = 15.0;
+    
+    
+    startDate.borderStyle = UITextBorderStyleLine;
+    startDate.layer.borderWidth = 1;
+    startDate.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    startDate.layer.cornerRadius = 15.0;
     
     UIpickerMonth = [[ UIPickerView alloc] initWithFrame:CGRectMake(0.0f, 386.0f, 250.0f, 100.0f)];
     UIpickerMonth.delegate = self;
@@ -45,7 +88,6 @@
     UIToolbar *comptoolbar1=[[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
     UIBarButtonItem *flex1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *genderdoneButton1=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(hidePickerMonth)];
-    
     
     [comptoolbar1 setItems:[NSArray arrayWithObjects:genderdoneButton1, nil]];
     comptoolbar1.items = @[flex1, genderdoneButton1];
@@ -83,13 +125,11 @@
 
 - (IBAction)saveCardBtnAction:(id)sender {
     
-    
-    
     if ([saveCard.currentImage isEqual:[UIImage imageNamed:@"dialog_ok-disabled"]])
     {
         saveCardString = @"1";
       
-        [saveCard setImage:[UIImage imageNamed:@"dialog_ok"] forState:UIControlStateNormal];
+        [saveCard setImage:[UIImage imageNamed:@"myCheck"] forState:UIControlStateNormal];
     }
     else
     {
@@ -97,12 +137,7 @@
    
         [saveCard setImage:[UIImage imageNamed:@"dialog_ok-disabled"] forState:UIControlStateNormal];
     }
-    
-    
 }
-
-
-
 
 -(void)hidejob
 {
@@ -111,35 +146,26 @@
 }
 
 - (IBAction)backAction:(id)sender {
-    
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 - (IBAction)payBtnAction:(id)sender {
     
-    
-    // access_token, product_id, start_date, end_date, payment_by = new_card, save_cc_id, cc_fname, cc_lname, cc_number, card_type, exp_month, exp_year, cvv, save_credit_card
-    
     [self validations];
-    
-    
-    
 }
 
-
-
-
-
 - (IBAction)cardTypeBtnActn:(id)sender {
-    
-    
+
+    [firstName resignFirstResponder];
+    [lastName resignFirstResponder];
+    [accountNumberTxtFld resignFirstResponder];
+    [expMnth resignFirstResponder];
+    [expYrTxtFld resignFirstResponder];
+    [cvvNumberTxtFld resignFirstResponder];
     
     NSMutableArray*array=[[NSMutableArray alloc]init];
     [array addObjectsFromArray:ATMCard ];
-    
-    //  [IdsArray addObjectsFromArray:categoriesIdArray ];
     
     [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
     [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex)
@@ -165,7 +191,7 @@
     {
         
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your First Name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -179,7 +205,7 @@
     
     else if ([[lastName.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Last name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -194,7 +220,7 @@
     
     else if ([[accountNumberTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Account Number"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -209,7 +235,7 @@
     else if ([[cvvNumberTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Your Cvv Number"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -217,18 +243,14 @@
                                   selectAction:^(AlertViewActionType actionType) {
                                       NSLog(@"%zd", actionType);
                                   }];
-        
-        
         [cvvNumberTxtFld resignFirstResponder];
         
         
     }
     
-    
-    
     else if ([[expMnth.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter exp. month"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -243,7 +265,7 @@
     
     else if ([[expYrTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter exp. Year"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -257,7 +279,7 @@
     }
     else if (CardString==nil)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your card type"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -271,10 +293,6 @@
         
         
     }
-
-    
-    
-    
     
     else
     {
@@ -286,12 +304,9 @@
 {
   
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
-    
-    
     NSLog(@"%@",_startDateString);
-    
     NSDictionary* registerInfo;
-    
+
     if (([saveCardString isEqualToString:@"1"]))
     {
         saveCardString = @"1";
@@ -331,9 +346,7 @@
              
              [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
              
-             UIStoryboard *sb = [self storyboard];
-             UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"lenderHomePageViewController"];
-             Appdelegate.window.rootViewController = vc;
+             
              
          }
          else if ([responseDict[@"response"]boolValue]==1)
@@ -341,20 +354,21 @@
              
              [Utility showAlertWithTitleText:@"Product Booked Succesfully!" messageText:nil delegate:nil];
              
+             
+             
              UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
              LenderTabBarViewController* tabBarController = (LenderTabBarViewController*)[storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
              
              [self.navigationController pushViewController:tabBarController animated:YES];
              
+//UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+  //           LenderTabBarViewController* tabBarController = (LenderTabBarViewController*)[storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
+             
+    //         [self.navigationController pushViewController:tabBarController animated:YES];
+             
          }
      }];
-
-    
-    
 }
-
-
-
 
 #pragma mark UIpicker view Delegate
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -418,14 +432,24 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
    
-        if ([accountNumberTxtFld.text length]<17)
-        {
+    if(textField == accountNumberTxtFld){
+        if (textField.text.length < 17 || string.length == 0){
             return YES;
         }
-   
+        else{
+            return NO;
+        }
+    }
+    
+    if(textField == cvvNumberTxtFld){
+        if (textField.text.length < 3 || string.length == 0){
+            return YES;
+        }
+        else{
+            return NO;
+        }
+    }
         return NO;
 
 }
-
-
 @end

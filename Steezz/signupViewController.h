@@ -12,6 +12,11 @@
 @interface signupViewController : UIViewController
 
 {
+    IBOutlet UIView *termOfServicePopView;
+    
+    IBOutlet UIButton *termsOkButton;
+    
+    IBOutlet UIWebView *myTermsWebView;
     
     IBOutlet UIButton *signUpBackBtn;
     
@@ -19,9 +24,17 @@
     
     IBOutlet UITextField *lastnameTxtFld;
     
+    IBOutlet UITextField *cityTxtFlr;
 
+    IBOutlet UITextField *statetxtFld;
     
     IBOutlet UITextField *emailTxtFld;
+    
+    IBOutlet UITextField *zipcodeTxtFld;
+    
+    
+    
+    
     
  
     IBOutlet UIButton *termsOfServicesBtn;

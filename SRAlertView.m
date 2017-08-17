@@ -45,7 +45,7 @@ blue:((float)(RGBValue & 0xFF))/255.0 alpha:1.0]
 #pragma mark - Use Frame
 
 #define kAlertViewW             275.0f
-#define kAlertViewTitleH        20.0f
+#define kAlertViewTitleH        0.0f
 #define kAlertViewBtnH          50.0f
 #define kAlertViewMessageMinH   75.0f
 
@@ -231,12 +231,12 @@ blue:((float)(RGBValue & 0xFF))/255.0 alpha:1.0]
         }
         [_messageLabel sizeToFit];
         CGFloat messageLabH = expectSize.height < kAlertViewMessageMinH ? kAlertViewMessageMinH : expectSize.height;
-        _messageLabel.frame = CGRectMake(messageLabelSpacing, CGRectGetMaxY(_titleLabel.frame) + verticalMargin,
+        _messageLabel.frame = CGRectMake(messageLabelSpacing, CGRectGetMaxY(_titleLabel.frame) -10,
                                          kAlertViewW - messageLabelSpacing * 2, messageLabH);
         _messageLabel;
     })];
     
-    _alertView.frame  = CGRectMake(0, 0, kAlertViewW, CGRectGetMaxY(_messageLabel.frame) + kAlertViewBtnH + verticalMargin);
+    _alertView.frame  = CGRectMake(0, 0, kAlertViewW, CGRectGetMaxY(_messageLabel.frame) + kAlertViewBtnH -10);
     _alertView.center = self.center;
     
     CGFloat btnY = _alertView.frame.size.height - kAlertViewBtnH;

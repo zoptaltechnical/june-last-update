@@ -26,12 +26,6 @@
     
    
     aboutTxtView.placeholderColor = [UIColor lightGrayColor];
-    
-    usernametxtFld.borderStyle = UITextBorderStyleLine;
-    usernametxtFld.layer.borderWidth = 1;
-    usernametxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    usernametxtFld.layer.cornerRadius = 15.0;
-    
     nameTextFld.borderStyle = UITextBorderStyleLine;
     nameTextFld.layer.borderWidth = 1;
     nameTextFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
@@ -58,16 +52,22 @@
     emailTxtFld.layer.cornerRadius = 15.0;
     
    
-    locationtextFld.layer.borderWidth = 1;
-    locationtextFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    locationtextFld.layer.cornerRadius = 15.0;
+    cityTextField.layer.borderWidth = 1;
+    cityTextField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    cityTextField.layer.cornerRadius = 15.0;
+    
+    stateTextField.layer.borderWidth = 1;
+    stateTextField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    stateTextField.layer.cornerRadius = 15.0;
+    
+    zipcodeTextField.layer.borderWidth = 1;
+    zipcodeTextField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    zipcodeTextField.layer.cornerRadius = 15.0;
+    
     
     payPalIDTxtFld.layer.borderWidth = 1;
     payPalIDTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     payPalIDTxtFld.layer.cornerRadius = 15.0;
-    
-    
-    
     
     aboutTxtView.layer.borderWidth = 1;
     aboutTxtView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
@@ -76,25 +76,64 @@
     userProfilePic.layer.cornerRadius=userProfilePic.frame.size.width/2;
     userProfilePic.clipsToBounds= YES;
     
-    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:usernametxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:nameTextFld ,nil]];
-    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:locationtextFld ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:cityTextField ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:lastNameTextField ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:emailTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:phoneNumbertxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:addressTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:payPalIDTxtFld ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:zipcodeTextField ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:stateTextField ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:cityTextField ,nil]];
+
+    
+    
     editBtn.hidden = YES;
     
     
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
-    [tapRecognizer addTarget:self action:@selector(bigButtonTapped:)];
-    [userProfilePic addGestureRecognizer:tapRecognizer];
+    // Code commented to avoid the zoom effect of profile pic.
     
-    userProfilePic.userInteractionEnabled=YES;
-        [self callMyProfileAPI];
+    
+//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
+//    [tapRecognizer addTarget:self action:@selector(bigButtonTapped:)];
+//    [userProfilePic addGestureRecognizer:tapRecognizer];
+//    
+//    userProfilePic.userInteractionEnabled=YES;
+    
 }
 
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+    if ([[Utility valueForKey:backArrow] isEqualToString:@"2"])
+    {
+        myProfileBackBtn.hidden = NO;
+        
+        
+    }
+    
+    else{
+        
+        myProfileBackBtn.hidden = YES;
+        
+    }
+    
+    
+    if ([base64EncodedP length]>0)
+    {
+        
+    }
+    
+    else
+    {
+       [self callMyProfileAPI];
+    }
+    
+    
+}
 
 - (void)bigButtonTapped:(UITapGestureRecognizer*)sender
 {
@@ -124,13 +163,18 @@
     
     
     cameraBtn.hidden = NO;
+    [nameTextFld becomeFirstResponder];
+    
+    
     nameTextFld.userInteractionEnabled = YES;
     lastNameTextField.userInteractionEnabled = YES;
     emailTxtFld.userInteractionEnabled = YES;
-    usernametxtFld.userInteractionEnabled = YES;
     phoneNumbertxtFld.userInteractionEnabled = YES;
     addressTxtFld.userInteractionEnabled = YES;
-    locationtextFld.userInteractionEnabled = YES;
+    cityTextField.userInteractionEnabled = YES;
+    stateTextField.userInteractionEnabled = YES;
+    zipcodeTextField.userInteractionEnabled = YES;
+
     aboutTxtView.userInteractionEnabled = YES;
     payPalIDTxtFld.userInteractionEnabled = YES;
     editBtn.hidden = NO;
@@ -142,6 +186,7 @@
 
 - (IBAction)myProfileBackBtnPressed:(id)sender {
     
+    [Utility setValue:@"1" forKey:backArrow];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -152,28 +197,17 @@
     [self ActionSheetImage];
 }
 
-
-
-
 - (IBAction)editBtnPressed:(id)sender
 {
-    
-    
-    
     [self updateProfileValidation];
-    
    
-    
 }
-
 
 -(void)updateProfileValidation
 {
-    
     if ([[nameTextFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your First name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -182,16 +216,17 @@
                                       NSLog(@"%zd", actionType);
                                   }];
         
-        
         [nameTextFld resignFirstResponder];
         [lastNameTextField resignFirstResponder];
         [phoneNumbertxtFld resignFirstResponder];
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
+
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
         
         
@@ -201,7 +236,7 @@
     {
         
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Last Name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -217,14 +252,15 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
     }
     
     else if ([[emailTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Password"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -240,40 +276,41 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
     }
     
     
-    else if ([[usernametxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
-    {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your Email"
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationDownToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        
-        [nameTextFld resignFirstResponder];
-        [lastNameTextField resignFirstResponder];
-        [phoneNumbertxtFld resignFirstResponder];
-        [aboutTxtView resignFirstResponder];
-        [addressTxtFld resignFirstResponder];
-        [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
-        [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
-    }
+//    else if ([[usernametxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+//    {
+//        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+//                                       message:@"Please enter your Email"
+//                               leftActionTitle:@"OK"
+//                              rightActionTitle:@""
+//                                animationStyle:AlertViewAnimationDownToCenterSpring
+//                                  selectAction:^(AlertViewActionType actionType) {
+//                                      NSLog(@"%zd", actionType);
+//                                  }];
+//        
+//        
+//        [nameTextFld resignFirstResponder];
+//        [lastNameTextField resignFirstResponder];
+//        [phoneNumbertxtFld resignFirstResponder];
+//        [aboutTxtView resignFirstResponder];
+//        [addressTxtFld resignFirstResponder];
+//        [emailTxtFld resignFirstResponder];
+//        [locationtextFld resignFirstResponder];
+//        [payPalIDTxtFld resignFirstResponder];
+//        [usernametxtFld resignFirstResponder];
+//    }
     
     else if ([[phoneNumbertxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your Address"
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your phone Number"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationDownToCenterSpring
@@ -288,17 +325,19 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
     }
     
     
     
     else if ([[addressTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your area"
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your address"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationDownToCenterSpring
@@ -313,16 +352,17 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
     }
     
-    else if ([[locationtextFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    else if ([[cityTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please Fill About User Field"
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your city"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationDownToCenterSpring
@@ -337,17 +377,19 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
     }
     
     
     
-    else if ([[aboutTxtView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    else if ([[stateTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your Phone Number"
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your state"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationDownToCenterSpring
@@ -362,16 +404,98 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
     }
+    
+    
+    
+    
+    else if ([[zipcodeTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your Zip code"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+    }
+    
+    
+    else if ([[payPalIDTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    {
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"You cannot Update your Profile without adding Paypal ID!"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        
+        [nameTextFld resignFirstResponder];
+        [lastNameTextField resignFirstResponder];
+        [phoneNumbertxtFld resignFirstResponder];
+        [aboutTxtView resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
+        [payPalIDTxtFld resignFirstResponder];
+    }
+
+
+            
+        else if ( ![Utility NSStringIsValidEmail:payPalIDTxtFld.text])
+            {
+              
+                [SRAlertView sr_showAlertViewWithTitle:@""
+                                               message:@"Please enter your Valid Paypal ID."
+                                       leftActionTitle:@"OK"
+                                      rightActionTitle:@""
+                                        animationStyle:AlertViewAnimationRightToCenterSpring
+                                          selectAction:^(AlertViewActionType actionType) {
+                                              NSLog(@"%zd", actionType);
+                                          }];
+                
+                [nameTextFld resignFirstResponder];
+                [lastNameTextField resignFirstResponder];
+                [phoneNumbertxtFld resignFirstResponder];
+                [aboutTxtView resignFirstResponder];
+                [addressTxtFld resignFirstResponder];
+                [emailTxtFld resignFirstResponder];
+                [cityTextField resignFirstResponder];
+                [stateTextField resignFirstResponder];
+                [zipcodeTextField resignFirstResponder];
+                [payPalIDTxtFld resignFirstResponder];
+            }
+    
+    
     
 
     else if (![Utility NSStringIsValidEmail:emailTxtFld.text])
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Valid Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -387,35 +511,10 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
-        
-    }
-    
-    
-    else if (![Utility NSStringIsValidEmail:payPalIDTxtFld.text])
-    {
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter Valid Paypal ID."
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationRightToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        
-        [nameTextFld resignFirstResponder];
-        [lastNameTextField resignFirstResponder];
-        [phoneNumbertxtFld resignFirstResponder];
-        [aboutTxtView resignFirstResponder];
-        [addressTxtFld resignFirstResponder];
-        [emailTxtFld resignFirstResponder];
-        [locationtextFld resignFirstResponder];
-        [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder];
         
     }
     
@@ -424,7 +523,7 @@
     {
         
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Paypal ID"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -441,9 +540,11 @@
         [aboutTxtView resignFirstResponder];
         [addressTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
-         [locationtextFld resignFirstResponder];
+        [cityTextField resignFirstResponder];
+        [stateTextField resignFirstResponder];
+        [zipcodeTextField resignFirstResponder];
         [payPalIDTxtFld resignFirstResponder];
-        [usernametxtFld resignFirstResponder]; }
+    }
     
     
     
@@ -458,12 +559,9 @@
 {
     
     UIActionSheet *popup;
-    
     popup = [[UIActionSheet alloc] initWithTitle:@"Choose Photo:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Camera",
              @"Photos Album",
              nil];
-    
-    
     [popup showInView:self.view];
 }
 
@@ -473,10 +571,8 @@
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     
-    picker.navigationBar.barStyle = UIBarStyleBlack; // Or whatever style.
-    // or
+    picker.navigationBar.barStyle = UIBarStyleBlack;
     picker.navigationBar.tintColor = [UIColor redColor];
-    
     picker.delegate  = self;
     picker.allowsEditing = YES;
     switch (buttonIndex) {
@@ -575,7 +671,11 @@
                  
                  lastNameTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"last_name"]];
                  
-                  locationtextFld.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"location"]];
+                  cityTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"city"]];
+                 
+                 stateTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"state"]];
+                 
+                 zipcodeTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"zip_code"]];
                  
                  emailTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"email"]];
                  
@@ -585,7 +685,9 @@
                  
                  addressTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"address"]];
                  
-                 usernametxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"username"]];
+                 
+                  payPalIDTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"paypal_id"]];
+               
                  
                  [userProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile_icon"] options:SDWebImageRefreshCached];
              }
@@ -600,23 +702,32 @@
     [Appdelegate startLoader:nil withTitle:@"Loding..."];
     NSDictionary* MyProfileInfo;
     
+    
+    if ([aboutTxtView.text length]==0) {
+        aboutTxtView.text = @"";
+    }
+        
     if ([base64EncodedP length]==0)
     {
         base64EncodedP=@"";
     }
+    
+   
+    
     MyProfileInfo = @{
                       @"access_token":[dict valueForKey:@"access_token"],
                       @"email":emailTxtFld.text,
                       @"first_name":nameTextFld.text,
                       @"profile_pic":base64EncodedP,
                       @"last_name":lastNameTextField.text,
-                      @"location":locationtextFld.text,
+                      @"city":cityTextField.text,
+                      @"state":stateTextField.text,
+                      @"zip_code":zipcodeTextField.text,
                       @"address":addressTxtFld.text,
                       @"device_type":@"Iphone",
                       @"device_token":@"12345678",
                       @"about_user":aboutTxtView.text,
                       @"phone":phoneNumbertxtFld.text,
-                      @"username":usernametxtFld.text,
                       @"paypal_id":payPalIDTxtFld.text
                       };
     
@@ -636,13 +747,21 @@
          
          else if ([responseDict[@"result"]boolValue]==1)
          {
+             
+             
+             
              [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
              
              nameTextFld.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"first_name"]];
              
              lastNameTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"last_name"]];
              
-             locationtextFld.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"location"]];
+             stateTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"state"]];
+             
+             cityTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"city"]];
+             
+             
+             zipcodeTextField.text = [NSString stringWithFormat:@"%@", [[responseDict valueForKey:@"data"] valueForKey:@"zip_code"]];
              
              emailTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"email"]];
              
@@ -651,8 +770,8 @@
              aboutTxtView.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"about_user"]];
              
              addressTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"address"]];
-             
-             usernametxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"username"]];
+            
+             payPalIDTxtFld.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"paypal_id"]];
              
              [userProfilePic sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile_icon"] options:SDWebImageRefreshCached];
           
@@ -661,14 +780,14 @@
              nameTextFld.userInteractionEnabled = NO;
              lastNameTextField.userInteractionEnabled = NO;
              emailTxtFld.userInteractionEnabled = NO;
-             usernametxtFld.userInteractionEnabled = NO;
              phoneNumbertxtFld.userInteractionEnabled = NO;
              addressTxtFld.userInteractionEnabled = NO;
-             locationtextFld.userInteractionEnabled = NO;
+             cityTextField.userInteractionEnabled = NO;
+              stateTextField.userInteractionEnabled = NO;
+              zipcodeTextField.userInteractionEnabled = NO;
              aboutTxtView.userInteractionEnabled = NO;
              payPalIDTxtFld.userInteractionEnabled = NO;
-             editBtn.hidden = NO;
-             [self.navigationController popViewControllerAnimated:YES];
+             editBtn.hidden = YES;
          }
      }];
 }

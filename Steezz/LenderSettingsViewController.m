@@ -34,14 +34,12 @@
     lenderProfilePic.clipsToBounds= YES;    
     lenderProfilePic.layer.borderColor=[UIColor whiteColor].CGColor;
     
-     menu_label=[[NSMutableArray alloc]initWithObjects:@"MY PROFILE",@"FEEDBACK FORUM",@"NOTIFICATION CENTER",@"SUPPORT",@"ABOUT US",@"CHANGE PASSWORD",@"PAYMENTS",@"DISCLAIMER",@"HISTORY",@"SWITCH TO HOST",nil];
+     menu_label=[[NSMutableArray alloc]initWithObjects:@"MY PROFILE",@"FEEDBACK",@"SUPPORT",@"CHANGE PASSWORD",@"PAYMENTS",@"TERMS OF SERVICE",@"HISTORY",@"SWITCH TO ENTHUSIAST",nil];
     
     Array_of_images = [[NSMutableArray alloc] initWithObjects:
                        [UIImage imageNamed:@"profile_icon"],
                        [UIImage imageNamed:@"feedback-forum"],
-                       [UIImage imageNamed:@"notification-center"],
                        [UIImage imageNamed:@"support"],
-                       [UIImage imageNamed:@"about-us"],
                        [UIImage imageNamed:@"Change-Password"],
                        [UIImage imageNamed:@"payments"],
                        [UIImage imageNamed:@"Disclaimer"],
@@ -117,6 +115,8 @@
     if (indexPath.row == 0)
     {
         
+          [Utility setValue:@"2" forKey:backArrow];
+        
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         LenderProfileViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProfileViewController"];
@@ -133,16 +133,8 @@
 
     
     }
+  
     else if (indexPath.row == 2)
-    {
-       
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        NotificationCenterViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"NotificationCenterViewController"];
-        [self.navigationController pushViewController:homeObj animated:YES];
-      
-        
-    }
-    else if (indexPath.row == 3)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
@@ -152,16 +144,8 @@
             }
     
     
-    else if (indexPath.row == 4)
-    {
-        
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        AboutUsViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"AboutUsViewController"];
-        [self.navigationController pushViewController:homeObj animated:YES];
-
-          }
-    else if (indexPath.row == 5)
+ 
+    else if (indexPath.row == 3)
     {
         
         
@@ -171,7 +155,7 @@
 
        
     }
-    else if (indexPath.row == 6)
+    else if (indexPath.row ==4)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
@@ -182,7 +166,7 @@
     }
     
     
-    else if (indexPath.row == 7)
+    else if (indexPath.row == 5)
     {
         
         
@@ -193,7 +177,7 @@
     }
     
     
-    else if (indexPath.row == 8)
+    else if (indexPath.row == 6)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
@@ -202,8 +186,7 @@
         
     }
     
-    
-    else if (indexPath.row == 9)
+    else if (indexPath.row == 7)
     {
         [self callSwitchToLendeeAPI ];
        
@@ -242,12 +225,14 @@
          {
             NSLog(@"save product = %@",responseDict);
              
+             
+            [[NSUserDefaults standardUserDefaults] setObject:[responseDict objectForKey:@"data"]forKey:@"loginData"];
+             
              UIViewController *popUpController = ViewControllerIdentifier(@"LendeeNavigateID");
              [self.view.window setRootViewController:popUpController];
              NSLog(@"done");
-             
 //             
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:@"You are now an enthusiast."
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

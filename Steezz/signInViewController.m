@@ -187,8 +187,8 @@
 {
     if ([[signInEmailTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your Username or Email"
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationTopToCenterSpring
@@ -203,7 +203,7 @@
     else if ([[signInPasswrdTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Password"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -252,7 +252,7 @@
              [signInPasswrdTxtFld resignFirstResponder];
              [signInEmailTxtFld resignFirstResponder];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -264,7 +264,12 @@
          }
          else if ([responseDict[@"result"]boolValue]==1)
          {
+             [signInEmailTxtFld resignFirstResponder];
+             [signInPasswrdTxtFld resignFirstResponder];
+             
              NSLog(@"sign_up%@", responseDict);
+             
+             
              
                [[NSUserDefaults standardUserDefaults] setValue:@"Yes" forKey:@"logedIn"];
              
@@ -337,7 +342,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

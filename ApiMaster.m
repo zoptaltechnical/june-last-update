@@ -112,8 +112,7 @@ static ApiMaster* singleton = nil;
           completionHandler:(APICompletionHandler)handler
 {
     
-     NSString* infoStr = [NSString stringWithFormat:@"first_name=%@&last_name=%@&email=%@&phone=%@&address=%@&password=%@&device_token=%@&device_type=%@&cpassword=%@&location=%@",userInfo [@"first_name"],userInfo[@"last_name"],userInfo [@"email"],userInfo[@"phone"],userInfo [@"address"],userInfo[@"password"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"cpassword"],userInfo[@"location"]];
-    
+     NSString* infoStr = [NSString stringWithFormat:@"first_name=%@&last_name=%@&email=%@&phone=%@&address=%@&password=%@&device_token=%@&device_type=%@&cpassword=%@&city=%@&state=%@&zip_code=%@",userInfo [@"first_name"],userInfo[@"last_name"],userInfo [@"email"],userInfo[@"phone"],userInfo [@"address"],userInfo[@"password"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"cpassword"],userInfo[@"city"],userInfo[@"state"],userInfo[@"zip_code"]];
     
     McomLOG(@"infostr :%@",infoStr);
     
@@ -214,8 +213,12 @@ static ApiMaster* singleton = nil;
 -(void)UpdateProfileWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&device_token=%@&device_type=%@&first_name=%@&last_name=%@&email=%@&phone=%@&location=%@&address=%@&about_user=%@&username=%@&profile_pic=%@&paypal_id=%@",userInfo[@"access_token"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"first_name"],userInfo[@"last_name"],userInfo[@"email"],userInfo[@"phone"],userInfo[@"location"],userInfo[@"address"],userInfo[@"about_user"],userInfo[@"username"],userInfo[@"profile_pic"],userInfo[@"paypal_id"]];
+    
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&device_token=%@&device_type=%@&first_name=%@&last_name=%@&email=%@&phone=%@&city=%@&address=%@&about_user=%@&profile_pic=%@&paypal_id=%@&zip_code=%@&state=%@",userInfo[@"access_token"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"first_name"],userInfo[@"last_name"],userInfo[@"email"],userInfo[@"phone"],userInfo[@"city"],userInfo[@"address"],userInfo[@"about_user"],userInfo[@"profile_pic"],userInfo[@"paypal_id"],userInfo[@"zip_code"],userInfo[@"state"]];
     NSLog(@"%@",infoStr);
+    
+    
+    NSLog(@"infoStr  =  %@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@update_profile",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [request setHTTPBody:[infoStr dataUsingEncoding:NSUTF8StringEncoding]];
@@ -460,6 +463,22 @@ static ApiMaster* singleton = nil;
 
 
 
+-(void)DeleteCardWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
+{
+   
+    NSString* infoStr = [NSString stringWithFormat:@"card_id=%@&access_token=%@",userInfo[@"card_id"],userInfo[@"access_token"]];
+    NSLog(@"%@",infoStr);
+    NSString *url=[[NSString stringWithFormat:@"%@remove_credit_card",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setHTTPBody:[infoStr dataUsingEncoding:NSUTF8StringEncoding]];
+    NSLog(@"Request At support lender %@",request);
+    [request setTimeoutInterval:540];
+    [self forwardRequest1:request showActivity:YES completionHandler:handler];
+    
+    
+}
+
+
 -(void)LenderSearchProductWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
    
@@ -506,6 +525,28 @@ static ApiMaster* singleton = nil;
     [self forwardRequest1:request showActivity:YES completionHandler:handler];
     
 }
+
+-(void)FreeBookingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
+{
+    
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&booking_dates=%@&amount=%@" ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo[@"booking_dates"],userInfo [@"amount"]];
+    
+    McomLOG(@"infostr :%@",infoStr);
+    NSString *url=[[NSString stringWithFormat:@"%@free_booking",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"that is the url -->%@",url);
+    
+    NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] ];
+    [request setHTTPBody:[infoStr dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setTimeoutInterval:540];
+    
+    NSLog(@" request at sign up%@",request);
+    [self forwardRequest1:request showActivity:YES completionHandler:handler];
+    
+}
+
+
+
+
 
 
 -(void)StartReportWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
@@ -851,13 +892,7 @@ static ApiMaster* singleton = nil;
          if(connectionError != nil)
          {
              
-           //  [[[UIAlertView alloc] initWithTitle:@"Connection Error !" message:@"No Internet Connection" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-             
-             
-             UIAlertController *alertController = [UIAlertController  alertControllerWithTitle:@"Connection Error !"  message:@"No Internet Connection"  preferredStyle:UIAlertControllerStyleAlert];
-             [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-             }]];
-            
+            [[[UIAlertView alloc] initWithTitle:@"Connection Error !" message:@"No Internet Connection" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
              
             [Appdelegate stopLoader:nil];
              
@@ -883,11 +918,9 @@ static ApiMaster* singleton = nil;
      {
          if(connectionError != nil)
          {
-             UIAlertController *alertController = [UIAlertController  alertControllerWithTitle:@"Connection Error !"  message:@"No Internet Connection"  preferredStyle:UIAlertControllerStyleAlert];
-             [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-             }]];
+          
              
-            // [[[UIAlertView alloc] initWithTitle:@"Connection Error !" message:@"No Internet Connection" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+             [[[UIAlertView alloc] initWithTitle:@"Connection Error !" message:@"No Internet Connection" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
              return;
          }
          McomLOG(@"Response String %@", NSStringFromNSData(data));

@@ -118,7 +118,7 @@
 {
     if(self.dateSelected)
     {
-        self.dayLabel.backgroundColor = [UIColor blueColor];
+        self.dayLabel.backgroundColor = [UIColor colorWithRed:67.0/255.0 green:229.0/255.0 blue:214.0/255 alpha:1];
         self.dayLabel.layer.cornerRadius = (self.dayLabel.frame.size.width/2);
         self.dayLabel.font = dayCell_labelFontSelected;
         self.dayLabel.textColor = dayCell_labelTextColorSelected;

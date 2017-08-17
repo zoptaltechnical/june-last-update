@@ -92,7 +92,7 @@
     else
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Sorry you don't have book any"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -356,7 +356,7 @@
     
     if ([categoryString length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Category"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -368,7 +368,7 @@
     
     if ([endEmailString length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Hoster Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -382,7 +382,7 @@
     
     else if ([base64EncodedP length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Add report Image"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -394,7 +394,7 @@
     
     else if ([[discriptionView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Enter Report Description"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""

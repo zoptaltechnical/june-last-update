@@ -29,6 +29,8 @@
 {
     NSString *mystring;
     
+    NSString *myPayingAmount;
+    
     NSString *AvailableDatesString;
     
     NSMutableArray * detailDataArray;
@@ -45,6 +47,7 @@
     NSString *create_time;
     
     NSDecimalNumber *totalAmountToPay;
+    NSDecimalNumber *ZeroAmount;
     
     NSDictionary *dict;
     
@@ -85,12 +88,7 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     self.minimumDate =  [self.dateFormatter dateFromString:@"2017-07-01"];
-    
-  
-    
- 
-    
-    
+
    // self.view.backgroundColor = [UIColor whiteColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localeDidChange) name:NSCurrentLocaleDidChangeNotification object:nil];
@@ -100,7 +98,7 @@
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
     
-    [backGroundView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.81]];
+    [backGroundView setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.91]];
     popUpView.layer.cornerRadius = 8.0;
   
     
@@ -234,7 +232,7 @@
     if ([AvailableDatesString length]==0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Booking Dates!"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -275,7 +273,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -297,19 +295,24 @@
              
              backGroundView.hidden = NO;
              
-             amountToPay.text = [NSString stringWithFormat:@"$%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
-             
-             totalAmountToPay = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]]];
-             NSLog(@"%@",totalAmountToPay);
-             
-             numberofDay.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"num_of_days"]];
-             
-             perDayPrice.text = [NSString stringWithFormat:@"$ %@/Day",_PerDayAmount];
+           
          }
      }];
 }
 
 - (IBAction)creditBtnAction:(id)sender {
+    
+    NSLog(@"%@",myPayingAmount);
+    
+    if ([myPayingAmount isEqualToString:@"0"])
+    {
+        [self  FreeBookingAPI];
+
+        
+    }
+    
+    else
+    {
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     paymentFromViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"paymentFromViewController"];
@@ -319,13 +322,29 @@
     homeObj.BookProductId = _ProdctID;
     
     [self.navigationController pushViewController:homeObj animated:YES];
+        
+    }
   
 }
 
 
 - (IBAction)payPalBtnAction:(id)sender {
     
-    PayPalItem *item1 = [PayPalItem itemWithName:@"skateboard" withQuantity:1 withPrice:totalAmountToPay withCurrency:@"USD" withSku:@"SKU-Skateboard"];
+    NSLog(@"%@",totalAmountToPay);
+    
+    NSDecimalNumber *floatDecimal = [[NSDecimalNumber alloc] initWithFloat:0.0f];
+   
+    
+    if ([totalAmountToPay compare:floatDecimal]==0.0f)
+    {
+        [self  FreeBookingAPI];
+    }
+    
+    else
+    {
+    
+    
+    PayPalItem *item1 = [PayPalItem itemWithName:@"skateboard" withQuantity:1 withPrice:@"1000" withCurrency:@"USD" withSku:@"SKU-Skateboard"];
         
     PayPalItem *item2 = [PayPalItem itemWithName:@"Steezz Product" withQuantity:1 withPrice:[NSDecimalNumber decimalNumberWithString:@"00.00"] withCurrency:@"USD" withSku:@"SKU-Steezz-Product"];
     NSArray*items = @[item1,item2];
@@ -353,6 +372,8 @@
     PayPalPaymentViewController *payVC = [[PayPalPaymentViewController alloc]initWithPayment:payment configuration:self.PayPalPaymentConfig delegate:self];
         
     [self presentViewController:payVC animated:YES completion:nil];
+        
+    }
 }
 
 
@@ -429,7 +450,7 @@
              
               [self.navigationController popViewControllerAnimated:YES];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -450,7 +471,7 @@
              
              
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:@"Product booked successfully!"
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -502,16 +523,12 @@
                  if ([[responseDict[@"product"] valueForKey:@"unavailable_dates"] isKindOfClass:[NSString class]])
                  {
                      
-                     [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                                    message:@"Product is not Available"
-                                            leftActionTitle:@"OK"
-                                           rightActionTitle:@""
-                                             animationStyle:AlertViewAnimationZoom
-                                               selectAction:^(AlertViewActionType actionType) {
-                                                   NSLog(@"%zd", actionType);
-                                               }];
+                     NSCalendar* cal = [NSCalendar currentCalendar];
+                     FIMultipleSelectionCalendarView* view = [[FIMultipleSelectionCalendarView alloc]initWithFrame:CGRectMake(0, 0, myCalnderView.frame.size.width,myCalnderView.frame.size.height ) calendar:cal singleSelectionOnly:NO disableDates:nil];
+                     view.calViewDelegate = self;
+                     [myCalnderView addSubview:view];
                      
-                     [self.navigationController popViewControllerAnimated:YES];
+                    
                  }
                  
                  else if ([[responseDict[@"product"] valueForKey:@"unavailable_dates"] isKindOfClass:[NSArray class]])
@@ -524,30 +541,50 @@
                  disableDates = [[responseDict[@"product"] valueForKey:@"unavailable_dates"] valueForKey:@"unavailable_date"];
                      
                      
+                     
+                     
                      NSMutableArray*datesArray=[[NSMutableArray alloc]init];
                      [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
-                     for (int i=0; i<disableDates.count; i++)
+                     
+                     
+                     if ([[disableDates objectAtIndex:0] isEqualToString:@"0000-00-00"])
                      {
-                         NSDate*date=[self.dateFormatter dateFromString:[disableDates objectAtIndex:i]];
-                         NSString*date1=[self.formatter stringFromDate:date];
-                         
-                         [datesArray addObject:date1];
+                       
+                         NSCalendar* cal = [NSCalendar currentCalendar];
+                         FIMultipleSelectionCalendarView* view = [[FIMultipleSelectionCalendarView alloc]initWithFrame:CGRectMake(0, 0, myCalnderView.frame.size.width,myCalnderView.frame.size.height ) calendar:cal singleSelectionOnly:NO disableDates:nil];
+                         view.calViewDelegate = self;
+                         [myCalnderView addSubview:view];
+                        
                      }
                      
+                     else
+                     {
+                         for (int i=0; i<disableDates.count; i++)
+                         {
+                             NSDate*date=[self.dateFormatter dateFromString:[disableDates objectAtIndex:i]];
+                             NSString*date1=[self.formatter stringFromDate:date];
+                             
+                             [datesArray addObject:date1];
+                         }
+                         
+                         
+                         NSLog(@"datesArray = %@",datesArray);
+                         
+                         NSCalendar* cal = [NSCalendar currentCalendar];
+                         
+                         FIMultipleSelectionCalendarView* view = [[FIMultipleSelectionCalendarView alloc]initWithFrame:CGRectMake(0, 0, myCalnderView.frame.size.width,myCalnderView.frame.size.height ) calendar:cal singleSelectionOnly:NO disableDates:datesArray];
+                         view.calViewDelegate = self;
+                         [myCalnderView addSubview:view];
+                         
+                     }
                      
-                     NSLog(@"datesArray = %@",datesArray);
-                     
-                     NSCalendar* cal = [NSCalendar currentCalendar];
-                     
-                     FIMultipleSelectionCalendarView* view = [[FIMultipleSelectionCalendarView alloc]initWithFrame:CGRectMake(0, 0, myCalnderView.frame.size.width,myCalnderView.frame.size.height ) calendar:cal singleSelectionOnly:NO disableDates:datesArray];
-                     view.calViewDelegate = self;
-                     [myCalnderView addSubview:view];
+                  
                      
  
-                     if (detailDataArray.count ==0)
-                 {
-                     [self.navigationController popViewControllerAnimated:YES];
-                 }
+//                     if (detailDataArray.count ==0)
+//                 {
+//                     [self.navigationController popViewControllerAnimated:YES];
+//                 }
                  
                  }
              }
@@ -645,5 +682,71 @@
 {
     return YES;
 }
+
+
+
+
+
+-(void)FreeBookingAPI
+{
+    NSLog(@"%@",AvailableDatesString);
+    
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    NSDictionary* registerInfo = @{
+                                   @"access_token":[dict valueForKey:@"access_token"],
+                                   @"product_id":_ProdctID,
+                                   @"booking_dates":AvailableDatesString,
+                                   @"amount":@"0"
+                                   };
+    McomLOG(@"%@",registerInfo);
+    [API FreeBookingWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         
+         [Appdelegate stopLoader:nil];
+         
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"response"]boolValue]==0)
+         {
+             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
+             [self.navigationController popViewControllerAnimated:YES];
+             
+             [SRAlertView sr_showAlertViewWithTitle:@""
+                                            message:errormessage
+                                    leftActionTitle:@"OK"
+                                   rightActionTitle:@""
+                                     animationStyle:AlertViewAnimationRightToCenterSpring
+                                       selectAction:^(AlertViewActionType actionType) {
+                                           NSLog(@"%zd", actionType);
+                                       }];
+             
+             
+             
+             
+         }
+         else if ([responseDict[@"response"]boolValue]==1)
+         {
+             NSLog(@"sign_up%@", responseDict);
+             
+             [self.navigationController popViewControllerAnimated:YES];
+             
+             
+             
+             [SRAlertView sr_showAlertViewWithTitle:@""
+                                            message:@"Product booked successfully!"
+                                    leftActionTitle:@"OK"
+                                   rightActionTitle:@""
+                                     animationStyle:AlertViewAnimationRightToCenterSpring
+                                       selectAction:^(AlertViewActionType actionType) {
+                                           NSLog(@"%zd", actionType);
+                                       }];
+         }
+     }];
+    
+    
+}
+
 
 @end

@@ -163,7 +163,7 @@
 +(void)addHorizontalPadding:(NSMutableArray *)textFieldArray
 {
     for(UITextField *textField in textFieldArray){
-        UIView *spacerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 25, 30)];
+        UIView *spacerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 30)];
         [textField setLeftViewMode:UITextFieldViewModeAlways];
         [textField setLeftView:spacerView];
     }

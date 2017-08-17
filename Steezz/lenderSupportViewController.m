@@ -38,8 +38,8 @@
     messageTxtView.layer.borderWidth = 1;
     messageTxtView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     messageTxtView.layer.cornerRadius = 15.0;
-    messageTxtView.placeholderText = @"       Message";
-    messageTxtView.placeholderColor = [UIColor lightGrayColor];
+    messageTxtView.placeholderText = @"    Message";
+    messageTxtView.placeholderColor = [UIColor darkGrayColor];
   
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:supportName ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:supportEmail ,nil]];
@@ -72,7 +72,7 @@
     if ([[supportName.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -92,7 +92,7 @@
     {
         
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -108,7 +108,7 @@
     
     else if ([[messageTxtView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Message"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -128,7 +128,7 @@
     else if (![Utility NSStringIsValidEmail:supportEmail.text])
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Valid Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -180,7 +180,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -199,7 +199,7 @@
              [supportName resignFirstResponder];
              [messageTxtView resignFirstResponder];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:@"Your message has been successfully submitted. We will contact you within 24 hours"
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

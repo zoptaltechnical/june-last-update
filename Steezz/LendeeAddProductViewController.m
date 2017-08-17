@@ -8,10 +8,17 @@
 
 #import "LendeeAddProductViewController.h"
 #import "FTPopOverMenu.h"
-@interface LendeeAddProductViewController ()<PlaceSearchTextFieldDelegate>
+#import "PECropViewController.h"
+
+
+@interface LendeeAddProductViewController ()<PlaceSearchTextFieldDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, PECropViewControllerDelegate>
 {
     NSMutableArray *randomDateSelection;
     NSString *myString;
+    
+    NSData *data;
+    
+    UIImage* image;
     
     NSString *availableDateString;
     
@@ -29,7 +36,7 @@
     UIDatePicker *DatePicker;
 }
 
-
+@property (nonatomic) UIPopoverController *popover;
 @property (nonatomic, retain) NSDate * curDate;
 @property (nonatomic, retain) NSDateFormatter * formatter;
 @end
@@ -43,6 +50,7 @@
     self.formatter = [[NSDateFormatter alloc] init];
     [_formatter setDateFormat:@"yyyy/MM/dd"];
     
+
     
     
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
@@ -52,7 +60,7 @@
     selectCategoryBtn.layer.borderColor = [[UIColor darkGrayColor] CGColor];
     selectCategoryBtn.layer.cornerRadius = 15.0;
     [selectCategoryBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 0.0f)];
-
+    [calanderBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 16.0f, 0.0f, 0.0f)];
     
     calanderBtn.layer.borderWidth = 1;
     calanderBtn.layer.borderColor = [[UIColor darkGrayColor] CGColor];
@@ -86,11 +94,8 @@
     description.layer.borderColor = [[UIColor darkGrayColor] CGColor];
     description.layer.cornerRadius = 15.0;
     
-    description.placeholderText = @"       Description...";
-    description.placeholderColor = [UIColor lightGrayColor];
-    
-    
-    
+    description.placeholderText = @"   Description...";
+    description.placeholderColor = [UIColor darkGrayColor];
     
     
     
@@ -116,9 +121,219 @@
    // DatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:-568024668];
  
     
-    [self callGetAllCategories];
+    
     
 }
+
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self callGetAllCategories];
+    
+    [self updateEditButtonEnabled];
+    
+}
+
+
+
+
+#pragma mark - PECropViewControllerDelegate methods
+
+- (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage transform:(CGAffineTransform)transform cropRect:(CGRect)cropRect
+{
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+    productImage.image = croppedImage;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self updateEditButtonEnabled];
+    }
+}
+
+- (void)cropViewControllerDidCancel:(PECropViewController *)controller
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self updateEditButtonEnabled];
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+
+- (void)updateEditButtonEnabled
+{
+    //self.editButton.enabled = !!productImage.image;
+}
+
+
+
+
+
+#pragma mark - Private methods
+
+- (void)showCamera
+{
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+    controller.delegate = self;
+    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.popover.isPopoverVisible) {
+            [self.popover dismissPopoverAnimated:NO];
+        }
+        
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+    
+    } else {
+        [self presentViewController:controller animated:YES completion:NULL];
+    }
+}
+
+- (void)openPhotoAlbum
+{
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+    controller.delegate = self;
+    controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.popover.isPopoverVisible) {
+            [self.popover dismissPopoverAnimated:NO];
+        }
+        
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+//        [self.popover presentPopoverFromBarButtonItem:self.cameraButton
+//                             permittedArrowDirections:UIPopoverArrowDirectionAny
+//                                             animated:YES];
+    } else {
+        [self presentViewController:controller animated:YES completion:NULL];
+    }
+}
+
+
+#pragma mark - UIActionSheetDelegate methods
+
+/*
+ Open camera or photo album.
+ */
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Photo Album", nil)]) {
+        [self openPhotoAlbum];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Camera", nil)]) {
+        [self showCamera];
+    }
+}
+
+#pragma mark - UIImagePickerControllerDelegate methods
+
+/*
+ Open PECropViewController automattically when image selected.
+ */
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+ 
+    image = info[UIImagePickerControllerOriginalImage];
+    productImage.image = image;
+    
+   // data = UIImagePNGRepresentation(image);
+    
+    
+   data = UIImageJPEGRepresentation(image,1.0);
+    
+    UIImage *imageObj = [UIImage imageWithData:data];
+    
+    
+    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.popover.isPopoverVisible) {
+            [self.popover dismissPopoverAnimated:NO];
+        }
+        
+        [self updateEditButtonEnabled];
+        [self openEditor:nil];
+    } else {
+        [picker dismissViewControllerAnimated:YES completion:^{
+            [self openEditor:nil];
+        }];
+    }
+}
+
+
+#pragma mark - Action methods
+
+- (IBAction)openEditor:(id)sender
+{
+    PECropViewController *controller = [[PECropViewController alloc] init];
+    controller.delegate = self;
+    controller.image = productImage.image;
+    
+    image = productImage.image;
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height;
+    CGFloat length = MIN(width, height);
+    controller.imageCropRect = CGRectMake((width - length) / 2,
+                                          (height - length) / 2,
+                                          length,
+                                          length);
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
+    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
+    [self presentViewController:navigationController animated:YES completion:NULL];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - (IBAction)calanderBtnAction:(id)sender
 {
     
@@ -144,13 +359,12 @@
     [self.datePicker setDaysInFutureSelection:0];
     
     
-    
     [self.datePicker setAllowMultiDaySelection:YES];
     // [self.datePicker setDateTimeZoneWithName:@"UTC"];
     // [self.datePicker setAutoCloseCancelDelay:5.0];
-    [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
-    [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
-    [self.datePicker setCurrentDateColorSelected:[UIColor yellowColor]];
+    [self.datePicker setSelectedBackgroundColor:[UIColor redColor]];
+    [self.datePicker setCurrentDateColor:[UIColor greenColor]];
+    [self.datePicker setCurrentDateColorSelected:[UIColor greenColor]];
     
     [self.datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
         int tmp = (arc4random() % 30)+1;
@@ -255,33 +469,60 @@
     
     [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
     
-    [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex) {
+    if (array.count==0) {
         
-        categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
-        categoryID = [NSString stringWithFormat:@"%@",[IdsArray objectAtIndex:selectedIndex]];
-        [selectCategoryBtn setTitle:categoryString forState:UIControlStateNormal];
-        
-        if ([categoryString isEqualToString:@"All"]) {
-            
-            categoryID = @"All";
-        }
-        else
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Sorry Categories are not Loaded!"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType)
         {
-            categoryID = [NSString stringWithFormat:@"%@",[IdsArray objectAtIndex:selectedIndex]];
-        }
+                                      [self callGetAllCategories];
+        }];
         
-        NSLog(@"3u294509645604 =====%@",categoryID);
     }
-                    dismissBlock:^{
-                    }];
-
+    else
+    {
+        
+        [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex) {
+            
+            categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
+            categoryID = [NSString stringWithFormat:@"%@",[IdsArray objectAtIndex:selectedIndex]];
+            [selectCategoryBtn setTitle:categoryString forState:UIControlStateNormal];
+            
+            if ([categoryString isEqualToString:@"All"]) {
+                
+                categoryID = @"All";
+            }
+            else
+            {
+                categoryID = [NSString stringWithFormat:@"%@",[IdsArray objectAtIndex:selectedIndex]];
+            }
+            
+            NSLog(@"3u294509645604 =====%@",categoryID);
+        }
+                        dismissBlock:^{
+                        }];
+ 
+    }
+    
+   
     
 }
 
 - (IBAction)cameraBtnPressed:(id)sender {
     
-    [self ActionSheetImage];
+        [self ActionSheetImage];
+  
 }
+
+
+
+
+
+
+
 
 
 - (IBAction)submitBtnPressed:(id)sender {
@@ -300,7 +541,7 @@
     
     if ([[locationTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Location Field"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -318,7 +559,7 @@
     
     else if ([[pricetxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Price/Day of product"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -336,8 +577,8 @@
     else if ([base64EncodedP length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter Product Image"
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please Add your Product Image"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationDownToCenterSpring
@@ -350,10 +591,26 @@
         [locationTxtFld resignFirstResponder];
     }
     
+    else if ([categoryID length]==0)
+    {
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter Product Category"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [description resignFirstResponder];
+        [pricetxtFld resignFirstResponder];
+        [locationTxtFld resignFirstResponder];
+        
+    }
     
     else if ([[description.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Product Description"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -387,81 +644,6 @@
     
     [popup showInView:self.view];
 }
-
-#pragma mark - UIImagePickerController Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    
-    picker.navigationBar.barStyle = UIBarStyleBlack; // Or whatever style.
-    // or
-    picker.navigationBar.tintColor = [UIColor redColor];
-    
-    picker.delegate  = self;
-    picker.allowsEditing = YES;
-    switch (buttonIndex) {
-        case 0:
-            
-            if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-            {
-                
-                UIAlertView*  myAlertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Device has no camera"  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                
-                [myAlertView show];
-                
-            }
-            else
-            {
-                
-                picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                
-                [self presentViewController:picker animated:YES completion:Nil];
-            }
-            
-            break;
-        case 1:
-            
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentViewController:picker animated:YES completion:NULL];
-        default:
-            break;
-    }
-}
-
-
-#pragma mark IMAGE PICKER DELEGATES
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    
-    NSData* data;
-    CGSize size;
-    
-            while (data.length / 1000 >= 200)
-            {
-                image = [Utility imageWithEditImage:image andWidth:image.size.width/2 andHeight:image.size.height/2];
-                data = UIImagePNGRepresentation(image);
-            }
-          data = UIImagePNGRepresentation(image);
-    
-    size =CGSizeMake(productImage.frame.size.width,productImage.frame.size.height);
-    data = UIImagePNGRepresentation(image);
-    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
-    [productImage setImage:image];
-    
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
-}
-
 
 #pragma  Category List API
 -(void)callGetAllCategories
@@ -504,6 +686,10 @@
     
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
     
+    if ([availableDateString length]==0) {
+        availableDateString = @"";
+    }
+    
     NSDictionary* registerInfo;
     registerInfo= @{
                     @"cat_id":categoryID,
@@ -543,7 +729,7 @@
              [locationTxtFld resignFirstResponder];
              
              [self.navigationController popViewControllerAnimated:YES];
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -614,8 +800,10 @@
         
         availableDateString = [randomDateSelection componentsJoinedByString:@","];
         
-        [calanderBtn setTitle: [NSString stringWithFormat:@"%@",availableDateString] forState:UIControlStateNormal];
+   //  [calanderBtn setTitle: [NSString stringWithFormat:@"%@",availableDateString] forState:UIControlStateNormal];
         
+        
+        [calanderBtn setTitle:@"Mark Unavailable Dates. " forState:UIControlStateNormal];
         [self dismissSemiModalView];
         
     }

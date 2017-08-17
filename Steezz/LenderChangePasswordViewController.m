@@ -61,7 +61,7 @@
     
     if ([[oldPaswrdTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your old Pasword"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -77,7 +77,7 @@
     
     else if ([[newPaswrdTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your new Password"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -92,7 +92,7 @@
     
     else if ([[cnfrmPasswrdTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Password to conform."
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -109,7 +109,7 @@
     {
         
         
-        [SRAlertView sr_showAlertViewWithTitle:@"AlertView"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"your Password do not match Please check."
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -155,7 +155,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -171,7 +171,7 @@
              
              
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:@"Password Changed!"
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

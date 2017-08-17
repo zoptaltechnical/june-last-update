@@ -11,7 +11,7 @@
 @interface LENDEEProductsViewController ()
 
 {
-    
+    NSString *MyPayPalID;
     NSDictionary *dict;
     NSString *lendeeProductID;
     
@@ -39,6 +39,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
      NoProductAddedLabel.hidden = YES;
+    [self callMyProfileAPI];
+    
      [self callLendeeProductListAPI];
     
 }
@@ -46,10 +48,10 @@
 - (IBAction)productAddBtnPressed:(id)sender {
     
     
-    if ([dict valueForKey:@"paypal_id"]) {
-        if ([[dict valueForKey:@"paypal_id"]length]==0)
+   
+        if ([MyPayPalID length]==0)
         {
-            [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+            [SRAlertView sr_showAlertViewWithTitle:@""
                                            message:@"You have to Add Paypal Id in order to add Products."
                                    leftActionTitle:@"OK"
                                   rightActionTitle:@""
@@ -70,7 +72,7 @@
         }
         
         
-    }
+    
    
     
 }
@@ -108,10 +110,10 @@
     
     [ImageMy sd_setImageWithURL:[NSURL URLWithString: [[LendeeProductArray valueForKey:@"product_image"] objectAtIndex:indexPath.row] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
     
-    UIButton *DeleteProductBtn =(UIButton *)[cell.contentView viewWithTag:6004];
-    [DeleteProductBtn addTarget:self
-                action:@selector(DeleteBtnPressed:)
-      forControlEvents:UIControlEventTouchUpInside];
+  //  UIButton *DeleteProductBtn =(UIButton *)[cell.contentView viewWithTag:6004];
+   // [DeleteProductBtn addTarget:self
+            //    action:@selector(DeleteBtnPressed:)
+     // forControlEvents:UIControlEventTouchUpInside];
     
     
     UILabel *date=(UILabel *)[cell.contentView viewWithTag:6005];
@@ -138,20 +140,18 @@
 
 }
 
-
-
--(void)DeleteBtnPressed:(id)sender
-{
-    
-    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:lendeeProductTableView];
-    NSIndexPath *indexPath = [lendeeProductTableView indexPathForRowAtPoint:buttonPosition];
-    McomLOG(@"like-indexPath--%ld",(long)indexPath.row);
-    
-    lendeeProductID = [NSString stringWithFormat:@"%@",[[LendeeProductArray valueForKey:@"id"]objectAtIndex:indexPath.row]];
-    [self callLendeeDeleteProductAPI];
-    
-    
-}
+//-(void)DeleteBtnPressed:(id)sender
+//{
+//    
+//    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:lendeeProductTableView];
+//    NSIndexPath *indexPath = [lendeeProductTableView indexPathForRowAtPoint:buttonPosition];
+//    McomLOG(@"like-indexPath--%ld",(long)indexPath.row);
+//    
+//    lendeeProductID = [NSString stringWithFormat:@"%@",[[LendeeProductArray valueForKey:@"id"]objectAtIndex:indexPath.row]];
+//    [self callLendeeDeleteProductAPI];
+//    
+//    
+//}
 
 
 
@@ -177,7 +177,13 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+             if ([[responseDict valueForKey:@"message"]isEqualToString:@"Access token incorrect."])
+             {
+                 [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+                 UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+                 [self.view.window setRootViewController:popUpController];
+                 
+             }
          }
          
          else if ([responseDict[@"result"]boolValue]==1)
@@ -244,5 +250,46 @@
          }
      }];
 }
+
+
+
+#pragma  CALL MY PROFILE API FOR LENDER
+
+-(void)callMyProfileAPI
+{
+    
+    dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
+    NSLog(@"%@ login data = ",dict);
+    
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    NSDictionary* registerInfo = @{
+                                   @"access_token":[dict valueForKey:@"access_token"]
+                                   };
+    
+    McomLOG(@"%@",registerInfo);
+    [API myProfileWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         
+         [Appdelegate stopLoader:nil];
+         
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             NSLog(@"%@",dict_response);
+         }
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"sign_up%@", responseDict);
+             if ([responseDict valueForKey:@"data"])
+             {
+                 MyPayPalID  = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"]valueForKey:@"paypal_id"]];
+             }
+         }
+     }];
+}
+
+
 
 @end

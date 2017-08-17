@@ -9,10 +9,12 @@
 #import "LendeeProductDetailViewController.h"
 #import "FTPopOverMenu.h"
 
+#import "PECropViewController.h"
+
 
 #import "JTSImageViewController.h"
 #import "JTSImageInfo.h"
-@interface LendeeProductDetailViewController ()<PlaceSearchTextFieldDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface LendeeProductDetailViewController ()<PlaceSearchTextFieldDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,PECropViewControllerDelegate>
 
 {
      NSMutableArray *randomDateSelection;
@@ -22,7 +24,10 @@
     NSString *check;
     NSString *category_name;
     NSString *product_id;
-    
+    NSData *data;
+
+    UIImage* image;
+
     NSString *categoryID;
     NSDictionary *dict;
     NSMutableArray *categoriesListArray;
@@ -33,6 +38,9 @@
     
      
 }
+
+
+@property (nonatomic) UIPopoverController *popover;
 
 @end
 
@@ -135,6 +143,7 @@
 
 
 
+
 -(NSString *)timetofill:(NSDate *)date
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -146,44 +155,26 @@
 
 - (IBAction)countBtnActn:(id)sender {
     
-    
-    
-    
     NSMutableArray*array=[[NSMutableArray alloc]init];
     
     
     [array addObjectsFromArray:[randomDateSelection valueForKey:@"unavailable_date"] ];
     
-    
-    
     [FTPopOverMenuConfiguration defaultConfiguration].menuWidth=130;
-    
-    [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex) {
-        
+    [FTPopOverMenu showForSender:sender withMenu:array doneBlock:^(NSInteger selectedIndex)
+    {
         categoryString = [NSString stringWithFormat:@"%@",[array objectAtIndex:selectedIndex]];
-        
-        
         NSLog(@"3u294509645604 =====%@",categoryID);
     }
                     dismissBlock:^{
                     }];
-    
-
-    
-    
 }
-
-
-
-
 
 - (IBAction)availableDateBtnAction:(id)sender {
     
 
     randomDateSelection =  [[NSMutableArray alloc] init];
-    
     [randomDateSelection removeAllObjects];
-    
     //  if ([myString isEqualToString:@"SelectedString"]) {
     
     if(!self.datePicker)
@@ -321,8 +312,6 @@
     popup = [[UIActionSheet alloc] initWithTitle:@"Choose Photo:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Camera",
              @"Photos Album",
              nil];
-    
-    
     [popup showInView:self.view];
 }
 
@@ -331,86 +320,10 @@
 
 
 
-#pragma mark - UIImagePickerController Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    
-    picker.navigationBar.barStyle = UIBarStyleBlack; // Or whatever style.
-    // or
-    picker.navigationBar.tintColor = [UIColor redColor];
-    
-    picker.delegate  = self;
-    picker.allowsEditing = YES;
-    switch (buttonIndex) {
-        case 0:
-            
-            if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-            {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:@"Device has no camera" preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                [alertController addAction:ok];
-                
-                [self presentViewController:alertController animated:YES completion:nil];
-                
-  
-                
-            }
-            else
-            {
-                
-                picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                
-                [self presentViewController:picker animated:YES completion:Nil];
-            }
-            
-            break;
-        case 1:
-            
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentViewController:picker animated:YES completion:NULL];
-        default:
-            break;
-    }
-}
 
 
-#pragma mark IMAGE PICKER DELEGATES
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    
-    NSData* data;
-    CGSize size;
-    
-    while (data.length / 1000 >= 200)
-    {
-        image = [Utility imageWithEditImage:image andWidth:image.size.width/2 andHeight:image.size.height/2];
-        data = UIImagePNGRepresentation(image);
-    }
-    data = UIImagePNGRepresentation(image);
-    
-    
- 
-    
-    size =CGSizeMake(productImage.frame.size.width-100,productImage.frame.size.height-100);
-    data = UIImagePNGRepresentation(image);
-    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
-    [productImage setImage:image];
-    
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-}
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
-}
+
 
 
 
@@ -532,13 +445,16 @@
                      
                      randomDateSelection =[[NSMutableArray alloc]initWithArray:[[responseDict valueForKey:@"product"] valueForKey:@"unavailable_dates"]];
                      
+                     
                      // [randomDateSelection addObject:[[responseDict valueForKey:@"product"] valueForKey:@"available_dates"]];
                      
                      
                      [countBtn setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)randomDateSelection.count] forState:UIControlStateNormal];
                      
                      
-                     availableDateString = [[randomDateSelection valueForKey:@"available_date"] componentsJoinedByString:@","];
+                     availableDateString = [[randomDateSelection valueForKey:@"unavailable_date"] componentsJoinedByString:@","];
+                     
+                     NSLog(@"availableDateString = %@",availableDateString);
                      
                      [availableDatebtn setTitle: [NSString stringWithFormat:@"Not Available for %@ Days",[[responseDict valueForKey:@"product"] valueForKey:@"total_unavailable_dates"]] forState:UIControlStateNormal];
                      
@@ -602,7 +518,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -682,7 +598,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -713,7 +629,7 @@
     
      if ([[locationTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Location"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -728,7 +644,7 @@
     
     else if ([[priceTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Price"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -743,7 +659,7 @@
     else if ([[descriptnTxtView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Description of product"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -874,5 +790,156 @@
     
 }
 
+// i have changed the code for  editing product image , "" comment it .
+
+
+
+
+#pragma mark - PECropViewControllerDelegate methods
+
+- (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage transform:(CGAffineTransform)transform cropRect:(CGRect)cropRect
+{
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+    productImage.image = croppedImage;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self updateEditButtonEnabled];
+    }
+}
+
+- (void)cropViewControllerDidCancel:(PECropViewController *)controller
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self updateEditButtonEnabled];
+    }
+    
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+
+- (void)updateEditButtonEnabled
+{
+    //self.editButton.enabled = !!productImage.image;
+}
+
+
+
+
+
+#pragma mark - Private methods
+
+- (void)showCamera
+{
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+    controller.delegate = self;
+    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.popover.isPopoverVisible) {
+            [self.popover dismissPopoverAnimated:NO];
+        }
+        
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+        
+    } else {
+        [self presentViewController:controller animated:YES completion:NULL];
+    }
+}
+
+- (void)openPhotoAlbum
+{
+    UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+    controller.delegate = self;
+    controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.popover.isPopoverVisible) {
+            [self.popover dismissPopoverAnimated:NO];
+        }
+        
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+        //        [self.popover presentPopoverFromBarButtonItem:self.cameraButton
+        //                             permittedArrowDirections:UIPopoverArrowDirectionAny
+        //                                             animated:YES];
+    } else {
+        [self presentViewController:controller animated:YES completion:NULL];
+    }
+}
+
+
+#pragma mark - UIActionSheetDelegate methods
+
+/*
+ Open camera or photo album.
+ */
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Photo Album", nil)]) {
+        [self openPhotoAlbum];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Camera", nil)]) {
+        [self showCamera];
+    }
+}
+
+#pragma mark - UIImagePickerControllerDelegate methods
+
+/*
+ Open PECropViewController automattically when image selected.
+ */
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
+    image = info[UIImagePickerControllerOriginalImage];
+    productImage.image = image;
+    
+ //   data = UIImagePNGRepresentation(image);
+    
+    data = UIImageJPEGRepresentation(image,1.0);
+    
+    UIImage *imageObj = [UIImage imageWithData:data];
+    
+    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if (self.popover.isPopoverVisible) {
+            [self.popover dismissPopoverAnimated:NO];
+        }
+        
+        [self updateEditButtonEnabled];
+        [self openEditor:nil];
+    } else {
+        [picker dismissViewControllerAnimated:YES completion:^{
+            [self openEditor:nil];
+        }];
+    }
+}
+
+
+#pragma mark - Action methods
+
+- (IBAction)openEditor:(id)sender
+{
+    PECropViewController *controller = [[PECropViewController alloc] init];
+    controller.delegate = self;
+    controller.image = productImage.image;
+    
+    image = productImage.image;
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height;
+    CGFloat length = MIN(width, height);
+    controller.imageCropRect = CGRectMake((width - length) / 2,
+                                          (height - length) / 2,
+                                          length,
+                                          length);
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
+    [self presentViewController:navigationController animated:YES completion:NULL];
+}
 
 @end

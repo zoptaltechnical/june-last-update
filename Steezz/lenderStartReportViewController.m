@@ -157,8 +157,8 @@
     else
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Sorry you don't have book any"
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Sorry you don't have book any Product!"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
                                 animationStyle:AlertViewAnimationDownToCenterSpring
@@ -276,7 +276,7 @@
     
     if ([categoryString length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Category"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -293,7 +293,7 @@
     
     if ([emailString length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Hoster Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -310,7 +310,7 @@
     
     else if ([base64EncodedP length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Add Image"
                                        leftActionTitle:@"OK"
                                        rightActionTitle:@""
@@ -327,7 +327,7 @@
     
     else if ([[startReportTextView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Enter Report Description"
                                        leftActionTitle:@"OK"
                                        rightActionTitle:@""
@@ -342,7 +342,7 @@
     
     if ([categoryID length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please Select Category"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -380,7 +380,10 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+            
+             [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+             UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+             [self.view.window setRootViewController:popUpController];
          }
          
          else if ([responseDict[@"result"]boolValue]==1)
@@ -426,7 +429,10 @@
         
         if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+             if ([[responseDict valueForKey:@"message"]isEqualToString:@"Access token incorrect."])
+             {
+                 
+             }
          }
          
          else if ([responseDict[@"result"]boolValue]==1)

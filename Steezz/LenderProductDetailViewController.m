@@ -34,9 +34,8 @@
     dateCountLabel.layer.cornerRadius = dateCountLabel.frame.size.width / 2;
     dateCountLabel.clipsToBounds = YES;
     
-    userImage.layer.borderWidth=5;
-    userImage.layer.cornerRadius=userImage.frame.size.width/2;;
-    userImage.clipsToBounds= YES;
+   
+
     
     userImage.layer.borderColor=[UIColor whiteColor].CGColor;
     
@@ -174,6 +173,9 @@
              if ([responseDict valueForKey:@"product"])
              {
                  
+                 userImage.layer.cornerRadius=userImage.frame.size.width/2;;
+                 userImage.clipsToBounds= YES;
+                 
                  dateCountLabel.hidden = NO;
              //    date.text =[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"available_date"]] ;
                  
@@ -190,14 +192,26 @@
                  [usernameBtn setTitle:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"first_name"]] forState:UIControlStateNormal];
                  
                  
-                 [productImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"product_image"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
                  
+                 if ([[[responseDict valueForKey:@"product"] valueForKey:@"is_favourite"]isEqualToString:@"Yes"])
+                 {
+                     [favouriteBtn setImage:[UIImage imageNamed:@"heart_iconAfter"] forState:UIControlStateNormal
+                      ];
+                 }
+                 
+                else if ([[[responseDict valueForKey:@"product"] valueForKey:@"is_favourite"]isEqualToString:@"No"])
+                 {
+                     [favouriteBtn setImage:[UIImage imageNamed:@"heart-1"] forState:UIControlStateNormal
+                      ];
+                 }
+                 
+                 [productImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"product_image"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
                  
                  [userImage sd_setImageWithURL:[NSURL URLWithString: [[responseDict valueForKey:@"product"] valueForKey:@"profile_pic"] ]placeholderImage:[UIImage imageNamed:@"1"] options:SDWebImageRefreshCached];
                  
                  product_id = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"id"]];
                  
-                User_id = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"user_id"]];
+                 User_id = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"user_id"]];
                  
                  dateString = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"available_date"]];
                  
@@ -205,12 +219,9 @@
                  
                  GetUserId= [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"user_id"]];
                  
-                 
                  ownerName = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"product"] valueForKey:@"first_name"]];
-
              }
-             
-            }
+         }
      }];
 }
 
@@ -241,9 +252,9 @@
          else if ([responseDict[@"result"]boolValue]==1)
          {
              NSLog(@"save product = %@",responseDict);
+             [self callProductDetailAPI];
              
-             
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""
@@ -251,20 +262,15 @@
                                        selectAction:^(AlertViewActionType actionType) {
                                            NSLog(@"%zd", actionType);
                                        }];
-             
          }
      }];
 }
-
-
 
 -(void)callGetConversationIDAPI
 {
     
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
-    
     NSDictionary* registerInfo;
-    
     
     registerInfo= @{
                     @"access_token":[dict valueForKey:@"access_token"],
@@ -296,8 +302,4 @@
          }
      }];
 }
-
-
-
-
 @end

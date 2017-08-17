@@ -9,7 +9,7 @@
 #import "PaymentListingViewController.h"
 
 @interface PaymentListingViewController ()
-{
+{NSString *categoryType;
     NSDictionary *dict;
     NSMutableArray *paymentListingArray;
 }
@@ -51,14 +51,14 @@
     }
     
     UILabel *Productname=(UILabel *)[cell.contentView viewWithTag:70001000100];
-    Productname.text= [NSString stringWithFormat:@"Your  %@ is booked",   [[paymentListingArray valueForKey:@"product_name"]objectAtIndex:indexPath.row]];
+    
+    Productname.text = [NSString stringWithFormat:@"%@", [[paymentListingArray valueForKey:@"msg_string"]objectAtIndex:indexPath.row]];
     
     UILabel *StartDate=(UILabel *)[cell.contentView viewWithTag:70001000101];
-    StartDate.text= [NSString stringWithFormat:@"From %@",   [[paymentListingArray valueForKey:@"start_date"]objectAtIndex:indexPath.row]];
+    StartDate.text= [NSString stringWithFormat:@"From %@",[[paymentListingArray valueForKey:@"start_date"]objectAtIndex:indexPath.row]];
     
     UILabel *endDate=(UILabel *)[cell.contentView viewWithTag:70001000104];
     endDate.text= [NSString stringWithFormat:@"To %@",   [[paymentListingArray valueForKey:@"end_date"]objectAtIndex:indexPath.row]];
-    
     
     UILabel *AmountPaid=(UILabel *)[cell.contentView viewWithTag:70001000108];
     AmountPaid.text= [NSString stringWithFormat:@"$ %@",   [[paymentListingArray valueForKey:@"amount"]objectAtIndex:indexPath.row]];
@@ -85,7 +85,7 @@
     homeObj.AdminChargesString = [[paymentListingArray valueForKey:@"admin_charges"]objectAtIndex:indexPath.row];
     homeObj.PaypalIdString = [[paymentListingArray valueForKey:@"paypal_id"]objectAtIndex:indexPath.row];
     
-    homeObj.startDateStrig = [[paymentListingArray valueForKey:@"start_date"]objectAtIndex:indexPath.row];
+    homeObj.startDateStrig = [[paymentListingArray valueForKey:@"booking_dates_count"]objectAtIndex:indexPath.row];
     
     homeObj.EndDateStrings = [[paymentListingArray valueForKey:@"end_date"]objectAtIndex:indexPath.row];
     
@@ -113,9 +113,12 @@
      {
          [Appdelegate stopLoader:nil];
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
-         
+         NSLog(@"%@",dict_response);
          if ([responseDict[@"result"]boolValue]==0)
          {
+             
+             
+            // paymentlistLabel.hidden = NO;
              
                         
              //             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];

@@ -56,11 +56,12 @@
 - (IBAction)myOrderBtnAction:(id)sender {
     
     _myBool = NO;
-    historylabel.hidden = YES;
-    
+    historylabel.hidden = YES;    
+     historyBtn.titleLabel.textColor = [UIColor whiteColor];
     
     UIImage *colorimage = [UIImage imageNamed:@"disable"];
     [historyBtn setBackgroundImage:colorimage forState:UIControlStateNormal];
+   
     
     
     UIImage *colorimage1 = [UIImage imageNamed:@"active"];
@@ -84,10 +85,6 @@
     
     UIImage *colorimage1 = [UIImage imageNamed:@"disable"];
     [myOrderBtn setBackgroundImage:colorimage1 forState:UIControlStateNormal];
-    
-    
-    
-    
     
      [self callHistoryDetailAPI];
     
@@ -167,7 +164,7 @@
         Price.text= [NSString stringWithFormat:@"$%@",[[myOrderArray valueForKey:@"price"]objectAtIndex:indexPath.row]];
         
         UILabel *description=(UILabel *)[cell1.contentView viewWithTag:45711003];
-        description.text= [NSString stringWithFormat:@"%@ %%",[[myOrderArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
+        description.text= [NSString stringWithFormat:@"%@",[[myOrderArray valueForKey:@"product_desc"]objectAtIndex:indexPath.row]];
         
         UIImageView *ImageMy = (UIImageView *)[cell1.contentView viewWithTag:45711004];
         
@@ -207,26 +204,44 @@
 {
     
     if (_myBool ==YES) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    LenderProductDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProductDetailViewController"];
-    homeObj.ProductDetail = [[histroyListingArray valueForKey:@"product_id"]objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:homeObj animated:YES];
+  
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        PaymentDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"PaymentDetailViewController"];
+        homeObj.Status = [[histroyListingArray valueForKey:@"status"]objectAtIndex:indexPath.row];
+        homeObj.TotalAmountString = [[histroyListingArray valueForKey:@"total_amount"]objectAtIndex:indexPath.row];
+        homeObj.AmountPaidString = [[histroyListingArray valueForKey:@"receiver_amount"]objectAtIndex:indexPath.row];
+        homeObj.AdminChargesString = [[histroyListingArray valueForKey:@"admin_charges"]objectAtIndex:indexPath.row];
+        homeObj.PaypalIdString = [[histroyListingArray valueForKey:@"transaction_id"]objectAtIndex:indexPath.row];
+        homeObj.startDateStrig = [[histroyListingArray valueForKey:@"booking_dates_count"]objectAtIndex:indexPath.row];
+        homeObj.EndDateStrings = [[histroyListingArray valueForKey:@"end_date"]objectAtIndex:indexPath.row];
+        homeObj.ProductNAmeString = [[histroyListingArray valueForKey:@"product_name"]objectAtIndex:indexPath.row];
+        homeObj.Status = [[histroyListingArray valueForKey:@"status"]objectAtIndex:indexPath.row];
+        [self.navigationController pushViewController:homeObj animated:YES];
+        
     }
     
     else if (_myBool ==NO)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        LenderProductDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProductDetailViewController"];
-        homeObj.ProductDetail = [[myOrderArray valueForKey:@"product_id"]objectAtIndex:indexPath.row];
+        PaymentDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"PaymentDetailViewController"];
+        homeObj.Status = [[myOrderArray valueForKey:@"status"]objectAtIndex:indexPath.row];
+        homeObj.TotalAmountString = [[myOrderArray valueForKey:@"total_amount"]objectAtIndex:indexPath.row];
+        homeObj.AmountPaidString = [[myOrderArray valueForKey:@"receiver_amount"]objectAtIndex:indexPath.row];
+        homeObj.AdminChargesString = [[myOrderArray valueForKey:@"admin_charges"]objectAtIndex:indexPath.row];
+        homeObj.PaypalIdString = [[myOrderArray valueForKey:@"transaction_id"]objectAtIndex:indexPath.row];
+        
+        homeObj.startDateStrig = [[myOrderArray valueForKey:@"booking_dates_count"]objectAtIndex:indexPath.row];
+        
+        homeObj.EndDateStrings = [[myOrderArray valueForKey:@"end_date"]objectAtIndex:indexPath.row];
+        
+        homeObj.ProductNAmeString = [[myOrderArray valueForKey:@"product_name"]objectAtIndex:indexPath.row];
+        homeObj.Status = [[myOrderArray valueForKey:@"status"]objectAtIndex:indexPath.row];
+        
         [self.navigationController pushViewController:homeObj animated:YES];
         
     }
     
-    
 }
-
-
-
 
 -(void)messageBtnPressed:(id)sender
 {
@@ -314,7 +329,8 @@
          {
              //[Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
              [historytableView reloadData];
-             
+             historyBtn.titleLabel.textColor = [UIColor darkGrayColor];
+
              historylabel.hidden = NO;
          }
          
@@ -322,6 +338,8 @@
          {
              _myBool = NO;
              NSLog(@"My Current Oder  List  = %@",responseDict);
+             historyBtn.titleLabel.textColor = [UIColor darkGrayColor];
+
              
              if ([responseDict[@"data"] count]>0)
              {

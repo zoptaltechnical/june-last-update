@@ -35,14 +35,12 @@
     [lendeeImage.layer setBorderColor: [[UIColor whiteColor] CGColor]];
     [lendeeImage.layer setBorderWidth: 3.0];
     
-    menu_label=[[NSMutableArray alloc]initWithObjects:@"MY PROFILE",@"FEEDBACK FORUM",@"NOTIFICATION CENTER",@"SUPPORT",@"ABOUT US",@"CHANGE PASSWORD",@"PAYMENTS",@"PAYMENTS HISTORY",@"DISCLAIMER",@"SWITCH TO RENTER",nil];
+    menu_label=[[NSMutableArray alloc]initWithObjects:@"MY PROFILE",@"FEEDBACK",@"SUPPORT",@"CHANGE PASSWORD",@"PAYMENTS",@"PAYMENTS HISTORY",@"TERMS OF SERVICE",@"SWITCH TO RENTER",nil];
     
     Array_of_images = [[NSMutableArray alloc] initWithObjects:
                        [UIImage imageNamed:@"profile_icon"],
                        [UIImage imageNamed:@"feedback-forum"],
-                       [UIImage imageNamed:@"notification-center"],
                        [UIImage imageNamed:@"support"],
-                       [UIImage imageNamed:@"about-us"],
                        [UIImage imageNamed:@"Change-Password"],
                        [UIImage imageNamed:@"payments"],
                        [UIImage imageNamed:@"history"],
@@ -103,6 +101,7 @@
     
     if (indexPath.row == 0)
     {
+        [Utility setValue:@"2" forKey:backArrow];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         LenderProfileViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProfileViewController"];
@@ -119,16 +118,16 @@
         
         
     }
+//    else if (indexPath.row == 2)
+//    {
+//        
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//        NotificationCenterViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"NotificationCenterViewController"];
+//        [self.navigationController pushViewController:homeObj animated:YES];
+//               
+//        
+//    }
     else if (indexPath.row == 2)
-    {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        NotificationCenterViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"NotificationCenterViewController"];
-        [self.navigationController pushViewController:homeObj animated:YES];
-               
-        
-    }
-    else if (indexPath.row == 3)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
@@ -138,13 +137,8 @@
     }
     
     
-    else if (indexPath.row == 4)
-    {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        AboutUsViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"AboutUsViewController"];
-        [self.navigationController pushViewController:homeObj animated:YES];
-    }
-    else if (indexPath.row == 5)
+   
+    else if (indexPath.row == 3)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         LenderChangePasswordViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderChangePasswordViewController"];
@@ -152,7 +146,7 @@
         
         
     }
-    else if (indexPath.row == 6)
+    else if (indexPath.row == 4)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
@@ -161,7 +155,7 @@
         
     }
     
-    else if (indexPath.row == 7)
+    else if (indexPath.row == 5)
     {
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
@@ -169,7 +163,7 @@
         [self.navigationController pushViewController:homeObj animated:YES];
     }
     
-    else if (indexPath.row == 8)
+    else if (indexPath.row == 6)
     {
         
         
@@ -182,8 +176,10 @@
     
     
     
-    else if (indexPath.row == 9)
+    else if (indexPath.row == 7)
     {
+    [Utility setValue:@"1" forKey:backArrow];
+        
         
         [self callSwitchToLenderAPI];
         
@@ -272,7 +268,16 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+             if ([[responseDict valueForKey:@"message"]isEqualToString:@"Access token incorrect."])
+             {
+                 [Utility showAlertWithTitleText:@"Sorry This user is already logged in from other device!" messageText:nil delegate:nil];
+                 UIViewController *popUpController = ViewControllerIdentifier(@"LoginScreennavigateID");
+                 [self.view.window setRootViewController:popUpController];
+                 
+             }
+             
+             
+            // [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
          }
          
          else if ([responseDict[@"result"]boolValue]==1)
@@ -280,10 +285,14 @@
              NSLog(@"save product = %@",responseDict);
              
              
+              [[NSUserDefaults standardUserDefaults] setObject:[responseDict objectForKey:@"data"]forKey:@"loginData"];
+             
+             
+             
              UIViewController *popUpController = ViewControllerIdentifier(@"LenderNavigateID");
              [self.view.window setRootViewController:popUpController];
             
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:@"You are now a Renter."
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

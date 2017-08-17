@@ -120,6 +120,22 @@
     [FavouriteSaveBtn addTarget:self
                       action:@selector(FavouriteSaveBtnPressed:)
                       forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    if ([[[bookingListArray valueForKey:@"is_favourite"] objectAtIndex:indexPath.row] isEqualToString:@"Yes"])
+    {
+        [FavouriteSaveBtn setImage:[UIImage imageNamed:@"favorite"] forState:UIControlStateNormal
+         ];
+        
+    }
+    else if ([[[bookingListArray valueForKey:@"is_favourite"] objectAtIndex:indexPath.row] isEqualToString:@"No"])
+    {
+        [FavouriteSaveBtn setImage:[UIImage imageNamed:@"heart"] forState:UIControlStateNormal
+         ];
+        
+    }
+    
+    
         
     UIButton *BookBtn =(UIButton *)[cell.contentView viewWithTag:4005];
     [BookBtn addTarget:self
@@ -229,8 +245,10 @@
          {
              NSLog(@"save product = %@",responseDict);
              
+             [self callBookingListAPI];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                             leftActionTitle:@"OK"
                                             rightActionTitle:@""
@@ -265,7 +283,7 @@
          {
              NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:errormessage
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

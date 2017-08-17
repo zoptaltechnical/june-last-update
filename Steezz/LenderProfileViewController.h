@@ -11,7 +11,10 @@
 @interface LenderProfileViewController : UIViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate>
 
 {
-    IBOutlet UITextField *usernametxtFld;
+    
+    
+    
+    
     IBOutlet UIButton *cameraBtn;
     
     IBOutlet UIButton *firstEdit;
@@ -27,9 +30,12 @@
     
     IBOutlet UITextField *payPalIDTxtFld;
 
+    IBOutlet UITextField *cityTextField;
    
+    IBOutlet UITextField *zipcodeTextField;
+    IBOutlet UITextField *stateTextField;
     IBOutlet UITextField *addressTxtFld;
-    IBOutlet MVPlaceSearchTextField *locationtextFld;
+   
   
     IBOutlet LPlaceholderTextView *aboutTxtView;
     

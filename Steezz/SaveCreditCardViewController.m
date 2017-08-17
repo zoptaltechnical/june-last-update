@@ -25,6 +25,46 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    firstName.borderStyle = UITextBorderStyleLine;
+    firstName.layer.borderWidth = 1;
+    firstName.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    firstName.layer.cornerRadius = 15.0;
+    
+    saveBtnAction.layer.cornerRadius = 8;
+    saveBtnAction.clipsToBounds = YES;
+    
+    lastNAme.borderStyle = UITextBorderStyleLine;
+    lastNAme.layer.borderWidth = 1;
+    lastNAme.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    lastNAme.layer.cornerRadius = 15.0;
+    
+    accountNmberTxtFld.borderStyle = UITextBorderStyleLine;
+    accountNmberTxtFld.layer.borderWidth = 1;
+    accountNmberTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    accountNmberTxtFld.layer.cornerRadius = 15.0;
+    
+    expiryMnth.borderStyle = UITextBorderStyleLine;
+    expiryMnth.layer.borderWidth = 1;
+    expiryMnth.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    expiryMnth.layer.cornerRadius = 15.0;
+    
+    
+    expryYrTxtFld.borderStyle = UITextBorderStyleLine;
+    expryYrTxtFld.layer.borderWidth = 1;
+    expryYrTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    expryYrTxtFld.layer.cornerRadius = 15.0;
+    
+    
+    CvvNmberTxtFld.borderStyle = UITextBorderStyleLine;
+    CvvNmberTxtFld.layer.borderWidth = 1;
+    CvvNmberTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    CvvNmberTxtFld.layer.cornerRadius = 15.0;
+    
+    
+    cardTypeBtn.layer.cornerRadius = 15; 
+    cardTypeBtn.clipsToBounds = YES;
+    
+    
     dict=  [[NSUserDefaults standardUserDefaults]objectForKey:@"loginData"];
     NSLog(@"%@ login data = ",dict);
     
@@ -32,7 +72,7 @@
     
     MonthArray=[[NSMutableArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
     
-    YearArray=[[NSMutableArray alloc]initWithObjects:@"2017",@"2018",@"2019",@"2020",@"2021",@"2022",@"2022",@"2023",@"2024",@"2025",@"2026",@"2027",@"2028",@"2029",@"2030",@"2031",@"2032",@"2033",@"2034",@"2035",@"2036",@"2037",@"2038",@"2039",@"2040",@"2041",@"2042",@"2043",@"2044",@"2045",@"2046",@"2047",@"2048",@"2049",@"2050",nil];
+    YearArray=[[NSMutableArray alloc]initWithObjects:@"2017",@"2018",@"2019",@"2020",@"2021",@"2022",@"2023",@"2024",@"2025",@"2026",@"2027",@"2028",@"2029",@"2030",@"2031",@"2032",@"2033",@"2034",@"2035",@"2036",@"2037",@"2038",@"2039",@"2040",@"2041",@"2042",@"2043",@"2044",@"2045",@"2046",@"2047",@"2048",@"2049",@"2050",nil];
     
     
     UIpickerMonth = [[ UIPickerView alloc] initWithFrame:CGRectMake(0.0f, 386.0f, 250.0f, 100.0f)];
@@ -61,10 +101,17 @@
     [expryYrTxtFld setInputAccessoryView:toolbarstate];
     doneBtnstate.tintColor = [UIColor blackColor];
     
+   // [cardTypeBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 0.0f)];
 
     
-//    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:startDate ,nil]];
-//    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:endDate ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:expiryMnth ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:expryYrTxtFld ,nil]];
+    
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:accountNmberTxtFld ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:CvvNmberTxtFld ,nil]];
+    
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:firstName ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:lastNAme ,nil]];
     
     
     // Do any additional setup after loading the view.
@@ -95,6 +142,16 @@
 }
 
 - (IBAction)cardTypeBtnAction:(id)sender {
+    
+    
+    [firstName resignFirstResponder];
+    [lastNAme resignFirstResponder];
+    [accountNmberTxtFld resignFirstResponder];
+    [CvvNmberTxtFld resignFirstResponder];
+    [expiryMnth resignFirstResponder];
+    [expryYrTxtFld resignFirstResponder];
+    
+    
 
     
     NSMutableArray*array=[[NSMutableArray alloc]init];
@@ -120,7 +177,7 @@
     
     if ([[firstName.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your First Name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -141,7 +198,7 @@
     
     else if ([[lastNAme.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Last name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -161,7 +218,7 @@
     
     else if ([[accountNmberTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Account Number"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -181,7 +238,7 @@
     else if ([[CvvNmberTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Your Cvv Number"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -203,7 +260,7 @@
     
     else if ([[expiryMnth.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter exp. month"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -223,7 +280,7 @@
     
     else if ([[expryYrTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter exp. Year"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -242,7 +299,7 @@
     }
     else if (CardString==nil)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your card type"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -376,9 +433,22 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ([accountNmberTxtFld.text length]<17)
-    {
-        return YES;
+    if(textField == accountNmberTxtFld){
+        if (textField.text.length < 17 || string.length == 0){
+            return YES;
+        }
+        else{
+            return NO;
+        }
+    }
+    
+    if(textField == CvvNmberTxtFld){
+        if (textField.text.length < 3 || string.length == 0){
+            return YES;
+        }
+        else{
+            return NO;
+        }
     }
     return NO;
 }

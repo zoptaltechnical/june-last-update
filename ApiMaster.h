@@ -103,9 +103,9 @@ typedef void (^APICompletionHandler)(NSDictionary* responseDict,NSError *error);
 
 -(void)paymentListingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
 
+-(void)DeleteCardWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
 
-
-
+-(void)FreeBookingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
 
 
 

@@ -222,7 +222,7 @@
     if ([[discriptionTxtView.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Discription of report."
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -286,7 +286,7 @@
          else if ([responseDict[@"result"]boolValue]==1)
          {
              
-             [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+             [SRAlertView sr_showAlertViewWithTitle:@""
                                             message:[responseDict valueForKey:@"message"]
                                     leftActionTitle:@"OK"
                                    rightActionTitle:@""

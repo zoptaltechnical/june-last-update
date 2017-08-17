@@ -20,7 +20,7 @@
     
     disWebView.delegate = self;
     
-    NSURL *url = [NSURL URLWithString:@"http://workmeappit.com/steezz/disclaimer"];
+    NSURL *url = [NSURL URLWithString:@"https://zoptal.com/demo/steezz/terms"];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [disWebView loadRequest:requestObj];
     // Do any additional setup after loading the view.

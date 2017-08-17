@@ -14,6 +14,7 @@
     NSString *cardID;
     NSMutableArray *cardListArray;
     NSDictionary *dict;
+    NSString *myCardID;
 }
 
 @end
@@ -27,9 +28,15 @@
     NSLog(@"%@ login data = ",dict);
     
     
-    [self CreditCardListingAPI];
+  //  [self CreditCardListingAPI];
     
     // Do any additional setup after loading the view.
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+   [self CreditCardListingAPI];
+    
 }
 
 - (IBAction)savedCardBackBtnAction:(id)sender {
@@ -72,6 +79,12 @@
     
     UILabel *Cardnumber=(UILabel *)[cell.contentView viewWithTag:960000002];
     Cardnumber.text= [NSString stringWithFormat:@"%@",   [[cardListArray valueForKey:@"card_number"]objectAtIndex:indexPath.row]];
+    
+    
+      UIButton *DeleteProductBtn =(UIButton *)[cell.contentView viewWithTag:960000005];
+     [DeleteProductBtn addTarget:self
+        action:@selector(DeleteBtnPressed:)
+     forControlEvents:UIControlEventTouchUpInside];
 
   
     UIImageView *ImageMy = (UIImageView *)[cell.contentView viewWithTag:960000000];
@@ -103,15 +116,59 @@
     {
         NSLog(@"dont want to pay");
     }
-//
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-//    LenderProductDetailViewController *homeObj = [storyboard instantiateViewControllerWithIdentifier:@"LenderProductDetailViewController"];
-
-//    [self.navigationController pushViewController:homeObj animated:YES];
-//    
-    
     
 }
+
+-(void)DeleteBtnPressed:(id)sender
+{
+
+    CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:cardListingTableView];
+    NSIndexPath *indexPath = [cardListingTableView indexPathForRowAtPoint:buttonPosition];
+    McomLOG(@"like-indexPath--%ld",(long)indexPath.row);
+
+    myCardID = [NSString stringWithFormat:@"%@",[[cardListArray valueForKey:@"card_id"]objectAtIndex:indexPath.row]];
+    [self callDeleteCardAPI];
+
+}
+
+
+
+
+#pragma  Delete Card API
+-(void)callDeleteCardAPI
+{
+    
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    NSDictionary* registerInfo = @{
+                                   @"access_token":[dict valueForKey:@"access_token"],
+                                   @"card_id":myCardID
+                                   };
+    
+    McomLOG(@"%@",registerInfo);
+    [API DeleteCardWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         
+         [Appdelegate stopLoader:nil];
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         NSLog(@"%@",dict_response);
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"]    messageText:nil delegate:nil];
+             
+             [self CreditCardListingAPI];
+         }
+         
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"Home Feed List  = %@",responseDict);
+             [self CreditCardListingAPI];
+         }
+     }];
+}
+
+
 
 -(void)CreditCardListingAPI
 {
@@ -131,7 +188,9 @@
          
          if ([responseDict[@"response"]boolValue]==0)
          {
-             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
+             [Utility showAlertWithTitleText:@"Please add your card" messageText:nil delegate:nil];
+             
+             [cardListingTableView reloadData];
              
            //  [self.navigationController popViewControllerAnimated:YES];
              
@@ -141,18 +200,7 @@
          {
              NSLog(@"Home Feed List  = %@",responseDict);
              
-             NSLog(@"%@", responseDict);
-             
-             cardListArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
-             NSLog(@"tabel list Data%@", cardListArray);
-             
-             if (cardListArray.count ==0)
-             {
-               
-             }
-             
-             [cardListingTableView reloadData];
-             
+                         
          }
      }];
 
@@ -196,12 +244,13 @@
          
          if ([responseDict[@"response"]boolValue]==0)
          {
-             UIStoryboard *sb = [self storyboard];
              
-             UIViewController *vc = [sb instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
-             Appdelegate.window.rootViewController = vc;
+             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+             LenderTabBarViewController* tabBarController = (LenderTabBarViewController*)[storyboard instantiateViewControllerWithIdentifier:@"LenderTabBarViewController"];
+             
+             [self.navigationController pushViewController:tabBarController animated:YES];
            
-             [Utility showAlertWithTitleText:@"Please Provide paypal transaction id." messageText:nil delegate:nil];
+             [Utility showAlertWithTitleText:[responseDict valueForKey:@"message"] messageText:nil delegate:nil];
          }
          else if ([responseDict[@"response"]boolValue]==1)
          {

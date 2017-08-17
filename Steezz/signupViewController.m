@@ -21,13 +21,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
      termOfSerivecs = @"0";
+    
+    termOfServicePopView.layer.cornerRadius = 8.0;
+
     
     firstnameTxtFld.borderStyle = UITextBorderStyleLine;
     firstnameTxtFld.layer.borderWidth = 1;
     firstnameTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     firstnameTxtFld.layer.cornerRadius = 15.0;
+    
+    statetxtFld.borderStyle = UITextBorderStyleLine;
+    statetxtFld.layer.borderWidth = 1;
+    statetxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    statetxtFld.layer.cornerRadius = 15.0;
+    
+    
+    cityTxtFlr.borderStyle = UITextBorderStyleLine;
+    cityTxtFlr.layer.borderWidth = 1;
+    cityTxtFlr.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    cityTxtFlr.layer.cornerRadius = 15.0;
+    
+    
+    
+    zipcodeTxtFld.borderStyle = UITextBorderStyleLine;
+    zipcodeTxtFld.layer.borderWidth = 1;
+    zipcodeTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    zipcodeTxtFld.layer.cornerRadius = 15.0;
+    
+    
     
     lastnameTxtFld.borderStyle = UITextBorderStyleLine;
     lastnameTxtFld.layer.borderWidth = 1;
@@ -70,6 +92,13 @@
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:areaTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:addressTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:emailTxtFld ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:zipcodeTxtFld ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:statetxtFld ,nil]];
+    [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:cityTxtFlr ,nil]];
+
+    
+    
+    
     // Do any additional setup after loading the view.
 }
 
@@ -91,6 +120,22 @@
     areaTxtFld.autoCompleteTableFrame = CGRectMake((self.view.frame.size.width-areaTxtFld.frame.size.width)*0.5, areaTxtFld.frame.size.height+100.0, areaTxtFld.frame.size.width, 200.0);
 }
 
+
+- (IBAction)myTermsOkBtnAction:(id)sender {
+    
+    [UIView transitionWithView:termOfServicePopView
+                      duration:1.4
+                       options:UIViewAnimationOptionTransitionFlipFromBottom
+                    animations:^{
+                        termOfServicePopView.hidden = YES;
+                    }
+                    completion:NULL];
+    
+    
+    
+}
+
+
 - (IBAction)termsOfServicesBtnAction:(id)sender {
 
         
@@ -100,6 +145,23 @@
             termOfSerivecs = @"1";
        
             [termsOfServicesBtn setImage:[UIImage imageNamed:@"select_icon-1"] forState:UIControlStateNormal];
+            
+            
+            [UIView transitionWithView:termOfServicePopView
+                              duration:1.4
+                               options:UIViewAnimationOptionTransitionFlipFromTop
+                            animations:^{
+                                termOfServicePopView.hidden = NO;
+                            }
+                            completion:NULL];
+            
+            
+            NSURL *url = [NSURL URLWithString:@"https://zoptal.com/demo/steezz/terms"];
+            NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+            [myTermsWebView loadRequest:requestObj];
+            
+            
+            
         }
         else
         {
@@ -177,7 +239,7 @@
     if ([[firstnameTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your First name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -194,6 +256,10 @@
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        
         
     }
     
@@ -201,7 +267,7 @@
     {
 
     
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Last Name"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -219,10 +285,13 @@
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
     }
     else if ([[passwordTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Password"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -240,12 +309,16 @@
         [areaTxtFld resignFirstResponder];
         [mobileTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
+        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
     }
     
     
     else if ([[emailTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -254,7 +327,9 @@
                                       NSLog(@"%zd", actionType);
                                   }];
         
-        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
         [firstnameTxtFld resignFirstResponder];
         [lastnameTxtFld resignFirstResponder];
@@ -268,7 +343,7 @@
     else if ([[addressTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Address"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -277,7 +352,9 @@
                                       NSLog(@"%zd", actionType);
                                   }];
         
-        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
         [firstnameTxtFld resignFirstResponder];
         [lastnameTxtFld resignFirstResponder];
@@ -287,36 +364,11 @@
         [mobileTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
     }
-    
-    
-    
-    else if ([[areaTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
-    {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please enter your area"
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationDownToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        
-        [emailTxtFld resignFirstResponder];
-        [firstnameTxtFld resignFirstResponder];
-        [lastnameTxtFld resignFirstResponder];
-        [passwordTxtFld resignFirstResponder];
-        [addressTxtFld resignFirstResponder];
-        [areaTxtFld resignFirstResponder];
-        [mobileTxtFld resignFirstResponder];
-        [emailTxtFld resignFirstResponder];
-    }
-    
  
     
     else if ([[mobileTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter your Phone Number"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -325,7 +377,9 @@
                                       NSLog(@"%zd", actionType);
                                   }];
         
-        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
         [firstnameTxtFld resignFirstResponder];
         [lastnameTxtFld resignFirstResponder];
@@ -336,14 +390,88 @@
         [emailTxtFld resignFirstResponder];
     }
     
-
+    
+    else if ([[statetxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    {
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your State"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+    }
     
     
+    
+    
+    else if ([[cityTxtFlr.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    {
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your City"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+    }
+    
+    
+    
+    else if ([[zipcodeTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
+    {
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your Zip Code"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+    }
     
     else if (![Utility NSStringIsValidEmail:emailTxtFld.text])
     {
         
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
+        [SRAlertView sr_showAlertViewWithTitle:@""
                                        message:@"Please enter Valid Email"
                                leftActionTitle:@"OK"
                               rightActionTitle:@""
@@ -352,7 +480,9 @@
                                       NSLog(@"%zd", actionType);
                                   }];
         
-        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
         [emailTxtFld resignFirstResponder];
         [firstnameTxtFld resignFirstResponder];
         [lastnameTxtFld resignFirstResponder];
@@ -364,30 +494,32 @@
         
     }
     
-    else if ([termOfSerivecs isEqualToString:@"0"])
-    {
-        
-        [SRAlertView sr_showAlertViewWithTitle:@"Alert"
-                                       message:@"Please Agree to Our Terms and Condition."
-                               leftActionTitle:@"OK"
-                              rightActionTitle:@""
-                                animationStyle:AlertViewAnimationRightToCenterSpring
-                                  selectAction:^(AlertViewActionType actionType) {
-                                      NSLog(@"%zd", actionType);
-                                  }];
-        
-        
-        [emailTxtFld resignFirstResponder];
-        [firstnameTxtFld resignFirstResponder];
-        [lastnameTxtFld resignFirstResponder];
-        [passwordTxtFld resignFirstResponder];
-        [addressTxtFld resignFirstResponder];
-        [areaTxtFld resignFirstResponder];
-        [mobileTxtFld resignFirstResponder];
-        [emailTxtFld resignFirstResponder];
-        
-    }
-    
+//    else if ([termOfSerivecs isEqualToString:@"0"])
+//    {
+//        
+//        [SRAlertView sr_showAlertViewWithTitle:@""
+//                                       message:@"Please Agree to Our Terms and Condition."
+//                               leftActionTitle:@"OK"
+//                              rightActionTitle:@""
+//                                animationStyle:AlertViewAnimationRightToCenterSpring
+//                                  selectAction:^(AlertViewActionType actionType) {
+//                                      NSLog(@"%zd", actionType);
+//                                  }];
+//        
+//        [statetxtFld resignFirstResponder];
+//        [cityTxtFlr resignFirstResponder];
+//        [zipcodeTxtFld resignFirstResponder];
+//        [emailTxtFld resignFirstResponder];
+//        [firstnameTxtFld resignFirstResponder];
+//        [lastnameTxtFld resignFirstResponder];
+//        [passwordTxtFld resignFirstResponder];
+//        [addressTxtFld resignFirstResponder];
+//        [areaTxtFld resignFirstResponder];
+//        [mobileTxtFld resignFirstResponder];
+//        [emailTxtFld resignFirstResponder];
+//        
+//    }
+//    
     
     
     
@@ -416,7 +548,9 @@
                             @"password":passwordTxtFld.text,
                             @"device_token":@"123456789",
                             @"device_type":@"IOS",
-                            @"location":areaTxtFld.text
+                            @"city":cityTxtFlr.text,
+                            @"state":statetxtFld.text,
+                            @"zip_code":zipcodeTxtFld.text
                             };
     
     McomLOG(@"%@",registerInfo);
@@ -450,5 +584,29 @@
 
          }
      }];
+}
+
+
+
+
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    
+    
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    
+    [Appdelegate stopLoader:nil];
+    
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"webview error:%@",[error localizedDescription]);
 }
 @end
