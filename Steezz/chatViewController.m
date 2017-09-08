@@ -28,7 +28,9 @@
     NSDateFormatter *dateFormatter;
     
     NSString *currentTime;
+    NSTimer *myTimer;
     
+    NSString *newCons;
     
 }
 
@@ -66,14 +68,50 @@
     
     [self loadAllMessages:_ConversationID_string];
     
-    [NSTimer scheduledTimerWithTimeInterval:12.0 target:self selector:@selector(reloadTable) userInfo:nil repeats:YES];
-
-    // Do any additional setup after loading the view.
+    
+    myTimer = [NSTimer scheduledTimerWithTimeInterval:12.0
+                                               target:self
+                                             selector:@selector(reloadTable)
+                                             userInfo:nil
+                                              repeats:YES];
+    
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(ForRefreshing:)
+                                                 name:@"ForRefreshing"
+                                               object:nil];
 }
+
+
+- (void)ForRefreshing:(NSNotification *) notification
+{
+    
+    if (newCons ==nil)
+    {
+        [self loadAllMessages:_ConversationID_string];
+ 
+    }
+    
+    else
+    {
+       [self RefreshAllMessages:newCons];
+    }
+    
+   
+    
+    
+    //
+    
+}
+
+
+
 
 -(void) reloadTable
 {
-    [self MyloadAllMessages:_ConversationID_string];
+    
+     [self nowReloadThisAPI];
+    
+    //[self MyloadAllMessages:_ConversationID_string];
     
 }
 
@@ -81,6 +119,20 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     [self currentTime];
+}
+
+
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [myTimer invalidate];
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [myTimer invalidate];
 }
 
 - (IBAction)chatCameraBtnAction:(id)sender {
@@ -152,6 +204,20 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 
 {
+    isFromImagePicker=YES;
+    image = [info objectForKey:UIImagePickerControllerEditedImage];
+    data = UIImageJPEGRepresentation(image, 0.99);
+    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
+    CGRect rect = CGRectMake(0,0,100,80);
+    UIGraphicsBeginImageContext( rect.size );
+    [image drawInRect:rect];
+    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSData *imageData = UIImagePNGRepresentation(picture1);
+    image=[UIImage imageWithData:imageData];
+    
+    [self sendImage:image];
     
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -237,7 +303,9 @@
                                                            options:NSStringDrawingUsesLineFragmentOrigin
                                                         attributes:@{ NSFontAttributeName:[UIFont systemFontOfSize:14.0f] }
                                                            context:nil].size;
-    return labelSize.height + 30 + TOP_MARGIN;
+    return labelSize.height + 45 + TOP_MARGIN;
+    
+    // here i have chaneg the height initially its 25
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -543,9 +611,7 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
-             
-             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+            
          }
          else if ([responseDict[@"result"]boolValue]==1)
          {
@@ -715,14 +781,22 @@
          
          if ([responseDict[@"response"]boolValue]==0)
          {
-             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
-             
-             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+//             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+//             
+//             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
          }
          else if ([responseDict[@"response"]boolValue]==1)
          {
+             //[myTimer invalidate];
+             newCons = [[responseDict valueForKey:@"data"] valueForKey:@"conversation_id"];
              
-             [self loadAllMessages:_ConversationID_string];
+             [[NSNotificationCenter defaultCenter]
+              postNotificationName:@"ForRefreshing"
+              object:self];
+             
+            //  [self nowReloadThisAPI];
+             
+      
              if ([messageTxtFld.text length]>0)
              {
                 // [self scrollTableview];
@@ -740,15 +814,27 @@
      }];
 }
 
+-(void)nowReloadThisAPI
+{
+    if (newCons ==nil) {
+        
+         [self loadAllMessages:_ConversationID_string];
+        
+    }
+    
+    else
+    {
+       [self RefreshAllMessages:newCons];
+    }
+    
+    
+}
 
 
 #pragma Api for refreshing messages 
 
 -(void)MyloadAllMessages:(NSString *)String
 {
-    
-    
-    
     NSLog(@"%@",dict1);
     
     NSDictionary* registerInfo;
@@ -768,9 +854,9 @@
          
          if ([responseDict[@"result"]boolValue]==0)
          {
-             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
-             
-             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
+//             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+//             
+//             [Utility showAlertWithTitleText:errormessage messageText:nil delegate:nil];
          }
          else if ([responseDict[@"result"]boolValue]==1)
          {
@@ -808,6 +894,10 @@
                          {
                              [self adddMediaBubbledata:kImagebyme mediaPath:[dict1 valueForKey:@"image"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
                          }
+                         else
+                         {
+                             [self adddMediaBubbledata:kTextByme mediaPath:[dict1 valueForKey:@"message"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
                          
                          NSMutableDictionary* mutableDict = [dict1 mutableCopy];
                          [mutableDict removeObjectForKey:@"data"];
@@ -817,14 +907,123 @@
                      else  if ([[dict1 valueForKey:@"type"]isEqualToString:@"other"])
                          
                      {
-                                                 
+                         if ([[dict1 valueForKey:@"image"]length]>0)
+                         {
+                             [self adddMediaBubbledata:kImagebyOther mediaPath:[dict1 valueForKey:@"image"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         else
+                         {
+                             [self adddMediaBubbledata:kTextByOther mediaPath:[dict1 valueForKey:@"message"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         
                          NSMutableDictionary* mutableDict = [dict1 mutableCopy];
                          [mutableDict removeObjectForKey:@"data"];
                      }
                      
+                     
                      [Chattable reloadData];
                      [self scrollTableview];
                      [self performSelector:@selector(messageSent:) withObject:@"0" afterDelay:1];
+                 }
+             }
+         }
+     }];
+}
+
+-(void)RefreshAllMessages:(NSString *)String
+{
+    NSLog(@"%@",dict1);
+    
+    NSDictionary* registerInfo;
+    
+    NSLog(@"string  = =   %@",String);
+    
+    registerInfo= @{
+                    @"access_token":[dict valueForKey:@"access_token"],
+                    @"conversation_id":String,
+                    };
+    
+    McomLOG(@"%@",registerInfo);
+    [API LoadAllMessagesWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             
+         }
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"responce =  %@",responseDict);
+             
+             MessageData = [responseDict valueForKey:@"data"];
+             [sphBubbledata removeAllObjects];
+             
+             if (MessageData.count ==0)
+             {
+                 [SRAlertView sr_showAlertViewWithTitle:@""
+                                                message:@"Message Chat is Empty!"
+                                        leftActionTitle:@"OK"
+                                       rightActionTitle:@""
+                                         animationStyle:AlertViewAnimationRightToCenterSpring
+                                           selectAction:^(AlertViewActionType actionType) {
+                                               NSLog(@"%zd", actionType);
+                                           }];
+             }
+             
+             else
+             {
+                 
+                 for (int i=0; i<[[responseDict valueForKey:@"data"] count]; i++)
+                 {
+                     NSDate *date = [NSDate date];
+                     NSLog(@"%@",date);
+                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                     [formatter setDateFormat:@"hh:mm a"];
+                     dict1=[[responseDict valueForKey:@"data"] objectAtIndex:i];
+                     
+                     if ([[dict1 valueForKey:@"type"] isEqualToString:@"self"])
+                     {
+                         if ([[dict1 valueForKey:@"image"]length]>0)
+                         {
+                             [self adddMediaBubbledata:kImagebyme mediaPath:[dict1 valueForKey:@"image"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         else
+                         {
+                             [self adddMediaBubbledata:kTextByme mediaPath:[dict1 valueForKey:@"message"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         
+                         NSMutableDictionary* mutableDict = [dict1 mutableCopy];
+                         [mutableDict removeObjectForKey:@"data"];
+                         
+                     }
+                     
+                     else  if ([[dict1 valueForKey:@"type"]isEqualToString:@"other"])
+                         
+                     {
+                         if ([[dict1 valueForKey:@"image"]length]>0)
+                         {
+                             [self adddMediaBubbledata:kImagebyOther mediaPath:[dict1 valueForKey:@"image"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         else
+                         {
+                             [self adddMediaBubbledata:kTextByOther mediaPath:[dict1 valueForKey:@"message"] mtime:[formatter stringFromDate:[dict1 valueForKey:@"date"]] thumb:[dict1 valueForKey:@"image"] downloadstatus:[dict1 valueForKey:@"profile_pic"] sendingStatus:kSent msg_ID:[self genRandStringLength:7]];
+                         }
+                         
+                         NSMutableDictionary* mutableDict = [dict1 mutableCopy];
+                         [mutableDict removeObjectForKey:@"data"];
+                     }
+                     
+                     
+//                     [[NSNotificationCenter defaultCenter]
+//                      postNotificationName:@"ForRefreshing"
+//                      object:self];
+                     
+                     [Chattable reloadData];
+                     [self scrollTableview];
+                     [self performSelector:@selector(messageSent:) withObject:@"0" afterDelay:1];
+                  
                  }
              }
          }

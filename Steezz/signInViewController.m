@@ -230,10 +230,12 @@
 {
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
     
+    NSLog(@"%@",[Utility valueForKey:DeviceToken]);
+    
     NSDictionary* registerInfo = @{
                                    @"username":signInEmailTxtFld.text,
                                    @"password":signInPasswrdTxtFld.text,
-                                   @"device_token":@"12345678",
+                                   @"device_token":[Utility valueForKey:DeviceToken],
                                    @"device_type":@"iPhone"
                                    };
     
@@ -323,7 +325,7 @@
     NSDictionary* registerInfo = @{
                                    @"facebook_id":facebookIDString,
                                    @"first_name":firstname,
-                                   @"device_token":@"12345678",
+                                   @"device_token":DeviceToken,
                                    @"device_type":@"iPhone",
                                    @"last_name":lastName,
                                    @"email":emailString,

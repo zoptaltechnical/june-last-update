@@ -72,6 +72,19 @@
         statusBar.backgroundColor = [UIColor blackColor];
     }
     
+    
+    
+    NSLog(@"Registering for push notifications...");
+    
+    
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+    
+    [application registerForRemoteNotifications];
+
+    
+    
+    
+    
     // Override point for customization after application launch.
     return YES;
 }
@@ -127,6 +140,25 @@
     }
     return YES;
 }
+
+
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"content---%@", token);
+    
+    [Utility setValue:token forKey:DeviceToken];
+    
+    NSLog(@"my device token = %@",[Utility valueForKey:DeviceToken]);
+    
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSString *str = [NSString stringWithFormat: @"Error: %@", err];
+    NSLog(@"%@",str);
+}
+
 
 
 

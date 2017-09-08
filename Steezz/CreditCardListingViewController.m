@@ -200,7 +200,19 @@
          {
              NSLog(@"Home Feed List  = %@",responseDict);
              
-                         
+             
+             NSLog(@"%@", responseDict);
+             
+             cardListArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
+             NSLog(@"tabel list Data%@", cardListArray);
+             
+             if (cardListArray.count ==0)
+             {
+               
+             }
+             
+             [cardListingTableView reloadData];
+             
          }
      }];
 

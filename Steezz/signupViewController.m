@@ -12,6 +12,10 @@
 
 {
     NSString *termOfSerivecs;
+    
+    NSString *MyDateOfBirth;
+    
+      UIDatePicker *DatePicker;
 }
 
 @end
@@ -25,31 +29,37 @@
     
     termOfServicePopView.layer.cornerRadius = 8.0;
 
+     [dateOfBirthBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 15.0f, 0.0f, 0.0f)];
     
     firstnameTxtFld.borderStyle = UITextBorderStyleLine;
     firstnameTxtFld.layer.borderWidth = 1;
     firstnameTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     firstnameTxtFld.layer.cornerRadius = 15.0;
     
+    
+    cnfirmPasswrdTxtFld.borderStyle = UITextBorderStyleLine;
+    cnfirmPasswrdTxtFld.layer.borderWidth = 1;
+    cnfirmPasswrdTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    cnfirmPasswrdTxtFld.layer.cornerRadius = 15.0;
+    
     statetxtFld.borderStyle = UITextBorderStyleLine;
     statetxtFld.layer.borderWidth = 1;
     statetxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     statetxtFld.layer.cornerRadius = 15.0;
     
+    dateOfBirthBtn.layer.borderWidth = 1;
+    dateOfBirthBtn.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    dateOfBirthBtn.layer.cornerRadius = 15.0;
     
     cityTxtFlr.borderStyle = UITextBorderStyleLine;
     cityTxtFlr.layer.borderWidth = 1;
     cityTxtFlr.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     cityTxtFlr.layer.cornerRadius = 15.0;
     
-    
-    
     zipcodeTxtFld.borderStyle = UITextBorderStyleLine;
     zipcodeTxtFld.layer.borderWidth = 1;
     zipcodeTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     zipcodeTxtFld.layer.cornerRadius = 15.0;
-    
-    
     
     lastnameTxtFld.borderStyle = UITextBorderStyleLine;
     lastnameTxtFld.layer.borderWidth = 1;
@@ -76,14 +86,11 @@
     mobileTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     mobileTxtFld.layer.cornerRadius = 15.0;
     
-   
-    
     areaTxtFld.placeSearchDelegate                 = self;
     areaTxtFld.strApiKey                           = @"AIzaSyCDi2dklT-95tEHqYoE7Tklwzn3eJP-MtM";
     areaTxtFld.superViewOfList                     = self.view;
     areaTxtFld.autoCompleteShouldHideOnSelection   = YES;
     areaTxtFld.maximumNumberOfAutoCompleteRows     = 5;
-    
    
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:firstnameTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:lastnameTxtFld ,nil]];
@@ -95,12 +102,86 @@
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:zipcodeTxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:statetxtFld ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:cityTxtFlr ,nil]];
-
-    
-    
+     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:cnfirmPasswrdTxtFld ,nil]];
     
     // Do any additional setup after loading the view.
 }
+
+
+- (IBAction)pickerCancelBtnAction:(id)sender
+{
+    datePickerView.hidden = YES;
+}
+
+
+- (IBAction)pickerDoneBtnAction:(id)sender {
+    
+    
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY/MM/dd"];
+    NSString *currentTime = [dateFormatter stringFromDate:age_picker.date];
+    [dateOfBirthBtn setTitle:currentTime forState:UIControlStateNormal];
+    [dateOfBirthBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    MyDateOfBirth = currentTime;
+    
+    datePickerView.hidden = YES;
+    
+    
+    
+    
+}
+
+
+
+
+
+
+- (IBAction)dateOfBirthbtnAction:(id)sender
+{
+    
+    datePickerView.hidden = NO;
+    [statetxtFld resignFirstResponder];
+    [cityTxtFlr resignFirstResponder];
+    [zipcodeTxtFld resignFirstResponder];
+    [emailTxtFld resignFirstResponder];
+    [firstnameTxtFld resignFirstResponder];
+    [lastnameTxtFld resignFirstResponder];
+    [passwordTxtFld resignFirstResponder];
+    [addressTxtFld resignFirstResponder];
+    [areaTxtFld resignFirstResponder];
+    [mobileTxtFld resignFirstResponder];
+    [emailTxtFld resignFirstResponder];
+    
+    [self validateAge];
+}
+
+
+
+
+
+-(void)validateAge {
+    
+    NSDateComponents *today = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:[NSDate date]];
+    NSInteger day = [today day];
+    NSInteger month = [today month];
+    NSInteger year = [today year];
+    
+    int correctYear = year - 18;
+    
+    NSDateComponents *correctAge = [[NSDateComponents alloc] init];
+    [correctAge setDay:day];
+    [correctAge setMonth:month];
+    [correctAge setYear:correctYear];
+    
+    NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+    [age_picker setDatePickerMode:UIDatePickerModeDate];
+    [age_picker setMaximumDate:[calendar dateFromComponents:correctAge]];
+    
+    return;
+}
+
 
 -(void)viewDidAppear:(BOOL)animated{
     
@@ -143,10 +224,7 @@
         {
 
             termOfSerivecs = @"1";
-       
-            [termsOfServicesBtn setImage:[UIImage imageNamed:@"select_icon-1"] forState:UIControlStateNormal];
-            
-            
+            [termsOfServicesBtn setImage:[UIImage imageNamed:@"select_icon-1"] forState:UIControlStateNormal];            
             [UIView transitionWithView:termOfServicePopView
                               duration:1.4
                                options:UIViewAnimationOptionTransitionFlipFromTop
@@ -159,9 +237,7 @@
             NSURL *url = [NSURL URLWithString:@"https://zoptal.com/demo/steezz/terms"];
             NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
             [myTermsWebView loadRequest:requestObj];
-            
-            
-            
+  
         }
         else
         {
@@ -289,6 +365,37 @@
         [cityTxtFlr resignFirstResponder];
         [zipcodeTxtFld resignFirstResponder];
     }
+    
+    
+    else if (![passwordTxtFld.text isEqualToString:cnfirmPasswrdTxtFld.text])
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please confirm your password"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [cnfirmPasswrdTxtFld resignFirstResponder];
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        
+    }
+    
+    
     else if ([[passwordTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         [SRAlertView sr_showAlertViewWithTitle:@""
@@ -494,32 +601,64 @@
         
     }
     
-//    else if ([termOfSerivecs isEqualToString:@"0"])
-//    {
-//        
-//        [SRAlertView sr_showAlertViewWithTitle:@""
-//                                       message:@"Please Agree to Our Terms and Condition."
-//                               leftActionTitle:@"OK"
-//                              rightActionTitle:@""
-//                                animationStyle:AlertViewAnimationRightToCenterSpring
-//                                  selectAction:^(AlertViewActionType actionType) {
-//                                      NSLog(@"%zd", actionType);
-//                                  }];
-//        
-//        [statetxtFld resignFirstResponder];
-//        [cityTxtFlr resignFirstResponder];
-//        [zipcodeTxtFld resignFirstResponder];
-//        [emailTxtFld resignFirstResponder];
-//        [firstnameTxtFld resignFirstResponder];
-//        [lastnameTxtFld resignFirstResponder];
-//        [passwordTxtFld resignFirstResponder];
-//        [addressTxtFld resignFirstResponder];
-//        [areaTxtFld resignFirstResponder];
-//        [mobileTxtFld resignFirstResponder];
-//        [emailTxtFld resignFirstResponder];
-//        
-//    }
-//    
+    else if ([MyDateOfBirth length]==0)
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter your date of birth."
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationRightToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        
+    }
+    
+    
+  else if ([termOfSerivecs isEqualToString:@"0"])
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please agree to terms & conditions."
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationRightToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [statetxtFld resignFirstResponder];
+        [cityTxtFlr resignFirstResponder];
+        [zipcodeTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        [firstnameTxtFld resignFirstResponder];
+        [lastnameTxtFld resignFirstResponder];
+        [passwordTxtFld resignFirstResponder];
+        [addressTxtFld resignFirstResponder];
+        [areaTxtFld resignFirstResponder];
+        [mobileTxtFld resignFirstResponder];
+        [emailTxtFld resignFirstResponder];
+        
+    }
+    
+    
+    
+    
+    
+    
     
     
     
@@ -546,11 +685,12 @@
                             @"cpassword":passwordTxtFld.text,
                             @"phone":mobileTxtFld.text,
                             @"password":passwordTxtFld.text,
-                            @"device_token":@"123456789",
+                            @"device_token":[Utility valueForKey:DeviceToken],
                             @"device_type":@"IOS",
                             @"city":cityTxtFlr.text,
                             @"state":statetxtFld.text,
-                            @"zip_code":zipcodeTxtFld.text
+                            @"zip_code":zipcodeTxtFld.text,
+                            @"date_of_birth":MyDateOfBirth
                             };
     
     McomLOG(@"%@",registerInfo);
@@ -586,10 +726,6 @@
      }];
 }
 
-
-
-
-
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
@@ -609,4 +745,6 @@
 {
     NSLog(@"webview error:%@",[error localizedDescription]);
 }
+
+
 @end

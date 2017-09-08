@@ -11,11 +11,12 @@
 @interface LenderProductDetailViewController : UIViewController
 {
     
+    IBOutlet UIButton *messageBtn;
     
     IBOutlet UIButton *favouriteBtn;
     
     
-    IBOutlet UIButton *messageBtn;
+   
     
     IBOutlet UILabel *dateCountLabel;
     

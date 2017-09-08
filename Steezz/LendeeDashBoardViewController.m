@@ -17,7 +17,7 @@
     NSString *categoryType;
     NSString *GetUserId;
     NSString *ownerUserName;
-    
+    NSTimer * myTimer;
     
     NSMutableArray *DashBoardArray;
     
@@ -41,8 +41,16 @@
              @"date_icon-1",
              nil];
     
+    
+    
+     myTimer = [NSTimer scheduledTimerWithTimeInterval:6.0
+                                                         target:self
+                                                       selector:@selector(reloadTable)
+                                                       userInfo:nil
+                                                        repeats:YES];
+    
    
-    [NSTimer scheduledTimerWithTimeInterval:6.0 target:self selector:@selector(reloadTable) userInfo:nil repeats:YES];
+   
     
     // Do any additional setup after loading the view.
 }
@@ -51,11 +59,18 @@
 -(void) reloadTable
 {
      [self MycallDashBoardAPI];
-    
-    
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [myTimer invalidate];
     
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [myTimer invalidate];
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -293,7 +308,7 @@
                                    };
     
     McomLOG(@"%@",registerInfo);
-    [API paymentListingWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+    [API DashboardtWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
      {
          [Appdelegate stopLoader:nil];
          NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
@@ -317,17 +332,13 @@
          else if ([responseDict[@"result"]boolValue]==1)
          {
              NSLog(@"sign_up%@", responseDict);
-             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
+             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"products"]];
              [dashBoardTableVIew reloadData];
              
-             NSLog(@"Dashboard list Data%@",DashBoardArray);
+            
          }
      }];
 }
-
-
-
-
 
 -(void)MycallDashBoardAPI
 {
@@ -337,7 +348,7 @@
                                    };
     
    
-    [API paymentListingWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+    [API DashboardtWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
      {
          [Appdelegate stopLoader:nil];
        //  NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
@@ -361,10 +372,10 @@
          else if ([responseDict[@"result"]boolValue]==1)
          {
              NSLog(@"sign_up%@", responseDict);
-             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"data"]];
-             [dashBoardTableVIew reloadData];
+             DashBoardArray =[[NSMutableArray alloc]initWithArray:responseDict[@"products"]];
+                        [dashBoardTableVIew reloadData];
              
-             NSLog(@"Dashboard list Data%@",DashBoardArray);
+            // NSLog(@"Dashboard list Data%@",DashBoardArray);
          }
      }];
 }

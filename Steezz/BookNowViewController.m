@@ -27,7 +27,7 @@
 
 @interface BookNowViewController ()<PayPalPaymentDelegate,FIMultipleSelectionCalendarViewDelegate>
 {
-    NSString *mystring;
+    NSString *mystring ,*transaction_fee,*new_Ammount;
     
     NSString *myPayingAmount;
     
@@ -295,7 +295,23 @@
              
              backGroundView.hidden = NO;
              
-           
+             
+             transaction_fee = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"trans_fees"]];
+             
+             new_Ammount = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"amount"]];
+             
+             
+             myPayingAmount = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
+
+             
+             amountToPay.text = [NSString stringWithFormat:@"$%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]];
+             
+             totalAmountToPay = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"total_amount"]]];
+             NSLog(@"%@",totalAmountToPay);
+             
+             numberofDay.text = [NSString stringWithFormat:@"%@",[[responseDict valueForKey:@"data"] valueForKey:@"num_of_days"]];
+             
+             perDayPrice.text = [NSString stringWithFormat:@"$ %@/Day",_PerDayAmount];
          }
      }];
 }
@@ -344,7 +360,7 @@
     {
     
     
-    PayPalItem *item1 = [PayPalItem itemWithName:@"skateboard" withQuantity:1 withPrice:@"1000" withCurrency:@"USD" withSku:@"SKU-Skateboard"];
+    PayPalItem *item1 = [PayPalItem itemWithName:@"skateboard" withQuantity:1 withPrice:totalAmountToPay withCurrency:@"USD" withSku:@"SKU-Skateboard"];
         
     PayPalItem *item2 = [PayPalItem itemWithName:@"Steezz Product" withQuantity:1 withPrice:[NSDecimalNumber decimalNumberWithString:@"00.00"] withCurrency:@"USD" withSku:@"SKU-Steezz-Product"];
     NSArray*items = @[item1,item2];
@@ -434,7 +450,9 @@
                                    @"booking_dates":AvailableDatesString,
                                    @"txd_id":paypalId,
                                    @"create_time":create_time,
-                                   @"amount":_PerDayAmount
+                                   @"amount":new_Ammount,
+                                   @"trans_fees":transaction_fee,
+                                   @"total_amount":myPayingAmount,
                                    };
     McomLOG(@"%@",registerInfo);
     [API paypalPaymentSucessWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)

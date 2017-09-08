@@ -42,7 +42,5 @@
 @property(nonatomic,strong) NSString * availabelDate;
 
 @property(nonatomic,strong) NSString * ProdctID;
-
-
 @property(nonatomic,strong) NSString * PerDayAmount;
 @end

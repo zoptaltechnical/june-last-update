@@ -64,7 +64,6 @@
     zipcodeTextField.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     zipcodeTextField.layer.cornerRadius = 15.0;
     
-    
     payPalIDTxtFld.layer.borderWidth = 1;
     payPalIDTxtFld.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     payPalIDTxtFld.layer.cornerRadius = 15.0;
@@ -725,7 +724,7 @@
                       @"zip_code":zipcodeTextField.text,
                       @"address":addressTxtFld.text,
                       @"device_type":@"Iphone",
-                      @"device_token":@"12345678",
+                      @"device_token":DeviceToken,
                       @"about_user":aboutTxtView.text,
                       @"phone":phoneNumbertxtFld.text,
                       @"paypal_id":payPalIDTxtFld.text

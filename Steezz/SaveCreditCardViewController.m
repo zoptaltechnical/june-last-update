@@ -258,6 +258,54 @@
         
     }
     
+    else if ([[CvvNmberTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] <=2)
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Please enter valid Cvv Number"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [firstName resignFirstResponder];
+        [lastNAme resignFirstResponder];
+        [accountNmberTxtFld resignFirstResponder];
+        [CvvNmberTxtFld resignFirstResponder];
+        [expiryMnth resignFirstResponder];
+        [expryYrTxtFld resignFirstResponder];
+        
+        
+        
+    }
+    
+    
+    else if ([[CvvNmberTxtFld.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] >4)
+    {
+        
+        [SRAlertView sr_showAlertViewWithTitle:@""
+                                       message:@"Cvv Number should contain 3 digits"
+                               leftActionTitle:@"OK"
+                              rightActionTitle:@""
+                                animationStyle:AlertViewAnimationDownToCenterSpring
+                                  selectAction:^(AlertViewActionType actionType) {
+                                      NSLog(@"%zd", actionType);
+                                  }];
+        
+        [firstName resignFirstResponder];
+        [lastNAme resignFirstResponder];
+        [accountNmberTxtFld resignFirstResponder];
+        [CvvNmberTxtFld resignFirstResponder];
+        [expiryMnth resignFirstResponder];
+        [expryYrTxtFld resignFirstResponder];
+        
+        
+        
+    }
+    
+    
     else if ([[expiryMnth.text stringByReplacingOccurrencesOfString:@" " withString:@""] length] == 0)
     {
         [SRAlertView sr_showAlertViewWithTitle:@""
@@ -431,25 +479,25 @@
 
 #pragma TextField Delegate
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if(textField == accountNmberTxtFld){
-        if (textField.text.length < 17 || string.length == 0){
-            return YES;
-        }
-        else{
-            return NO;
-        }
-    }
-    
-    if(textField == CvvNmberTxtFld){
-        if (textField.text.length < 3 || string.length == 0){
-            return YES;
-        }
-        else{
-            return NO;
-        }
-    }
-    return NO;
-}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    if(textField == accountNmberTxtFld){
+//        if (textField.text.length < 17 || string.length == 0){
+//            return YES;
+//        }
+//        else{
+//            return NO;
+//        }
+//    }
+//    
+//    if(textField == CvvNmberTxtFld){
+//        if (textField.text.length < 3 || string.length == 0){
+//            return YES;
+//        }
+//        else{
+//            return NO;
+//        }
+//    }
+//    return NO;
+//}
 @end

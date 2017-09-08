@@ -24,13 +24,13 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f) {
-            self.textLabel.backgroundColor = [UIColor whiteColor];
+            self.textLabel.backgroundColor = [UIColor clearColor];
         }
         self.textLabel.font = [UIFont systemFontOfSize:14.0f];
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.numberOfLines = 0;
         self.textLabel.textAlignment = NSTextAlignmentLeft;
-        self.textLabel.textColor = [UIColor blackColor];
+        self.textLabel.textColor = [UIColor darkGrayColor];
         
         _timestampLabel = [[UILabel alloc] init];
         _timestampLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -143,11 +143,12 @@
         messageBackgroundView.frame = CGRectMake(60, textLabelFrame.origin.y - 12, labelSize.width + 16,labelSize.height + 18);
         self.AvatarImageView.frame=CGRectMake(5,10+TOP_MARGIN, 50, 50);
         
-        UIImage *coloredImage = [UIImage imageNamed:@"messages_left_bubble"];
+      //  UIImage *coloredImage = [UIImage imageNamed:@"messages_left_bubble"];
         
-        //  UIImage *coloredImage = [[UIImage imageNamed:@"messages_left_bubble"] maskWithColor:BLUE_TEXT_HIGHLIGHT_COLOR]
+        messageBackgroundView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+        messageBackgroundView.layer.cornerRadius = 5;
         
-        messageBackgroundView.image = [[UIImage imageWithCGImage:coloredImage.CGImage] stretchableImageWithLeftCapWidth:20 topCapHeight:16];
+     //   messageBackgroundView.image = [[UIImage imageWithCGImage:coloredImage.CGImage] stretchableImageWithLeftCapWidth:10 topCapHeight:16];
         
     }else
     {
@@ -163,8 +164,13 @@
         self.textLabel.frame = textLabelFrame;
         
         messageBackgroundView.frame = CGRectMake(textLabelFrame.origin.x -8, textLabelFrame.origin.y - 2, labelSize.width + 16, labelSize.height + 18);
-         messageBackgroundView.image = [[UIImage imageNamed:@"messages_right_bubble"] stretchableImageWithLeftCapWidth:1 topCapHeight:16];
         
+
+        messageBackgroundView.backgroundColor = [UIColor colorWithRed:1.0/255.0 green:224.0/255.0 blue:205.0/255.0 alpha:1];
+
+        
+        messageBackgroundView.layer.cornerRadius = 5;
+
         self.AvatarImageView.frame=CGRectMake( self.frame.size.width-55,10+TOP_MARGIN, 50, 50);
         
     }
@@ -181,10 +187,10 @@
     
     CGContextSetLineWidth(context, 1.0);
     CGContextMoveToPoint(context, 0, 21); //start at this point
-    CGContextAddLineToPoint(context, (self.bounds.size.width - 120) / 2, 21); //draw to this point
+    CGContextAddLineToPoint(context, (self.bounds.size.width), 21); //draw to this point
     
     CGContextMoveToPoint(context, self.bounds.size.width, 21); //start at this point
-    CGContextAddLineToPoint(context, self.bounds.size.width - (self.bounds.size.width - 120) / 2, 21); //draw to this point
+    CGContextAddLineToPoint(context, self.bounds.size.width , 21); //draw to this point
     
     CGContextStrokePath(context);
     

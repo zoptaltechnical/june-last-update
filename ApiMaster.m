@@ -112,7 +112,7 @@ static ApiMaster* singleton = nil;
           completionHandler:(APICompletionHandler)handler
 {
     
-     NSString* infoStr = [NSString stringWithFormat:@"first_name=%@&last_name=%@&email=%@&phone=%@&address=%@&password=%@&device_token=%@&device_type=%@&cpassword=%@&city=%@&state=%@&zip_code=%@",userInfo [@"first_name"],userInfo[@"last_name"],userInfo [@"email"],userInfo[@"phone"],userInfo [@"address"],userInfo[@"password"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"cpassword"],userInfo[@"city"],userInfo[@"state"],userInfo[@"zip_code"]];
+     NSString* infoStr = [NSString stringWithFormat:@"first_name=%@&last_name=%@&email=%@&phone=%@&address=%@&password=%@&device_token=%@&device_type=%@&cpassword=%@&city=%@&state=%@&zip_code=%@&date_of_birth=%@",userInfo [@"first_name"],userInfo[@"last_name"],userInfo [@"email"],userInfo[@"phone"],userInfo [@"address"],userInfo[@"password"],userInfo[@"device_token"],userInfo[@"device_type"],userInfo[@"cpassword"],userInfo[@"city"],userInfo[@"state"],userInfo[@"zip_code"],userInfo[@"date_of_birth"]];
     
     McomLOG(@"infostr :%@",infoStr);
     
@@ -511,7 +511,7 @@ static ApiMaster* singleton = nil;
 -(void)paypalPaymentSucessWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
 {
     
-    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&txd_id=%@&booking_dates=%@&amount=%@&create_time=%@" ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo [@"txd_id"],userInfo[@"booking_dates"],userInfo [@"amount"],userInfo[@"create_time"]];
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@&product_id=%@&txd_id=%@&booking_dates=%@&amount=%@&create_time=%@&trans_fees=%@&total_amount=%@" ,userInfo [@"access_token"],userInfo[@"product_id"],userInfo [@"txd_id"],userInfo[@"booking_dates"],userInfo [@"amount"],userInfo[@"create_time"],userInfo[@"trans_fees"],userInfo[@"total_amount"]];
     
     McomLOG(@"infostr :%@",infoStr);
     NSString *url=[[NSString stringWithFormat:@"%@paypal_payment",creditCardURL] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

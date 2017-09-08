@@ -32,9 +32,15 @@
     
     IBOutlet UITextField *zipcodeTxtFld;
     
+    IBOutlet UIDatePicker *age_picker;
     
+    IBOutlet UIView *datePickerView;
     
+    IBOutlet UIButton *dateOfBirthBtn;
     
+    IBOutlet UIButton *pickerCancelBtn;
+    
+    IBOutlet UIButton *pickerDoneBtn;
     
  
     IBOutlet UIButton *termsOfServicesBtn;
@@ -42,6 +48,7 @@
     
     IBOutlet UITextField *passwordTxtFld;
     
+    IBOutlet UITextField *cnfirmPasswrdTxtFld;
     IBOutlet UITextField *mobileTxtFld;
     
     

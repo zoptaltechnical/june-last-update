@@ -61,6 +61,8 @@
         [l2 setCornerRadius:10];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
         
         UILongPressGestureRecognizer *lpgr
         = [[UILongPressGestureRecognizer alloc]
@@ -81,7 +83,6 @@
 -(void)tapRecognized:(UITapGestureRecognizer *)tapGR
 {
     [self.CustomDelegate mediaCellDidTapped:self AndGesture:tapGR];
-    
     
     if (_messageImageView >0)
     {
@@ -142,12 +143,12 @@
     if ([self.bubbletype isEqualToString:@"LEFT"])
     {
         messageBackgroundView.frame = CGRectMake(60,TOP_MARGIN+30 - 12, 140,140);
+        
         self.AvatarImageView.frame=CGRectMake(5,10+TOP_MARGIN, 50, 50);
         _messageImageView.frame=CGRectMake(0.5,0.5, 139,  139);
         _messageImageView.image=[UIImage imageNamed:@"ProfilePic"];
     }else
     {
-        
         
         messageBackgroundView.frame = CGRectMake( self.frame.size.width-200,TOP_MARGIN+20,140,140);
         self.AvatarImageView.frame=CGRectMake( self.frame.size.width-55,10+TOP_MARGIN, 50, 50);
