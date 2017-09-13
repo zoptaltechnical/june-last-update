@@ -837,6 +837,26 @@ static ApiMaster* singleton = nil;
 
 
 
+-(void)PayPalDescriptionWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler
+{
+    
+    NSString* infoStr = [NSString stringWithFormat:@"access_token=%@",userInfo[@"access_token"]];
+    NSLog(@"%@",infoStr);
+    NSString *url=[[NSString stringWithFormat:@"%@admin_paypal_credentials",WebURl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSMutableURLRequest* request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setHTTPBody:[infoStr dataUsingEncoding:NSUTF8StringEncoding]];
+    NSLog(@"Request At support lender %@",request);
+    [request setTimeoutInterval:540];
+    [self forwardRequest1:request showActivity:YES completionHandler:handler];
+    
+}
+
+
+
+
+
+
+
 
 
 
@@ -897,6 +917,34 @@ static ApiMaster* singleton = nil;
             [Appdelegate stopLoader:nil];
              
               return;
+         }
+         McomLOG(@"Response String %@", NSStringFromNSData(data));
+         if(handler != nil)
+             handler(JSONObjectFromData(data),connectionError);
+     }];
+}
+
+
+#pragma mark request1 to Server
+-(void)forwardRequest2:(NSMutableURLRequest*)request showActivity:(BOOL)showActivity
+     completionHandler:(APICompletionHandler)handler
+{
+    [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPMethod:@"POST"];
+    
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:
+     ^(NSURLResponse* response, NSData* data, NSError* connectionError)
+     {
+         if(connectionError != nil)
+         {
+             
+             [[[UIAlertView alloc] initWithTitle:@"Connection Error !" message:@"No Internet Connection" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+             
+             [Appdelegate stopLoader:nil];
+             
+             return;
          }
          McomLOG(@"Response String %@", NSStringFromNSData(data));
          if(handler != nil)

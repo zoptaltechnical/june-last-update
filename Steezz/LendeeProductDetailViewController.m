@@ -800,6 +800,11 @@
 - (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage transform:(CGAffineTransform)transform cropRect:(CGRect)cropRect
 {
     [controller dismissViewControllerAnimated:YES completion:NULL];
+    
+    data = UIImageJPEGRepresentation(croppedImage,1.0);
+    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
+    
+    
     productImage.image = croppedImage;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self updateEditButtonEnabled];

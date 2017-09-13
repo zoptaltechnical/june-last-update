@@ -114,7 +114,7 @@
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
 {
-    if ([[url absoluteString] rangeOfString:@"fb1701866856509602"].location != NSNotFound)
+    if ([[url absoluteString] rangeOfString:@"fb868427039982408"].location != NSNotFound)
     {
         //Facebook
         return [[FBSDKApplicationDelegate sharedInstance] application:application
@@ -128,10 +128,8 @@
 
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ([[url absoluteString] rangeOfString:@"fb1701866856509602"].location != NSNotFound)
+    if ([[url absoluteString] rangeOfString:@"fb868427039982408"].location != NSNotFound)
     {
-        //Facebook
-        
         
         return [[FBSDKApplicationDelegate sharedInstance] application:application
                                                               openURL:url
@@ -144,6 +142,7 @@
 
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"content---%@", token);
@@ -160,6 +159,86 @@
 }
 
 
+
+-(void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+{
+    
+    
+    NSString* alertValue = [NSString stringWithFormat:@"%@",[[userInfo valueForKey:@"aps"] valueForKey:@"badge"]];
+    NSLog(@"Notification  badge Number -- %@",alertValue);
+    
+    
+    UIApplicationState state = [application applicationState];
+    if (state == UIApplicationStateInactive)
+    {
+        [self pushActionWithDict:userInfo];
+        
+    }
+    
+    
+    else if (state == UIApplicationStateActive)
+    {
+        
+        if ([[userInfo valueForKey:@"aps"] valueForKey:@"alert"])
+        {
+            NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+            
+            UIAlertController * alert=   [UIAlertController alertControllerWithTitle:@"Steezz."  message:message  preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* OK = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
+                                 {
+                                     
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     [self pushActionWithDict:userInfo];
+                                     
+                                     
+                                 }];
+            
+            [alert addAction:OK];
+            [self.window.rootViewController presentViewController:alert animated:YES completion:^{
+            }];
+        }
+    }
+    
+    
+    
+    else
+    {
+        UIApplicationState state = [application applicationState];
+        if (state == UIApplicationStateInactive)
+        {
+            [self pushActionWithDict:userInfo];
+        }
+        else if (state == UIApplicationStateActive)
+        {
+            if ([[userInfo valueForKey:@"aps"] valueForKey:@"alert"])
+            {
+                NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+                UIAlertController * alert=   [UIAlertController alertControllerWithTitle:@"Blitz."  message:message  preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* OK = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action)
+                                     {
+                                         [alert dismissViewControllerAnimated:YES completion:nil];
+                                         [self pushActionWithDict:userInfo];
+                                     }];
+                [alert addAction:OK];
+                [self.window.rootViewController presentViewController:alert animated:YES completion:^{
+                }];
+            }
+        }
+        
+    }
+    
+   
+}
+
+
+
+-(void)pushActionWithDict:(NSDictionary *)dictPush
+{
+    NSLog(@"dictPush %@",dictPush);
+    
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

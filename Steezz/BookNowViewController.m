@@ -122,6 +122,8 @@
    
      [self callProductDetailAPI];
     
+    [self PayPalCredentialAPI];
+    
     
     // Do any additional setup after loading the view.
 }
@@ -761,6 +763,68 @@
                                            NSLog(@"%zd", actionType);
                                        }];
          }
+     }];
+    
+    
+}
+
+
+
+
+-(void)PayPalCredentialAPI
+{
+    NSLog(@"%@",AvailableDatesString);
+    
+    [Appdelegate startLoader:nil withTitle:@"Loading..."];
+    
+    NSDictionary* registerInfo = @{
+                                   @"access_token":[dict valueForKey:@"access_token"]
+                                  
+                                   };
+    McomLOG(@"%@",registerInfo);
+    [API PayPalDescriptionWithInfo:[registerInfo mutableCopy] completionHandler:^(NSDictionary *responseDict,NSError *error)
+     {
+         
+         [Appdelegate stopLoader:nil];
+         
+         NSDictionary *dict_response = [[NSDictionary alloc]initWithDictionary:responseDict];
+         
+         if ([responseDict[@"result"]boolValue]==0)
+         {
+             NSString * errormessage = [NSString stringWithFormat:@"%@",[dict_response valueForKey:@"message"]];
+             
+             [self.navigationController popViewControllerAnimated:YES];
+             
+             [SRAlertView sr_showAlertViewWithTitle:@""
+                                            message:errormessage
+                                    leftActionTitle:@"OK"
+                                   rightActionTitle:@""
+                                     animationStyle:AlertViewAnimationRightToCenterSpring
+                                       selectAction:^(AlertViewActionType actionType) {
+                                           NSLog(@"%zd", actionType);
+                                       }];
+             
+             
+             
+             
+         }
+         else if ([responseDict[@"result"]boolValue]==1)
+         {
+             NSLog(@"sign_up%@", responseDict);
+             
+             
+             [Utility setValue:[responseDict valueForKey:@"live_clientId"] forKey:PaypalLiveClientID];
+             [Utility setValue:[responseDict valueForKey:@"sandbox_clientId"] forKey:PaypalSandBoxClientID];
+             
+             
+             
+               [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentProduction:PaypalLiveClientID,PayPalEnvironmentSandbox:PaypalSandBoxClientID}];
+             
+             
+             
+             
+             
+        }
      }];
     
     

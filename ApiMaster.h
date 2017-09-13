@@ -107,6 +107,8 @@ typedef void (^APICompletionHandler)(NSDictionary* responseDict,NSError *error);
 
 -(void)FreeBookingWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
 
+-(void)PayPalDescriptionWithInfo:(NSMutableDictionary*)userInfo completionHandler:(APICompletionHandler)handler;
+
 
 
 

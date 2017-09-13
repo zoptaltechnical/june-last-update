@@ -69,8 +69,6 @@
     dateCountBtn.layer.cornerRadius=dateCountBtn.frame.size.width/2;
     dateCountBtn.clipsToBounds= YES;
     
-
-    
     pricetxtFld.borderStyle = UITextBorderStyleLine;
     pricetxtFld.layer.borderWidth = 1;
     pricetxtFld.layer.borderColor = [[UIColor darkGrayColor] CGColor];
@@ -143,7 +141,16 @@
 - (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage transform:(CGAffineTransform)transform cropRect:(CGRect)cropRect
 {
     [controller dismissViewControllerAnimated:YES completion:NULL];
-    productImage.image = croppedImage;
+    
+    
+    
+    CGSize  size  = {400, 400};
+    UIImage*image1 = [self scaleImage:croppedImage toSize:size];
+    
+    data = UIImageJPEGRepresentation(image1,1.0);
+    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
+    productImage.image = image1;
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self updateEditButtonEnabled];
     }
@@ -234,17 +241,13 @@
 {
  
     image = info[UIImagePickerControllerOriginalImage];
+    
+    
+    
     productImage.image = image;
     
-   // data = UIImagePNGRepresentation(image);
+  //  data = UIImagePNGRepresentation(image);
     
-    
-   data = UIImageJPEGRepresentation(image,1.0);
-    
-    UIImage *imageObj = [UIImage imageWithData:data];
-    
-    
-    base64EncodedP = [[NSString alloc] initWithString:[Base64 encode:data]];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (self.popover.isPopoverVisible) {
@@ -261,6 +264,29 @@
 }
 
 
+
+- (UIImage*) scaleImage:(UIImage*)image1 toSize:(CGSize)newSize {
+    CGSize scaledSize = newSize;
+    float scaleFactor = 1.0;
+    if( image1.size.width > image1.size.height ) {
+        scaleFactor = image1.size.width / image1.size.height;
+        scaledSize.width = newSize.width;
+        scaledSize.height = newSize.height / scaleFactor;
+    }
+    else {
+        scaleFactor = image1.size.height / image1.size.width;
+        scaledSize.height = newSize.height;
+        scaledSize.width = newSize.width / scaleFactor;
+    }
+    
+    UIGraphicsBeginImageContextWithOptions( scaledSize, NO, 0.0 );
+    CGRect scaledImageRect = CGRectMake( 0.0, 0.0, scaledSize.width, scaledSize.height );
+    [image1 drawInRect:scaledImageRect];
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+}
 #pragma mark - Action methods
 
 - (IBAction)openEditor:(id)sender
@@ -699,8 +725,8 @@
                     @"unavailable_dates":availableDateString,
                     @"is_available":@"Yes",
                     @"price":pricetxtFld.text,
-                    @"product_image":base64EncodedP,
-                    @"location":locationTxtFld.text
+                    @"location":locationTxtFld.text,
+                    @"product_image":base64EncodedP
                     };
     
     McomLOG(@"%@",registerInfo);

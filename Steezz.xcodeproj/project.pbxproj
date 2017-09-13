@@ -31,6 +31,8 @@
 		185054161EFA8EC3000975A0 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185054151EFA8EC3000975A0 /* Bolts.framework */; };
 		1859A4111ED444A900CD66D3 /* BookNowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1859A4101ED444A900CD66D3 /* BookNowViewController.m */; };
 		186050C01F616A9B00696B4B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 186050BF1F616A9B00696B4B /* Images.xcassets */; };
+		186E5DB71F6919FA0029AD9C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 186E5DB61F6919FA0029AD9C /* UserNotifications.framework */; };
+		186E5DB91F691A030029AD9C /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 186E5DB81F691A030029AD9C /* UserNotificationsUI.framework */; };
 		186EA0B21ED2A39400E28323 /* bookingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186EA0B11ED2A39400E28323 /* bookingViewController.m */; };
 		1873AC441F0A271300CCCEDB /* SaveCreditCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1873AC431F0A271300CCCEDB /* SaveCreditCardViewController.m */; };
 		188B24761F61732B00AFD001 /* Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 188B24751F61732B00AFD001 /* Splash.png */; };
@@ -213,6 +215,8 @@
 		1859A40F1ED444A900CD66D3 /* BookNowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookNowViewController.h; sourceTree = "<group>"; };
 		1859A4101ED444A900CD66D3 /* BookNowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookNowViewController.m; sourceTree = "<group>"; };
 		186050BF1F616A9B00696B4B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		186E5DB61F6919FA0029AD9C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		186E5DB81F691A030029AD9C /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		186EA0B01ED2A39400E28323 /* bookingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bookingViewController.h; sourceTree = "<group>"; };
 		186EA0B11ED2A39400E28323 /* bookingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bookingViewController.m; sourceTree = "<group>"; };
 		1873AC421F0A271300CCCEDB /* SaveCreditCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveCreditCardViewController.h; sourceTree = "<group>"; };
@@ -450,6 +454,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				186E5DB91F691A030029AD9C /* UserNotificationsUI.framework in Frameworks */,
+				186E5DB71F6919FA0029AD9C /* UserNotifications.framework in Frameworks */,
 				18970FB01F1F145900962299 /* QuartzCore.framework in Frameworks */,
 				18970FAE1F1F143E00962299 /* UIKit.framework in Frameworks */,
 				18970FAC1F1F143200962299 /* Foundation.framework in Frameworks */,
@@ -1123,12 +1129,12 @@
 		18D177951EBC849200C29EAB = {
 			isa = PBXGroup;
 			children = (
+				18D177E41EBC8A2900C29EAB /* PrefixHeader.pch */,
 				18B74A0E1F3D913500469D0E /* PEPhotoCropEditorBorder.png */,
 				18B74A101F3D914000469D0E /* PEPhotoCropEditorBorder@2x.png */,
 				18B74A0D1F3D90EE00469D0E /* en.Iproj */,
 				18B74A0A1F3D90AA00469D0E /* Resources  */,
 				18B74A071F3D907600469D0E /* Lib */,
-				18D177E41EBC8A2900C29EAB /* PrefixHeader.pch */,
 				18BCDCA51F3C255A008C96B8 /* ImageCropView.m */,
 				18BCDCA61F3C255A008C96B8 /* ImageCropView.h */,
 				18D8B5E91F21FE6D009EBE7E /* FIMultipleCalendar */,
@@ -1310,6 +1316,8 @@
 		4CE5E67EA26689B4310E8E54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				186E5DB81F691A030029AD9C /* UserNotificationsUI.framework */,
+				186E5DB61F6919FA0029AD9C /* UserNotifications.framework */,
 				18970FAF1F1F145900962299 /* QuartzCore.framework */,
 				18970FAD1F1F143D00962299 /* UIKit.framework */,
 				18970FAB1F1F143200962299 /* Foundation.framework */,
@@ -1914,7 +1922,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				INFOPLIST_FILE = Steezz/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1923,7 +1931,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zoptal.SteezzDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8a2b80a3-8e67-47d1-a51e-71071e25387a";
+				PROVISIONING_PROFILE = "7d2b1e95-1b66-4076-b0bc-b46f8dd433ab";
 				PROVISIONING_PROFILE_SPECIFIER = SteezzDev;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -1949,7 +1957,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PrefixHeader.pch;
 				INFOPLIST_FILE = Steezz/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1958,7 +1966,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zoptal.SteezzDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8a2b80a3-8e67-47d1-a51e-71071e25387a";
+				PROVISIONING_PROFILE = "7d2b1e95-1b66-4076-b0bc-b46f8dd433ab";
 				PROVISIONING_PROFILE_SPECIFIER = SteezzDev;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";

@@ -39,7 +39,7 @@
     messageTxtView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     messageTxtView.layer.cornerRadius = 15.0;
     messageTxtView.placeholderText = @"    Message";
-    messageTxtView.placeholderColor = [UIColor darkGrayColor];
+    messageTxtView.placeholderColor = [UIColor lightGrayColor];
   
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:supportName ,nil]];
     [Utility addHorizontalPadding:[NSMutableArray arrayWithObjects:supportEmail ,nil]];

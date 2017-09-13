@@ -223,14 +223,13 @@
     }
 }
 
-
 #pragma Sign in API
 
 -(void)callSignInAPI
 {
     [Appdelegate startLoader:nil withTitle:@"Loading..."];
     
-    NSLog(@"%@",[Utility valueForKey:DeviceToken]);
+    NSLog(@"device %@",[Utility valueForKey:DeviceToken]);
     
     NSDictionary* registerInfo = @{
                                    @"username":signInEmailTxtFld.text,

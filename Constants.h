@@ -76,15 +76,18 @@
 #define kNetworkAlert   @"No network available"
 
 
+#define PaypalLiveClientID   @"PaypalLiveClientID"
+#define PaypalSandBoxClientID   @"PaypalSandBoxClientID"
 
 
-#define WebURl @"https://steezz.com/home/"
 
-//#define WebURl @"https://zoptal.com/demo/steezz/home/"
 
-#define creditCardURL @"https://steezz.com/cc_payment/"
 
-#define webURLCardSaving @"https://steezz.com/cc_payment/"
+#define WebURl @"https://steezz.com/ios_app/home/"
+
+#define creditCardURL @"https://steezz.com/ios_app/cc_payment/"
+
+#define webURLCardSaving @"https://steezz.com/ios_app/cc_payment/"
 
 #define UtilManager  [Utility singleton]
 #define iOSVersion   [[[UIDevice currentDevice] systemVersion] floatValue]
